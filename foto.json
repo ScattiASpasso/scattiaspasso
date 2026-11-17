@@ -1,0 +1,87 @@
+[
+    {
+        "file": "Bardi.JPG",
+        "categoria": "strutture",
+        "titolo": "Castello di Bardi",
+        "tags": ["castello", "architettura", "fortezza", "storia", "strutture"]
+    },
+    {
+        "file": "Braies.JPG",
+        "categoria": "paesaggi",
+        "titolo": "Lago di Braies",
+        "tags": ["lago", "montagna", "dolomiti", "acqua", "natura", "paesaggio"]
+    },
+    {
+        "file": "cetoniella.jpg",
+        "categoria": "macro",
+        "titolo": "Cetoniella",
+        "tags": ["insetto", "macro", "natura", "fiore", "dettaglio", "fauna"]
+    },
+    {
+    "file": "Cimon delle Pale.jpg",
+    "categoria": "bianco-e-nero",
+    "titolo": "Cimon delle Pale",
+    "tags": ["pale di san martino", "montagna", "dolomiti", "rocce", "cielo", "paesaggio", "bianco e nero"]
+    },
+    {
+        "file": "Coniglietto.JPG",
+        "categoria": "fauna",
+        "titolo": "Coniglietto",
+        "tags": ["animale", "coniglio", "fauna", "prato", "natura"]
+    },
+    {
+        "file": "Foglie.JPG",
+        "categoria": "macro",
+        "titolo": "Trame di foglia",
+        "tags": ["foglia", "macro", "natura", "dettaglio", "verde", "pianta"]
+    },
+    {
+        "file": "Girasole.jpg",
+        "categoria": "fiori",
+        "titolo": "Girasole",
+        "tags": ["girasole", "fiore", "estate", "giallo", "natura"]
+    },
+    {
+        "file": "Monte Civetta.jpg",
+        "categoria": "paesaggi",
+        "titolo": "Monte Civetta",
+        "tags": ["civetta", "montagna", "dolomiti", "parete", "roccia", "paesaggio"]
+    },
+    {
+        "file": "Riflessi.JPG",
+        "categoria": "paesaggi",
+        "titolo": "Giochi di riflessi",
+        "tags": ["riflessi", "acqua", "lago", "natura", "paesaggio"]
+    },
+    {
+        "file": "Torre Chiara dettaglio.JPG",
+        "categoria": "strutture",
+        "titolo": "Dettaglio di Torrechiara",
+        "tags": ["castello", "torrechiara", "architettura", "dettaglio", "pietra", "strutture"]
+    },
+    {
+        "file": "Tramonto.JPG",
+        "categoria": "paesaggi",
+        "titolo": "Tramonto alpino",
+        "tags": ["tramonto", "sole", "luce", "montagna", "cielo", "paesaggio"]
+    },
+    {
+        "file": "Tramonto_1.jpg",
+        "categoria": "paesaggi",
+        "titolo": "Ultime luci del giorno",
+        "tags": ["tramonto", "colori", "sera", "cielo", "paesaggio"]
+    },
+    {
+        "file": "ulivo.JPG",
+        "categoria": "natura",
+        "titolo": "Ulivo secolare",
+        "tags": ["ulivo", "albero", "pianta", "natura", "tronco"]
+    },
+    {
+        "file": "Uva.jpg",
+        "categoria": "macro",
+        "titolo": "Gusto d'autunno",
+        "tags": ["uva", "frutto", "macro", "autunno", "dettaglio", "natura"]
+    }
+]
+

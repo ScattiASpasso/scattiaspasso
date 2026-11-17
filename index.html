@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il mondo di Ste</title>
+    <link rel="apple-touch-icon" href="foto/logo.jpg">
+    <link rel="icon" type="image/jpeg" href="foto/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #0c0c0c;
+            color: #dcdcdc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+        header {
+            padding: 40px 5% 20px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b87c24 15%, #f3d58d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 10px rgba(184, 124, 36, 0.25));
+        }
+        .nav-main {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-main a {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            padding: 5px 8px;
+        }
+        .nav-main a:hover, .nav-main a.active {
+            color: #ffffff;
+        }
+        .search-input {
+            background-color: #141414;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: #dcdcdc;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s, width 0.3s;
+            width: 130px;
+        }
+        .search-input:focus {
+            border-color: #777;
+            width: 170px;
+        }
+        .search-input::placeholder {
+            color: #666;
+        }
+        .nav-contact {
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 8px 16px !important;
+            color: #ccc !important;
+            transition: all 0.3s ease !important;
+        }
+        .nav-contact:hover {
+            border-color: #777;
+            background-color: rgba(255, 255, 255, 0.03);
+            color: #ffffff !important;
+        }
+
+        .header-categories {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-bottom: 5px;
+        }
+        .categories-nav {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .cat-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.78rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 2px 0;
+            white-space: nowrap;
+        }
+        .cat-link:hover, .cat-link.active {
+            color: #f3d58d;
+        }
+
+        /* Stile verde salvia di base per "Tutte" e "Storie", che diventa oro al passaggio/selezione */
+        .cat-special {
+            font-weight: 700;
+            color: #8fa38f;
+            letter-spacing: 2px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .cat-special:hover, .cat-special.active {
+            color: #f3d58d;
+            text-shadow: 0 0 10px rgba(243, 213, 141, 0.3);
+        }
+
+        .divider-line {
+            width: 100%;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, rgba(184, 124, 36, 0.75), rgba(243, 213, 141, 0.5), transparent);
+            margin: 20px 0 30px 0;
+        }
+
+        .intro {
+            max-width: 1100px;
+            margin: 0 auto 35px auto;
+            padding: 0 20px;
+            color: #888;
+            font-size: 0.95rem;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .featured-section {
+            max-width: 1100px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+            display: block;
+        }
+        .featured-label {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .featured-label::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.15), transparent);
+        }
+        .featured-card {
+            border-radius: 16px !important;
+            padding: 22px !important;
+            background: linear-gradient(145deg, #161616, #0e0e0e) !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(255, 255, 255, 0.02) !important;
+        }
+        .featured-card img {
+            width: 100% !important;
+            height: 70vh !important;
+            object-fit: cover !important;
+            border-radius: 10px !important;
+            display: block;
+        }
+        .featured-card .photo-overlay {
+            left: 22px !important;
+            right: 22px !important;
+            bottom: 22px !important;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            padding: 40px 22px 20px 22px !important;
+        }
+
+        .gallery {
+            max-width: 1100px;
+            margin: 20px auto 100px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+            min-height: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .gallery.grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+        }
+        .gallery.grid-view .photo-card img {
+            height: auto;
+            max-height: none;
+            object-fit: contain;
+        }
+
+        .gallery-empty {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+        .gallery-empty span {
+            display: block;
+            margin-top: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #b87c24 15%, #f3d58d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        .photo-card {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 24px;
+            background-color: #141414;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+            cursor: zoom-in;
+            border: 1px solid #1f1f1f;
+        }
+        .photo-card img {
+            width: 100%;
+            height: auto;
+            max-height: 65vh;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .photo-card:hover img {
+            transform: scale(2.0);
+        }
+        .photo-card img, .lightbox img {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 25px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+        }
+        .photo-title {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(12, 12, 12, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 900;
+            text-align: center;
+            padding: 12px 20px;
+            color: #666;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.96);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .lightbox-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox img {
+            display: block;
+            border-radius: 6px;
+        }
+        .lightbox-img-wrapper {
+            position: relative;
+            display: block;
+            line-height: 0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .lightbox-img-wrapper .photo-overlay {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            line-height: 1.5;
+            padding: 30px 25px 20px 25px;
+        }
+        .lightbox-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .lightbox-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .icon-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ccc;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            padding: 0;
+        }
+        .icon-btn:hover {
+            border-color: #fff;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+        .icon-btn svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .lightbox-note {
+            font-size: 0.75rem;
+            color: #aaa;
+            letter-spacing: 0.3px;
+            text-align: center;
+            width: 100%;
+        }
+        .lightbox-note a {
+            color: #fff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .lightbox-note a:hover {
+            color: #ccc;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1100;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 35px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+        .close-modal {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            color: #777;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .close-modal:hover {
+            color: #ffffff;
+        }
+        .modal-content h2 {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background-color: #0c0c0c;
+            border: 1px solid #282828;
+            border-radius: 6px;
+            padding: 12px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #666;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #ffffff;
+            color: #0c0c0c;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s;
+            margin-top: 8px;
+        }
+        .submit-btn:hover {
+            background-color: #d2d2d2;
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #form-status {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            color: #a3d9a5;
+            letter-spacing: 0.5px;
+        }
+    </style>
+    <meta name="description" content="Il mondo di Ste - Portfolio di fotografia naturalistica, paesaggi, fauna e macro tra le montagne del Trentino.">
+    <meta name="keywords" content="fotografia, paesaggi, natura, fauna, macro, Trentino, portfolio fotografico">
+
+    <meta property="og:title" content="Il mondo di Ste - Portfolio Fotografico">
+    <meta property="og:description" content="Il mio modo di fermare il tempo tra luce, montagne e incontri inaspettati.">
+    <meta property="og:image" content="https://mondodiste.github.io/foto/logo.jpg">
+    <meta property="og:url" content="https://mondodiste.github.io/">
+    <meta property="og:type" content="website">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="38d4ade3-e2cb-444d-b45e-6ccc71b71736"></script>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="logo">Il mondo di Ste</div>
+            <nav class="nav-main">
+                <a class="active" onclick="goToHome(this)">Home</a>
+                <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
+                <a class="nav-contact" onclick="openContactModal()">Contatti</a>
+            </nav>
+        </div>
+        
+        <div class="header-categories">
+            <nav class="categories-nav">
+                <a class="cat-link cat-special" onclick="filterGallery('all', this)">Tutte</a>
+                <a class="cat-link" onclick="filterGallery('paesaggi', this)">Paesaggi</a>
+                <a class="cat-link" onclick="filterGallery('natura', this)">Natura</a>
+                <a class="cat-link" onclick="filterGallery('fauna', this)">Fauna</a>
+                <a class="cat-link" onclick="filterGallery('macro', this)">Macro</a>
+                <a class="cat-link" onclick="filterGallery('eventi', this)">Eventi</a>
+                <a class="cat-link" onclick="filterGallery('street', this)">Street photography</a>
+                <a class="cat-link" onclick="filterGallery('sport', this)">Sport</a>
+                <a class="cat-link" onclick="filterGallery('astrofotografia', this)">Astrofotografia</a>
+                <a class="cat-link" onclick="filterGallery('fiori', this)">Fiori e Flora</a>
+                <a class="cat-link" onclick="filterGallery('strutture', this)">Strutture e Architetture</a>
+                <a class="cat-link" onclick="filterGallery('bianco-e-nero', this)">Bianco e Nero</a>
+                <a class="cat-link" onclick="filterGallery('astratta', this)">Astratta</a>
+                <a class="cat-link cat-special" onclick="filterGallery('storie', this)">Storie</a>
+            </nav>
+        </div>
+
+        <div class="divider-line"></div>
+    </header>
+    
+    <div class="intro">
+        <p>Il mio modo di fermare il tempo durante le uscite all'aria aperta: luce, montagne e incontri inaspettati.</p>
+        <p style="margin-top: 12px; font-size: 0.82rem; color: #666; font-style: normal; letter-spacing: 1px;">Nessun cookie, nessun tracciamento, zero dati personali. Solo fotografia in libertà.</p>
+    </div>
+
+    <div id="featured-section" class="featured-section">
+        <div class="featured-label">In primo piano</div>
+        <div class="photo-card featured-card" id="featured-card">
+            <img id="featured-img" src="" alt="" loading="lazy" oncontextmenu="return false;">
+            <div class="photo-overlay">
+                <span id="featured-title" class="photo-title"></span>
+            </div>
+        </div>
+    </div>
+    
+    <main class="gallery" id="gallery-container">
+        <div id="gallery-empty" class="gallery-empty">
+            Scatti in arrivo per questa sezione...
+            <span>Work in Progress &mdash; Presto online</span>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Il Mondo di Ste
+    </footer>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <div class="lightbox-img-wrapper">
+                <img id="lightbox-img" src="" alt="Foto ingrandita" oncontextmenu="return false;">
+                <div class="photo-overlay">
+                    <div class="lightbox-row">
+                        <span id="lightbox-title" class="photo-title"></span>
+                        <div class="lightbox-actions">
+                            <button onclick="sharePhoto()" class="icon-btn" title="Condividi">
+                                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="18" cy="5" r="3"></circle>
+                                    <circle cx="6" cy="12" r="3"></circle>
+                                    <circle cx="18" cy="19" r="3"></circle>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                </svg>
+                            </button>
+                            <a id="lightbox-download" href="" download class="icon-btn" title="Download">
+                                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lightbox-note">
+                        Ti serve la risoluzione originale o un formato specifico per stampa? <a onclick="closeLightbox(); openContactModal();">Scrivimi.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal" onclick="closeContactModalOnOutside(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeContactModal()">&times;</span>
+            <h2>Scrivimi</h2>
+            <form id="contact-form" action="https://formspree.io/f/xnpdjdnp" method="POST">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required placeholder="Il tuo nome">
+                </div>
+                <div class="form-group">
+                    <label for="email">La tua Email</label>
+                    <input type="email" id="email" name="email" required placeholder="nome@esempio.it">
+                </div>
+                <div class="form-group">
+                    <label for="message">Messaggio</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Scrivi qui il tuo messaggio..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submit-btn">Invia Messaggio</button>
+                <div id="form-status"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentCategory = 'all';
+        let allPhotosData = [];
+
+        fetch('foto.json?t=' + new Date().getTime())
+            .then(response => response.json())
+            .then(data => {
+                allPhotosData = data || [];
+
+                if (allPhotosData.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * allPhotosData.length);
+                    const featured = allPhotosData[randomIndex];
+
+                    const featuredSection = document.getElementById('featured-section');
+                    const featuredCard = document.getElementById('featured-card');
+                    const featuredImg = document.getElementById('featured-img');
+                    const featuredTitle = document.getElementById('featured-title');
+
+                    featuredImg.src = `foto/${featured.file}`;
+                    featuredImg.alt = featured.titolo;
+                    featuredTitle.textContent = featured.titolo;
+                    
+                    featuredCard.onclick = () => openLightbox(`foto/${featured.file}`, featured.titolo, featured.file);
+                    featuredSection.style.display = 'block';
+                }
+
+                renderGallery(allPhotosData);
+
+                const hash = window.location.hash;
+                if (hash.startsWith('#foto=')) {
+                    const targetFile = decodeURIComponent(hash.replace('#foto=', ''));
+                    const targetPhoto = allPhotosData.find(p => p.file === targetFile);
+                    if (targetPhoto) {
+                        openLightbox(`foto/${targetPhoto.file}`, targetPhoto.titolo, targetPhoto.file);
+                    }
+                }
+            })
+            .catch(err => console.error('Errore nel caricamento delle foto:', err));
+
+        function renderGallery(data) {
+            const container = document.getElementById('gallery-container');
+            container.querySelectorAll('.photo-wrapper').forEach(el => el.remove());
+
+            data.forEach(photo => {
+                const safeTitle = photo.titolo.replace(/"/g, '&quot;');
+                const safeTitleEscaped = photo.titolo.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const tagsStr = photo.tags && Array.isArray(photo.tags) ? photo.tags.join(' ').toLowerCase() : '';
+
+                const html = `
+                    <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${photo.titolo.toLowerCase()}" data-tags="${tagsStr}">
+                        <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
+                            <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
+                            <div class="photo-overlay">
+                                <span class="photo-title">${photo.titolo}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+
+            applyFilters();
+        }
+
+        function sharePhoto() {
+            const title = document.getElementById('lightbox-title').textContent;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Il mondo di Ste',
+                    text: `Guarda questa foto: "${title}"`,
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link della foto copiato negli appunti!');
+            }
+        }
+
+        function fitLightboxImage() {
+            const img = document.getElementById('lightbox-img');
+            if (!img.naturalWidth || !img.naturalHeight) return;
+
+            const maxW = window.innerWidth * 0.96;
+            const maxH = window.innerHeight * 0.94;
+            const imgRatio = img.naturalWidth / img.naturalHeight;
+            const screenRatio = maxW / maxH;
+
+            if (imgRatio > screenRatio) {
+                img.style.width = maxW + 'px';
+                img.style.height = (maxW / imgRatio) + 'px';
+            } else {
+                img.style.height = maxH + 'px';
+                img.style.width = (maxH * imgRatio) + 'px';
+            }
+        }
+
+        function openLightbox(src, title, fileName) {
+            const img = document.getElementById('lightbox-img');
+            const titleEl = document.getElementById('lightbox-title');
+            const downloadBtn = document.getElementById('lightbox-download');
+            
+            img.onload = fitLightboxImage;
+            img.src = src;
+            titleEl.textContent = title || '';
+            downloadBtn.href = src;
+            
+            const safeName = title ? title.toLowerCase().replace(/[^a-z0-9]/g, '_') + '.jpg' : 'sfondo_ste.jpg';
+            downloadBtn.setAttribute('download', safeName);
+
+            if (fileName) {
+                history.pushState(null, null, `#foto=${encodeURIComponent(fileName)}`);
+            }
+
+            document.getElementById('lightbox').style.display = 'flex';
+            if (img.complete) fitLightboxImage();
+        }
+        
+        window.addEventListener('resize', () => {
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                fitLightboxImage();
+            }
+        });
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            history.pushState(null, null, window.location.pathname + window.location.search);
+        }
+
+        function goToHome(element) {
+            currentCategory = 'all';
+            const featuredSection = document.getElementById('featured-section');
+            const galleryContainer = document.getElementById('gallery-container');
+            
+            if (featuredSection) featuredSection.style.display = 'block';
+            galleryContainer.classList.remove('grid-view');
+
+            document.querySelectorAll('.nav-main a:not(.nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            applyFilters();
+        }
+
+        function filterGallery(category, element) {
+            currentCategory = category;
+            
+            const galleryContainer = document.getElementById('gallery-container');
+            const featuredSection = document.getElementById('featured-section');
+
+            if (featuredSection) featuredSection.style.display = 'none';
+            galleryContainer.classList.add('grid-view');
+            
+            document.querySelectorAll('.nav-main a:not(.nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element && !element.classList.contains('nav-contact')) {
+                element.classList.add('active');
+            }
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const wrappers = document.querySelectorAll('.photo-wrapper');
+            let visibleCount = 0;
+
+            wrappers.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const title = card.getAttribute('data-title');
+                const tags = card.getAttribute('data-tags') || '';
+
+                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+                const matchesSearch = title.includes(query) || tags.includes(query);
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const emptyEl = document.getElementById('gallery-empty');
+            if (emptyEl) {
+                emptyEl.style.display = (visibleCount === 0) ? 'block' : 'none';
+            }
+        }
+
+        function openContactModal() {
+            document.getElementById('contact-modal').style.display = 'flex';
+            document.getElementById('form-status').textContent = '';
+        }
+
+        function closeContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
+
+        function closeContactModalOnOutside(event) {
+            if (event.target.id === 'contact-modal') {
+                closeContactModal();
+            }
+        }
+
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const status = document.getElementById('form-status');
+            const btn = document.getElementById('submit-btn');
+            const data = new FormData(event.target);
+
+            btn.disabled = true;
+            btn.textContent = 'Invio in corso...';
+
+            try {
+                const response = await fetch(event.target.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    status.style.color = '#a3d9a5';
+                    status.textContent = 'Messaggio inviato! Ti risponderò presto.';
+                    form.reset();
+                    setTimeout(() => {
+                        closeContactModal();
+                    }, 2000);
+                } else {
+                    status.style.color = '#ff8a80';
+                    status.textContent = 'Qualcosa è andato storto. Riprova tra poco.';
+                }
+            } catch (error) {
+                status.style.color = '#ff8a80';
+                status.textContent = 'Errore di connessione. Riprova.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Invia Messaggio';
+            }
+        });
+    </script>
+
+</body>
+</html>
