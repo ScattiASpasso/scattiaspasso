@@ -192,8 +192,14 @@
             border-radius: 0 !important;
             display: block;
             margin: 0 auto;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 1s ease-in-out, transform 0s !important;
+            transform: scale(1) !important;
         }
+        /* Disattiva espressamente lo zoom al passaggio del mouse sulla foto in primo piano */
+        .featured-card:hover img {
+            transform: scale(1) !important;
+        }
+
         .featured-card .photo-overlay {
             left: 0 !important;
             right: 0 !important;
@@ -642,8 +648,8 @@
                 allPhotosData = data || [];
 
                 if (allPhotosData.length > 0) {
-                    updateFeaturedPhoto(); // Mostra subito la prima foto all'avvio
-                    startFeaturedTimer();  // Avvia il timer dei 5 secondi
+                    updateFeaturedPhoto();
+                    startFeaturedTimer();
                 }
 
                 renderGallery(allPhotosData);
@@ -797,8 +803,8 @@
             
             if (featuredSection) {
                 featuredSection.style.display = 'block';
-                updateFeaturedPhoto(); // Aggiorna subito la foto quando si torna alla Home
-                startFeaturedTimer();  // Riavvia il timer
+                updateFeaturedPhoto();
+                startFeaturedTimer();
             }
             galleryContainer.classList.remove('grid-view');
 
@@ -816,7 +822,7 @@
 
             if (featuredSection) {
                 featuredSection.style.display = 'none';
-                stopFeaturedTimer(); // Ferma completamente il timer quando si entra nelle categorie
+                stopFeaturedTimer();
             }
             galleryContainer.classList.add('grid-view');
             
