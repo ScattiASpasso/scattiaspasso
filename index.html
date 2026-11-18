@@ -636,8 +636,8 @@
 
                 if (allPhotosData.length > 0) {
                     updateFeaturedPhoto();
-                    // Cambia la foto in primo piano ogni 10 secondi
-                    setInterval(updateFeaturedPhoto, 10000);
+                    // Cambia la foto in primo piano ogni 5 secondi
+                    setInterval(updateFeaturedPhoto, 5000);
                 }
 
                 renderGallery(allPhotosData);
@@ -657,7 +657,6 @@
             if (allPhotosData.length === 0) return;
 
             let randomIndex;
-            // Evita di mostrare la stessa foto due volte di fila se ci sono almeno 2 foto
             do {
                 randomIndex = Math.floor(Math.random() * allPhotosData.length);
             } while (randomIndex === lastFeaturedIndex && allPhotosData.length > 1);
@@ -670,7 +669,6 @@
             const featuredImg = document.getElementById('featured-img');
             const featuredTitle = document.getElementById('featured-title');
 
-            // Effetto dissolvenza pulito durante il cambio
             featuredImg.style.opacity = 0;
 
             setTimeout(() => {
