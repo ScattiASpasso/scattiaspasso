@@ -634,6 +634,7 @@
         let currentCategory = 'all';
         let allPhotosData = [];
         let lastFeaturedIndex = -1;
+        let featuredTimer = null;
 
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
@@ -641,8 +642,8 @@
                 allPhotosData = data || [];
 
                 if (allPhotosData.length > 0) {
-                    updateFeaturedPhoto();
-                    setInterval(updateFeaturedPhoto, 5000);
+                    updateFeaturedPhoto(); // Mostra subito la prima foto all'avvio
+                    startFeaturedTimer();  // Avvia il timer dei 5 secondi
                 }
 
                 renderGallery(allPhotosData);
@@ -657,6 +658,18 @@
                 }
             })
             .catch(err => console.error('Errore nel caricamento delle foto:', err));
+
+        function startFeaturedTimer() {
+            if (featuredTimer) clearInterval(featuredTimer);
+            featuredTimer = setInterval(updateFeaturedPhoto, 5000);
+        }
+
+        function stopFeaturedTimer() {
+            if (featuredTimer) {
+                clearInterval(featuredTimer);
+                featuredTimer = null;
+            }
+        }
 
         function updateFeaturedPhoto() {
             if (allPhotosData.length === 0) return;
@@ -698,7 +711,7 @@
 
                 const html = `
                     <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${photo.titolo.toLowerCase()}" data-tags="${tagsStr}">
-                        <div class="photo-photo-card photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
+                        <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
                             <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
                             <div class="photo-overlay">
                                 <span class="photo-title">${photo.titolo}</span>
@@ -782,7 +795,11 @@
             const featuredSection = document.getElementById('featured-section');
             const galleryContainer = document.getElementById('gallery-container');
             
-            if (featuredSection) featuredSection.style.display = 'block';
+            if (featuredSection) {
+                featuredSection.style.display = 'block';
+                updateFeaturedPhoto(); // Aggiorna subito la foto quando si torna alla Home
+                startFeaturedTimer();  // Riavvia il timer
+            }
             galleryContainer.classList.remove('grid-view');
 
             document.querySelectorAll('.nav-main a:not(.nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
@@ -797,7 +814,10 @@
             const galleryContainer = document.getElementById('gallery-container');
             const featuredSection = document.getElementById('featured-section');
 
-            if (featuredSection) featuredSection.style.display = 'none';
+            if (featuredSection) {
+                featuredSection.style.display = 'none';
+                stopFeaturedTimer(); // Ferma completamente il timer quando si entra nelle categorie
+            }
             galleryContainer.classList.add('grid-view');
             
             document.querySelectorAll('.nav-main a:not(.nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
