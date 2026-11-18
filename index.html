@@ -182,11 +182,11 @@
         }
         .featured-card img {
             width: 100% !important;
-            height: 70vh !important;
+            height: 85vh !important;
             object-fit: cover !important;
             border-radius: 10px !important;
             display: block;
-            transition: opacity 0.5s ease;
+            transition: opacity 1s ease-in-out;
         }
         .featured-card .photo-overlay {
             left: 22px !important;
@@ -669,14 +669,16 @@
             const featuredImg = document.getElementById('featured-img');
             const featuredTitle = document.getElementById('featured-title');
 
+            // Dissolvenza in uscita (sfuma a 0)
             featuredImg.style.opacity = 0;
 
+            // Sostituisce l'immagine e fa la dissolvenza in entrata a metà del tempo di transizione (500ms)
             setTimeout(() => {
                 featuredImg.src = `foto/${featured.file}`;
                 featuredImg.alt = featured.titolo;
                 featuredTitle.textContent = featured.titolo;
                 featuredImg.style.opacity = 1;
-            }, 300);
+            }, 500);
 
             featuredCard.onclick = () => openLightbox(`foto/${featured.file}`, featured.titolo, featured.file);
             featuredSection.style.display = 'block';
