@@ -122,7 +122,6 @@
             color: #f3d58d;
         }
 
-        /* Stile verde salvia di base per "Tutte" e "Storie", che diventa oro al passaggio/selezione */
         .cat-special {
             font-weight: 700;
             color: #8fa38f;
@@ -187,6 +186,7 @@
             object-fit: cover !important;
             border-radius: 10px !important;
             display: block;
+            transition: opacity 0.5s ease;
         }
         .featured-card .photo-overlay {
             left: 22px !important;
@@ -627,6 +627,7 @@
     <script>
         let currentCategory = 'all';
         let allPhotosData = [];
+        let lastFeaturedIndex = -1;
 
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
@@ -634,20 +635,9 @@
                 allPhotosData = data || [];
 
                 if (allPhotosData.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * allPhotosData.length);
-                    const featured = allPhotosData[randomIndex];
-
-                    const featuredSection = document.getElementById('featured-section');
-                    const featuredCard = document.getElementById('featured-card');
-                    const featuredImg = document.getElementById('featured-img');
-                    const featuredTitle = document.getElementById('featured-title');
-
-                    featuredImg.src = `foto/${featured.file}`;
-                    featuredImg.alt = featured.titolo;
-                    featuredTitle.textContent = featured.titolo;
-                    
-                    featuredCard.onclick = () => openLightbox(`foto/${featured.file}`, featured.titolo, featured.file);
-                    featuredSection.style.display = 'block';
+                    updateFeaturedPhoto();
+                    // Cambia la foto in primo piano ogni 10 secondi
+                    setInterval(updateFeaturedPhoto, 10000);
                 }
 
                 renderGallery(allPhotosData);
@@ -662,6 +652,37 @@
                 }
             })
             .catch(err => console.error('Errore nel caricamento delle foto:', err));
+
+        function updateFeaturedPhoto() {
+            if (allPhotosData.length === 0) return;
+
+            let randomIndex;
+            // Evita di mostrare la stessa foto due volte di fila se ci sono almeno 2 foto
+            do {
+                randomIndex = Math.floor(Math.random() * allPhotosData.length);
+            } while (randomIndex === lastFeaturedIndex && allPhotosData.length > 1);
+
+            lastFeaturedIndex = randomIndex;
+            const featured = allPhotosData[randomIndex];
+
+            const featuredSection = document.getElementById('featured-section');
+            const featuredCard = document.getElementById('featured-card');
+            const featuredImg = document.getElementById('featured-img');
+            const featuredTitle = document.getElementById('featured-title');
+
+            // Effetto dissolvenza pulito durante il cambio
+            featuredImg.style.opacity = 0;
+
+            setTimeout(() => {
+                featuredImg.src = `foto/${featured.file}`;
+                featuredImg.alt = featured.titolo;
+                featuredTitle.textContent = featured.titolo;
+                featuredImg.style.opacity = 1;
+            }, 300);
+
+            featuredCard.onclick = () => openLightbox(`foto/${featured.file}`, featured.titolo, featured.file);
+            featuredSection.style.display = 'block';
+        }
 
         function renderGallery(data) {
             const container = document.getElementById('gallery-container');
