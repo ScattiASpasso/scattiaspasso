@@ -750,20 +750,25 @@
 
         function installApp() {
             if (deferredPrompt) {
-               deferredPrompt.prompt();
-               deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-               console.log('Utente ha accettato l\'installazione');
-                document.getElementById('install-btn').style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Utente ha accettato l\'installazione');
+                        document.getElementById('install-btn').style.display = 'none';
+                    } else {
+                        console.log('Utente ha rifiutato l\'installazione');
+                    }
+                    deferredPrompt = null;
+                });
             } else {
-                console.log('Utente ha rifiutato l\'installazione');
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    alert("Per installare 'Scatti a Spasso' su iPhone:\n\n1. Tocca il pulsante di condivisione in basso (il quadrato con la freccia).\n2. Scorri e seleziona 'Aggiungi alla schermata Home'.");
+                } else {
+                    alert("Il tuo browser non supporta l'installazione diretta.\n\nSe usi Chrome o un browser compatibile, apri il menu (i tre puntini in alto a destra) e seleziona 'Installa app' o 'Aggiungi a schermata Home'.");
+                }
             }
-            deferredPrompt = null;
-        });
-    } else {
-        alert("Per installare l'app:\n- Su Android (Chrome/Brave): tocca i tre puntini in alto a destra e seleziona 'Installa app'.\n- Su iPhone (Safari): tocca il tasto Condividi e seleziona 'Aggiungi alla schermata Home'.");
-    }
-}
+        }
 
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
