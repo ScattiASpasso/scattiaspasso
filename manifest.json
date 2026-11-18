@@ -1,1 +1,16 @@
 
+{
+  "name": "Scatti a Spasso",
+  "short_name": "Scatti a Spasso",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#0c0c0c",
+  "icons": [
+    {
+      "src": "foto/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
