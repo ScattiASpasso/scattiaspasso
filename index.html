@@ -487,6 +487,7 @@
             display: none;
             position: fixed;
             z-index: 1100;
+            z-index: 1100;
             top: 0;
             left: 0;
             width: 100%;
@@ -621,7 +622,7 @@
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                     </div>
-                    <span class="install-text">&#9664; installa come l'app (solo Chrome. Per altri browser o Iphone crea scorciatoia in home)</span>
+                    <span class="install-text">&#9664; scarica l'app (solo Chrome. Per altri browser o Iphone crea scorciatoia in home)</span>
                 </a>
             </nav>
         </div>
@@ -638,7 +639,7 @@
                 <a class="cat-link" onclick="filterGallery('sport', this)">Sport</a>
                 <a class="cat-link" onclick="filterGallery('astrofotografia', this)">Astrofotografia</a>
                 <a class="cat-link" onclick="filterGallery('fiori', this)">Fiori e Flora</a>
-                <a class="cat-link" onclick="filterGallery('strutture', this)">Strutture e Architetture</a>
+                <a class="cat-link" onclick="filterGallery('strutture', this)", 'Strutture e Architetture')>Strutture e Architetture</a>
                 <a class="cat-link" onclick="filterGallery('bianco-e-nero', this)">Bianco e Nero</a>
                 <a class="cat-link" onclick="filterGallery('astratta', this)">Astratta</a>
                 <a class="cat-link cat-special" onclick="filterGallery('storie', this)">Storie</a>
@@ -662,6 +663,8 @@
             </div>
         </div>
     </div>
+    
+    <div class="featured-label" id="gallery-divider-label">nuovi scatti con lo stesso stile</div>
     
     <main class="gallery" id="gallery-container">
         <div id="gallery-empty" class="gallery-empty">
@@ -927,12 +930,16 @@
         function goToHome(element) {
             currentCategory = 'all';
             const featuredSection = document.getElementById('featured-section');
+            const dividerLabel = document.getElementById('gallery-divider-label');
             const galleryContainer = document.getElementById('gallery-container');
             
             if (featuredSection) {
                 featuredSection.style.display = 'block';
                 updateFeaturedPhoto();
                 startFeaturedTimer();
+            }
+            if (dividerLabel) {
+                dividerLabel.style.display = 'block';
             }
             galleryContainer.classList.remove('grid-view');
 
@@ -947,10 +954,14 @@
             
             const galleryContainer = document.getElementById('gallery-container');
             const featuredSection = document.getElementById('featured-section');
+            const dividerLabel = document.getElementById('gallery-divider-label');
 
             if (featuredSection) {
                 featuredSection.style.display = 'none';
                 stopFeaturedTimer();
+            }
+            if (dividerLabel) {
+                dividerLabel.style.display = 'none';
             }
             galleryContainer.classList.add('grid-view');
             
