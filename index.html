@@ -746,13 +746,14 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('Utente ha accettato l installazione');
+                        console.log('L\'utente ha accettato l\'installazione dell\'app');
                         document.getElementById('install-btn').style.display = 'none';
                     }
                     deferredPrompt = null;
                 });
             } else {
-                alert("Per installare l'app:\n- Su Android (Chrome): tocca i tre puntini in alto a destra e seleziona 'Aggiungi a Schermata Home' o 'Installa app'.\n- Su iPhone (Safari): tocca il tasto Condividi (quadretto con la freccia) e seleziona 'Aggiungi alla schermata Home'.");
+                // Se il prompt automatico non è disponibile, diamo indicazioni mirate
+                alert("Per installare l'app:\n- Su Android: apri il menu del browser e seleziona 'Installa app' o 'Aggiungi a schermata Home'.\n- Su iPhone: tocca il tasto Condividi in basso e seleziona 'Aggiungi alla schermata Home'.");
             }
         }
 
