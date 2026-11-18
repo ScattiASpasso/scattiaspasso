@@ -57,7 +57,8 @@
         .nav-main {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         .nav-main a {
             color: #777;
@@ -82,26 +83,32 @@
             font-family: inherit;
             outline: none;
             transition: border-color 0.3s, width 0.3s;
-            width: 130px;
+            width: 120px;
         }
         .search-input:focus {
             border-color: #777;
-            width: 170px;
+            width: 150px;
         }
         .search-input::placeholder {
             color: #666;
         }
-        .nav-contact {
+        .nav-contact, .nav-install {
             border: 1px solid #333;
             border-radius: 4px;
-            padding: 8px 16px !important;
+            padding: 8px 14px !important;
             color: #ccc !important;
             transition: all 0.3s ease !important;
         }
-        .nav-contact:hover {
+        .nav-contact:hover, .nav-install:hover {
             border-color: #777;
             background-color: rgba(255, 255, 255, 0.03);
             color: #ffffff !important;
+        }
+        /* Pulsante installa evidenziato leggermente */
+        .nav-install {
+            border-color: rgba(184, 124, 36, 0.5);
+            color: #f3d58d !important;
+            display: none; /* Di default nascosto finché il browser non conferma che è installabile */
         }
 
         .header-categories {
@@ -250,6 +257,11 @@
             margin: 20px auto 100px auto !important;
             padding: 0 !important;
         }
+        .gallery.grid-view .photo-card img {
+            height: auto;
+            max-height: none;
+            object-fit: contain;
+        }
 
         /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi */
         @media (max-width: 768px) {
@@ -258,12 +270,6 @@
                 gap: 15px !important;
                 width: 98% !important;
             }
-        }
-        }
-        .gallery.grid-view .photo-card img {
-            height: auto;
-            max-height: none;
-            object-fit: contain;
         }
 
         .gallery-empty {
@@ -565,6 +571,7 @@
                 <a class="active" onclick="goToHome(this)">Home</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contatti</a>
+                <a id="install-btn" class="nav-install" onclick="installApp()">Installa App</a>
             </nav>
         </div>
         
@@ -678,6 +685,32 @@
         let allPhotosData = [];
         let lastFeaturedIndex = -1;
         let featuredTimer = null;
+        let deferredPrompt = null;
+
+        // Gestione dell'evento di installazione PWA
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-block'; // Mostra il pulsante se il browser supporta l'installazione
+            }
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Utente ha accettato l installazione');
+                        document.getElementById('install-btn').style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                alert("Per installare l'app:\n- Su Android (Chrome): tocca i tre puntini in alto a destra e seleziona 'Aggiungi a Schermata Home' o 'Installa app'.\n- Su iPhone (Safari): tocca il tasto Condividi (quadretto con la freccia) e seleziona 'Aggiungi alla schermata Home'.");
+            }
+        }
 
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
@@ -845,7 +878,7 @@
             }
             galleryContainer.classList.remove('grid-view');
 
-            document.querySelectorAll('.nav-main a:not(.nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.nav-main a:not(.nav-contact, .nav-install), .cat-link').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
 
             applyFilters();
@@ -863,8 +896,8 @@
             }
             galleryContainer.classList.add('grid-view');
             
-            document.querySelectorAll('.nav-main a:not(.nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
-            if (element && !element.classList.contains('nav-contact')) {
+            document.querySelectorAll('.nav-main a:not(.nav-contact, .nav-install), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element && !element.classList.contains('nav-contact') && !element.classList.contains('nav-install')) {
                 element.classList.add('active');
             }
 
