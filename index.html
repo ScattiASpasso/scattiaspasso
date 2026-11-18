@@ -250,6 +250,16 @@
             margin: 20px auto 100px auto !important;
             padding: 0 !important;
         }
+
+        /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi */
+        @media (max-width: 768px) {
+            .gallery.grid-view {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+                width: 98% !important;
+            }
+        }
+        }
         .gallery.grid-view .photo-card img {
             height: auto;
             max-height: none;
