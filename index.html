@@ -6,6 +6,7 @@
     <title>Scatti a Spasso</title>
     <link rel="apple-touch-icon" href="foto/logo.jpg">
     <link rel="icon" type="image/jpeg" href="foto/logo.jpg">
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
     <meta name="google-site-verification" content="EimrBXSQnHX-HQnR79LSk1nfowpTkn0HA0aQtd81PPk" />
     <style>
@@ -37,7 +38,7 @@
             gap: 12px;
         }
         .logo-img {
-            height: 80px;
+            height: 40px;
             width: auto;
             object-fit: contain;
             border-radius: 4px;
@@ -206,7 +207,6 @@
             transition: opacity 1s ease-in-out, transform 0s !important;
             transform: scale(1) !important;
         }
-        /* Disattiva espressamente lo zoom al passaggio del mouse sulla foto in primo piano */
         .featured-card:hover img {
             transform: scale(1) !important;
         }
@@ -220,9 +220,10 @@
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
         }
 
+        /* Gallery per smartphone (100% di larghezza) */
         .gallery {
-            width: 50% !important; /* Riduce la larghezza delle foto in home al 50% */
-            max-width: 800px !important;
+            width: 100% !important;
+            max-width: none !important;
             margin: 20px auto 100px auto;
             padding: 0 3%;
             display: flex;
@@ -230,6 +231,14 @@
             gap: 45px;
             min-height: 200px;
             transition: all 0.3s ease;
+        }
+
+        /* Su desktop (schermi larghi), la home si restringe al 50% come volevi */
+        @media (min-width: 900px) {
+            .gallery:not(.grid-view) {
+                width: 50% !important;
+                max-width: 800px !important;
+            }
         }
 
         .gallery.grid-view {
