@@ -593,7 +593,14 @@
     <meta property="og:url" content="https://scattiaspasso.github.io/scattiaspasso/">
     <meta property="og:type" content="website">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="38d4ade3-e2cb-444d-b45e-6ccc71b71736"></script>
-</head>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => console.log("Service Worker registrato con successo."))
+          .catch((err) => console.log("Errore registrazione Service Worker:", err));
+      }
+    </script>
+ </head>
 <body>
 
     <header>
@@ -743,19 +750,20 @@
 
         function installApp() {
             if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('L\'utente ha accettato l\'installazione dell\'app');
-                        document.getElementById('install-btn').style.display = 'none';
-                    }
-                    deferredPrompt = null;
-                });
+               deferredPrompt.prompt();
+               deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+               console.log('Utente ha accettato l\'installazione');
+                document.getElementById('install-btn').style.display = 'none';
             } else {
-                // Se il prompt automatico non è disponibile, diamo indicazioni mirate
-                alert("Per installare l'app:\n- Su Android: apri il menu del browser e seleziona 'Installa app' o 'Aggiungi a schermata Home'.\n- Su iPhone: tocca il tasto Condividi in basso e seleziona 'Aggiungi alla schermata Home'.");
+                console.log('Utente ha rifiutato l\'installazione');
             }
-        }
+            deferredPrompt = null;
+        });
+    } else {
+        alert("Per installare l'app:\n- Su Android (Chrome/Brave): tocca i tre puntini in alto a destra e seleziona 'Installa app'.\n- Su iPhone (Safari): tocca il tasto Condividi e seleziona 'Aggiungi alla schermata Home'.");
+    }
+}
 
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
