@@ -21,9 +21,8 @@
             line-height: 1.6;
         }
         header {
-            padding: 40px 5% 20px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 30px 3% 15px 3%;
+            width: 100%;
         }
         .header-top {
             display: flex;
@@ -54,7 +53,7 @@
             font-size: 0.85rem;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            transition: color 0.2s ease;
+            transition: color 0.3s ease;
             cursor: pointer;
             padding: 5px 8px;
         }
@@ -94,15 +93,16 @@
         }
 
         .header-categories {
-            margin-top: 25px;
+            margin-top: 20px;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             padding-bottom: 5px;
+            width: 100%;
         }
         .categories-nav {
             display: flex;
-            gap: 18px;
+            gap: 22px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
@@ -137,13 +137,13 @@
             width: 100%;
             height: 1.5px;
             background: linear-gradient(90deg, transparent, rgba(184, 124, 36, 0.75), rgba(243, 213, 141, 0.5), transparent);
-            margin: 20px 0 30px 0;
+            margin: 15px 0 25px 0;
         }
 
         .intro {
-            max-width: 1100px;
-            margin: 0 auto 35px auto;
-            padding: 0 20px;
+            width: 100%;
+            margin: 0 auto 30px auto;
+            padding: 0 3%;
             color: #888;
             font-size: 0.95rem;
             font-style: italic;
@@ -152,12 +152,14 @@
         }
 
         .featured-section {
-            max-width: 1100px;
-            margin: 0 auto 60px auto;
-            padding: 0 20px;
+            width: 100%;
+            margin: 0 auto 50px auto;
+            padding: 0;
             display: block;
         }
         .featured-label {
+            width: 100%;
+            padding: 0 3%;
             font-family: 'Caveat', cursive;
             font-size: 1.6rem;
             color: #b0b0b0;
@@ -174,34 +176,37 @@
             background: linear-gradient(to right, rgba(255, 255, 255, 0.15), transparent);
         }
         .featured-card {
-            border-radius: 16px !important;
-            padding: 22px !important;
-            background: linear-gradient(145deg, #161616, #0e0e0e) !important;
-            border: 1px solid rgba(255, 255, 255, 0.14) !important;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(255, 255, 255, 0.02) !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+            box-shadow: none !important;
         }
         .featured-card img {
             width: 100% !important;
             height: auto !important;
-            max-height: none !important;
+            max-height: 85vh !important;
             object-fit: contain !important;
-            border-radius: 10px !important;
+            border-radius: 0 !important;
             display: block;
+            margin: 0 auto;
             transition: opacity 1s ease-in-out;
         }
         .featured-card .photo-overlay {
-            left: 22px !important;
-            right: 22px !important;
-            bottom: 22px !important;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            padding: 40px 22px 20px 22px !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            border-radius: 0 !important;
+            padding: 30px 3% 20px 3% !important;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
         }
 
         .gallery {
-            max-width: 1100px;
+            width: 100%;
             margin: 20px auto 100px auto;
-            padding: 0 20px;
+            padding: 0 3%;
             display: flex;
             flex-direction: column;
             gap: 45px;
@@ -213,7 +218,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            width: 100%;
         }
         .gallery.grid-view .photo-card img {
             height: auto;
@@ -512,8 +517,8 @@
 
     <header>
         <div class="header-top">
-            <div class="logo">Scatti a Spasso</div>
-            <nav class="nav-main">
+            <div class="logo" style="padding-left: 10px;">Scatti a Spasso</div>
+            <nav class="nav-main" style="padding-right: 10px;">
                 <a class="active" onclick="goToHome(this)">Home</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contatti</a>
@@ -637,7 +642,6 @@
 
                 if (allPhotosData.length > 0) {
                     updateFeaturedPhoto();
-                    // Cambia la foto in primo piano ogni 5 secondi
                     setInterval(updateFeaturedPhoto, 5000);
                 }
 
@@ -670,10 +674,8 @@
             const featuredImg = document.getElementById('featured-img');
             const featuredTitle = document.getElementById('featured-title');
 
-            // Dissolvenza in uscita (sfuma a 0)
             featuredImg.style.opacity = 0;
 
-            // Sostituisce l'immagine e fa la dissolvenza in entrata a metà del tempo di transizione (500ms)
             setTimeout(() => {
                 featuredImg.src = `foto/${featured.file}`;
                 featuredImg.alt = featured.titolo;
@@ -696,7 +698,7 @@
 
                 const html = `
                     <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${photo.titolo.toLowerCase()}" data-tags="${tagsStr}">
-                        <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
+                        <div class="photo-photo-card photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
                             <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
                             <div class="photo-overlay">
                                 <span class="photo-title">${photo.titolo}</span>
