@@ -617,6 +617,7 @@
             </div>
             <nav class="nav-main" style="padding-right: 10px;">
                 <a class="active" onclick="goToHome(this)">Home</a>
+                <a id="about-nav-link" onclick="toggleAboutModal(this)">Chi sono</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Condividi sito">
@@ -745,6 +746,22 @@
                 <button type="submit" class="submit-btn" id="submit-btn">Invia Messaggio</button>
                 <div id="form-status"></div>
             </form>
+        </div>
+    </div>
+
+    <div id="about-modal" class="modal" onclick="closeAboutModalOnOutside(event)">
+        <div class="modal-content" style="max-width: 560px;">
+            <span class="close-modal" onclick="closeAboutModal()">&times;</span>
+            <h2>Chi sono</h2>
+            <p style="margin-bottom: 14px; color: #dcdcdc;">
+                Ciao, sono Stefano Adami. Cammino e fotografo soprattutto tra le montagne del Trentino e la Val di Non, cercando luce, natura e momenti spontanei fuori dalle piste battute.
+            </p>
+            <p style="margin-bottom: 14px; color: #b5b5b5;">
+                Qui trovi paesaggi, fauna, macro, astrofotografia e qualche scatto rubato durante le uscite — senza cookie, tracciamenti o fronzoli inutili.
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">
+                Ti interessa una foto in alta risoluzione o una stampa? <a onclick="closeAboutModal(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
+            </p>
         </div>
     </div>
 
@@ -1012,6 +1029,33 @@
             const emptyEl = document.getElementById('gallery-empty');
             if (emptyEl) {
                 emptyEl.style.display = (visibleCount === 0) ? 'block' : 'none';
+            }
+        }
+
+        function openAboutModal(element) {
+            document.getElementById('about-modal').style.display = 'flex';
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element) element.classList.add('active');
+        }
+
+        function closeAboutModal() {
+            document.getElementById('about-modal').style.display = 'none';
+            const aboutLink = document.getElementById('about-nav-link');
+            if (aboutLink) aboutLink.classList.remove('active');
+        }
+
+        function closeAboutModalOnOutside(event) {
+            if (event.target.id === 'about-modal') {
+                closeAboutModal();
+            }
+        }
+
+        function toggleAboutModal(element) {
+            const modal = document.getElementById('about-modal');
+            if (modal.style.display === 'flex') {
+                closeAboutModal();
+            } else {
+                openAboutModal(element);
             }
         }
 
