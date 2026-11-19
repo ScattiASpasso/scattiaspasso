@@ -301,12 +301,74 @@
             object-fit: contain;
         }
 
-        /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi */
+        /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi e compatta gli spazi verticali */
         @media (max-width: 768px) {
             .gallery.grid-view {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 15px !important;
                 width: 98% !important;
+            }
+            header {
+                padding: 14px 3% 6px 3%;
+            }
+            .header-top {
+                gap: 10px;
+            }
+            .logo {
+                font-size: 1.35rem;
+                letter-spacing: 2.5px;
+            }
+            .logo-img {
+                height: 32px;
+            }
+            .nav-main {
+                gap: 6px;
+            }
+            .nav-main a {
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+                padding: 4px 6px;
+            }
+            .search-input {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+                width: 85px;
+            }
+            .nav-contact {
+                padding: 5px 10px !important;
+            }
+            .header-categories {
+                margin-top: 10px;
+                padding-bottom: 0;
+            }
+            .categories-nav {
+                gap: 8px 12px;
+            }
+            .cat-link {
+                font-size: 0.68rem;
+                letter-spacing: 1px;
+            }
+            .divider-line {
+                margin: 10px 0 12px 0;
+            }
+            .intro {
+                margin: 0 auto 14px auto;
+                font-size: 0.84rem;
+                line-height: 1.4;
+            }
+            .intro p + p {
+                margin-top: 6px !important;
+                font-size: 0.72rem !important;
+            }
+            .featured-section {
+                margin: 0 auto 24px auto;
+            }
+            .featured-label {
+                font-size: 1.35rem;
+                margin-bottom: 8px;
+            }
+            .featured-card img {
+                max-height: 58vh !important;
             }
         }
 
@@ -1168,3 +1230,6 @@
 
 </body>
 </html>
+```[cite: 2]
+
+Per verificare che funzioni: apri il sito sul telefono e controlla che **In primo piano** e una buona porzione della foto siano già visibili appena entri, senza toccare nulla su PC[cite: 2, 3]. Se vuoi ancora più spazio per la foto sul telefono, possiamo anche nascondere la seconda riga dell'introduzione (*"Nessun cookie..."*) solo sotto i 768 px o stringere ancora un po' le categorie[cite: 2, 3].
