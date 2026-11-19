@@ -228,7 +228,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
         .accordion-box h2 {
             font-size: 0.95rem;
@@ -251,13 +251,53 @@
             color: #fff;
             border-color: #777;
         }
-        .accordion-box p {
+        .accordion-box > p {
             margin-bottom: 12px;
             font-size: 0.95rem;
             line-height: 1.62;
         }
-        .accordion-box p:last-child {
+        .accordion-box > p:last-child {
             margin-bottom: 0;
+        }
+
+        /* Stili dedicati per Attrezzatura: nome vs perché */
+        .gear-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .gear-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .gear-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #f3d58d;
+            border-left: 3px solid #b87c24;
+            padding-left: 10px;
+            line-height: 1.35;
+        }
+        .gear-why {
+            background-color: #0e0e0e;
+            border: 1px solid #222;
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-left: 13px;
+            color: #c2c2c2;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+        .gear-spec {
+            display: block;
+            font-size: 0.78rem;
+            color: #8fa38f;
+            letter-spacing: 0.4px;
+            margin-bottom: 5px;
+            font-weight: 500;
         }
 
         .featured-section {
@@ -417,11 +457,20 @@
                 padding: 0 3%;
             }
             .accordion-box {
-                padding: 16px 16px;
+                padding: 16px 14px;
                 border-radius: 12px;
             }
-            .accordion-box p {
+            .accordion-box > p {
                 font-size: 0.9rem;
+            }
+            .gear-name {
+                font-size: 0.84rem;
+                letter-spacing: 0.7px;
+            }
+            .gear-why {
+                margin-left: 8px;
+                padding: 9px 12px;
+                font-size: 0.86rem;
             }
             .featured-section {
                 margin: 0 auto 24px auto;
@@ -808,7 +857,7 @@
                 "Scatti a Spasso" nasce dalla voglia di raccogliere gli attimi in cui mi sono preso il tempo per fermarmi a guardare quello che spesso ci scorre davanti troppo in fretta. Di condividerli alla "vecchia maniera". Senza social, algoritmi e like a tutti i costi.
             </p>
             <p style="color: #b5b5b5;">
-                Per me la fotografia è passione. E' camminare in silenzio tra natura e arte, montagne e città. E' stare fermo ad aspettare un cambio di luce o chinarmi su un dettaglio minimo. Non cerco lo scatto perfetto.
+                Per me la fotografia è passione. È camminare in silenzio tra natura e arte, montagne e città. È stare fermo ad aspettare un cambio di luce o chinarmi su un dettaglio minimo. Non cerco lo scatto perfetto.
             </p>
             <p style="color: #b5b5b5;">
                 Tra paesaggi, fauna e macro cerco di portare a casa immagini sincere, legate al momento e al luogo in cui sono nate, senza troppi fronzoli. Se una foto riesce a farti venire voglia di mettere le scarpe e uscire, ha già fatto il suo lavoro.
@@ -828,12 +877,60 @@
                 <h2>La mia attrezzatura</h2>
                 <button type="button" class="accordion-close" onclick="closeAccordion()">Chiudi &times;</button>
             </div>
-            <p style="color: #dcdcdc;">
-                Testo segnaposto per la versione a tendina: qui metteremo ciò che porto davvero nello zaino tra sentieri, boschi e uscite fotografiche.
-            </p>
-            <p style="color: #888; font-size: 0.9rem;">
-                Cliccando di nuovo su "Attrezzatura" o su "Chiudi" il pannello si ripiega senza spostare il resto.
-            </p>
+            <div class="gear-list">
+                <div class="gear-item">
+                    <div class="gear-name">Corpo macchina Canon EOS 5D Mark III</div>
+                    <div class="gear-why">
+                        La mia professionale full frame per andare sul sicuro senza compromessi. Completa di obiettivo ha un peso importante, quindi mi accompagna nelle uscite più "importanti" e mai casuali, negli eventi sportivi e teatrali.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Corpo macchina Canon EOS 50D</div>
+                    <div class="gear-why">
+                        Macchina semiprofessionale più compatta e leggera rispetto alla sorella pro, è stata la mia prima fotocamera digitale. Ora usata solo in accoppiata con la 5D. Quando l'attimo è più importante del peso di due fotocamere.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Fotocamera Sony RX10 IV</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Sensore CMOS da 1", zoom ottico 24–600mm (f/2.4–4.0)</span>
+                        La più usata. Leggera e versatile compromesso tuttofare. Permette di passare dal grandangolo sul paesaggio fino ai 600mm mantenendo una qualità che poco ha da invidiare ad una professionale.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Samsung Galaxy S25 Ultra</div>
+                    <div class="gear-why">
+                        L'ancora di salvezza contro l'attimo fuggente quando non ho con me la fotocamera. Pur montando quadrupla fotocamera 200 MP, ultra-grandangolare da 50 MP, teleobiettivo 5x da 50 MP e teleobiettivo 3x da 10 MP, come qualsiasi smartphone non compete con vere e proprie fotocamere, ma è sufficiente per non rimpiangere di non averle portate.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Obiettivo Canon EF 24-70mm f/2.8L USM</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Zoom standard professionale f/2.8 ultrasonico</span>
+                        Il tuttofare di qualità per eccellenza tra grandangolo e medio tele. Luminoso, solido e immediato. Il più usato in assoluto.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Canon EF 70-200mm f/2.8L IS USM</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Telezoom professionale, f/2.8 costante, stabilizzato</span>
+                        Pesa e si sente. Con me a comando pianificato! Quando vado a caccia e la distanza conta. Comprime i piani, stacca il soggetto con uno sfocato morbido.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Canon EF 100mm f/2.8L Macro IS USM</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Obiettivo macro e medio tele f/2.8 stabilizzato</span>
+                        Quando voglio scendere nei dettagli minuscoli, ma anche per ritratti e scorci ravvicinati con una resa pulita e precisa.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1267,8 +1364,3 @@
 
 </body>
 </html>
-```[cite: 4]
-
-### Come verificare che funzioni
-1. Apri la pagina sul telefono e tocca **Chi sono**: il pannello deve comparire subito sotto l'introduzione senza coprire lo schermo con una finestra modale[cite: 4].
-2. Tocca di nuovo **Chi sono** (oppure il tasto **Chiudi ×** in alto a destra del box): il pannello deve sparire e il layout sottostante deve tornare al suo posto[cite: 4].
