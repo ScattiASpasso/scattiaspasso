@@ -618,6 +618,7 @@
             <nav class="nav-main" style="padding-right: 10px;">
                 <a class="active" onclick="goToHome(this)">Home</a>
                 <a id="about-nav-link" onclick="toggleAboutModal(this)">Chi sono</a>
+                <a id="gear-nav-link" onclick="toggleGearModal(this)">La mia attrezzatura</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Condividi sito">
@@ -753,25 +754,38 @@
         <div class="modal-content" style="max-width: 560px;">
             <span class="close-modal" onclick="closeAboutModal()">&times;</span>
             <h2>Chi sono</h2>
-    <p style="margin-bottom: 14px; color: #dcdcdc;">
-        Ciao, sono Stefano Adami.
-    </p>
-    <p style="margin-bottom: 14px; color: #dcdcdc;">
-        "Scatti a Spasso" nasce dalla voglia di raccogliere gli attimi in cui mi sono preso il tempo per fermarmi a guardare quello che spesso ci scorre davanti troppo in fretta. Nasce dalla voglia di condividerli alla "vecchia maniera": niente social, niente algoritmi a comandare, zero like a tutti i costi.
-    </p>
-    <p style="margin-bottom: 14px; color: #b5b5b5;">
-        Per me la fotografia è da sempre prima di tutto un pretesto per camminare, respirare aria buona e passare tempo in mezzo a natura e arte, montagne e città. Non cerco lo scatto perfetto costruito a tavolino: preferisco aspettare un cambio di luce, seguire una traccia, chinarmi su un dettaglio minimo o restare fermo finché il posto intorno a me smette di fare rumore e ricomincia a mostrarsi per quello che è.
-    </p>
-    <p style="margin-bottom: 14px; color: #b5b5b5;">
-        Tra paesaggi, fauna e macro cerco di portare a casa immagini sincere, legate al momento e al luogo in cui sono nate, senza troppi fronzoli. Se una foto riesce a farti venire voglia di mettere gli scarponi e uscire, ha già fatto il suo lavoro.
-    </p>
-    <p style="margin-bottom: 14px; color: #dcdcdc;">
-        Le foto si possono scaricare liberamente dall'apposito pulsante e ripubblicate purché ne venga citata la fonte. Zero cookie, zero tracciamenti, solo fotografia.
-    </p>
-    <p style="color: #888; font-size: 0.9rem;">
-        Ti interessa una foto in alta risoluzione? <a onclick="closeAboutModal(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
-    </p>
+            <p style="margin-bottom: 14px; color: #dcdcdc;">
+                Ciao, sono Stefano Adami.
+            </p>
+            <p style="margin-bottom: 14px; color: #dcdcdc;">
+                "Scatti a Spasso" nasce dalla voglia di raccogliere gli attimi in cui mi sono preso il tempo per fermarmi a guardare quello che spesso ci scorre davanti troppo in fretta. Nasce dalla voglia di condividerli alla "vecchia maniera": niente social, niente algoritmi a comandare e zero like a tutti i costi.
+            </p>
+            <p style="margin-bottom: 14px; color: #b5b5b5;">
+                Per me la fotografia è da sempre prima di tutto un pretesto per camminare, respirare aria buona e passare tempo in mezzo a natura e arte, montagne e città. Non cerco lo scatto perfetto costruito a tavolino: preferisco aspettare un cambio di luce, seguire una traccia, chinarmi su un dettaglio minimo o restare fermo finché il posto intorno smette di fare rumore e ricomincia a mostrarsi per quello che è.
+            </p>
+            <p style="margin-bottom: 14px; color: #b5b5b5;">
+                Tra paesaggi, fauna e macro cerco di portare a casa immagini sincere, legate al momento e al luogo in cui sono nate, senza troppi fronzoli. Se una foto riesce a farti venire voglia di mettere gli scarponi e uscire, ha già fatto il suo lavoro.
+            </p>
+            <p style="margin-bottom: 14px; color: #dcdcdc;">
+                Le foto si possono scaricare liberamente dall'apposito pulsante e ripubblicate purché ne venga citata la fonte. Zero cookie, zero tracciamenti, solo fotografia.
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">
+                Ti interessa una foto in alta risoluzione? <a onclick="closeAboutModal(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
+            </p>
+        </div>
     </div>
+
+    <div id="gear-modal" class="modal" onclick="closeGearModalOnOutside(event)">
+        <div class="modal-content" style="max-width: 560px;">
+            <span class="close-modal" onclick="closeGearModal()">&times;</span>
+            <h2>La mia attrezzatura</h2>
+            <p style="margin-bottom: 14px; color: #dcdcdc;">
+                Testo segnaposto per provare la finestra: qui metteremo ciò che porto davvero nello zaino tra sentieri, boschi e uscite fotografiche.
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">
+                Quando il box ti convince dimmi pure cosa vuoi scrivere e lo aggiorniamo al volo.
+            </p>
+        </div>
     </div>
 
     <script>
@@ -1042,6 +1056,7 @@
         }
 
         function openAboutModal(element) {
+            closeGearModal();
             document.getElementById('about-modal').style.display = 'flex';
             document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
@@ -1065,6 +1080,34 @@
                 closeAboutModal();
             } else {
                 openAboutModal(element);
+            }
+        }
+
+        function openGearModal(element) {
+            closeAboutModal();
+            document.getElementById('gear-modal').style.display = 'flex';
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element) element.classList.add('active');
+        }
+
+        function closeGearModal() {
+            document.getElementById('gear-modal').style.display = 'none';
+            const gearLink = document.getElementById('gear-nav-link');
+            if (gearLink) gearLink.classList.remove('active');
+        }
+
+        function closeGearModalOnOutside(event) {
+            if (event.target.id === 'gear-modal') {
+                closeGearModal();
+            }
+        }
+
+        function toggleGearModal(element) {
+            const modal = document.getElementById('gear-modal');
+            if (modal.style.display === 'flex') {
+                closeGearModal();
+            } else {
+                openGearModal(element);
             }
         }
 
@@ -1125,4 +1168,3 @@
 
 </body>
 </html>
-```[cite: 1]
