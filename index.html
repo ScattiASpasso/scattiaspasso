@@ -208,6 +208,37 @@
             text-align: center;
         }
 
+        .page-section {
+            display: none;
+            width: 100%;
+            max-width: 820px;
+            margin: 20px auto 110px auto;
+            padding: 0 4%;
+        }
+        .page-box {
+            background-color: #141414;
+            border: 1px solid #242424;
+            border-radius: 18px;
+            padding: 28px 26px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+        }
+        .page-box h2 {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #f3d58d;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+        .page-box p {
+            margin-bottom: 14px;
+            font-size: 0.98rem;
+            line-height: 1.68;
+        }
+        .page-box p:last-child {
+            margin-bottom: 0;
+        }
+
         .featured-section {
             width: 100%;
             margin: 0 auto 50px auto;
@@ -369,6 +400,17 @@
             }
             .featured-card img {
                 max-height: 58vh !important;
+            }
+            .page-section {
+                margin: 12px auto 95px auto;
+                padding: 0 3%;
+            }
+            .page-box {
+                padding: 20px 18px;
+                border-radius: 14px;
+            }
+            .page-box p {
+                font-size: 0.94rem;
             }
         }
 
@@ -678,9 +720,9 @@
                 <span class="cat-link" style="cursor: default; padding: 0; font-size: 0.72rem; color: #888;">portfolio di stefano adami</span>
             </div>
             <nav class="nav-main" style="padding-right: 10px;">
-                <a class="active" onclick="goToHome(this)">Home</a>
-                <a id="about-nav-link" onclick="toggleAboutModal(this)">Chi sono</a>
-                <a id="gear-nav-link" onclick="toggleGearModal(this)">Attrezzatura</a>
+                <a id="home-nav-link" class="active" onclick="goToHome(this)">Home</a>
+                <a id="about-nav-link" onclick="togglePageSection('about', this)">Chi sono</a>
+                <a id="gear-nav-link" onclick="togglePageSection('gear', this)">Attrezzatura</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Condividi sito">
@@ -731,6 +773,42 @@
         <p>Il mio modo di fermare il tempo durante le uscite all'aria aperta: luce, montagne e incontri inaspettati.</p>
         <p style="margin-top: 12px; font-size: 0.82rem; color: #665; font-style: normal; letter-spacing: 1px;">Nessun cookie, nessun tracciamento, zero dati personali. Solo fotografia in libertà.</p>
     </div>
+
+    <section id="about-section" class="page-section">
+        <div class="page-box">
+            <h2>Chi sono</h2>
+            <p style="color: #dcdcdc;">
+                Ciao, sono Stefano Adami.
+            </p>
+            <p style="color: #dcdcdc;">
+                "Scatti a Spasso" nasce dalla voglia di raccogliere gli attimi in cui mi sono preso il tempo per fermarmi a guardare quello che spesso ci scorre davanti troppo in fretta. Di condividerli alla "vecchia maniera". Senza social, algoritmi e like a tutti i costi.
+            </p>
+            <p style="color: #b5b5b5;">
+                Per me la fotografia è passione. E' camminare in silenzio tra natura e arte, montagne e città. E' stare fermo ad aspettare un cambio di luce o chinarmi su un dettaglio minimo. Non cerco lo scatto perfetto.
+            </p>
+            <p style="color: #b5b5b5;">
+                Tra paesaggi, fauna e macro cerco di portare a casa immagini sincere, legate al momento e al luogo in cui sono nate, senza troppi fronzoli. Se una foto riesce a farti venire voglia di mettere le scarpe e uscire, ha già fatto il suo lavoro.
+            </p>
+            <p style="color: #dcdcdc;">
+                Le foto si possono scaricare liberamente dall'apposito pulsante e ripubblicate purché ne venga citata la fonte. Zero cookie, zero tracciamenti, solo fotografia.
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">
+                Ti interessa una foto in alta risoluzione? <a onclick="openContactModal()" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
+            </p>
+        </div>
+    </section>
+
+    <section id="gear-section" class="page-section">
+        <div class="page-box">
+            <h2>La mia attrezzatura</h2>
+            <p style="color: #dcdcdc;">
+                Testo segnaposto per provare la vista a tutta pagina: qui metteremo ciò che porto davvero nello zaino tra sentieri, boschi e uscite fotografiche.
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">
+                Quando il layout ti convince dimmi pure cosa vuoi scrivere e lo aggiorniamo al volo.
+            </p>
+        </div>
+    </section>
 
     <div id="featured-section" class="featured-section">
         <div class="featured-label">In primo piano</div>
@@ -812,46 +890,9 @@
         </div>
     </div>
 
-    <div id="about-modal" class="modal" onclick="closeAboutModalOnOutside(event)">
-        <div class="modal-content" style="max-width: 560px;">
-            <span class="close-modal" onclick="closeAboutModal()">&times;</span>
-            <h2>Chi sono</h2>
-            <p style="margin-bottom: 14px; color: #dcdcdc;">
-                Ciao, sono Stefano Adami.
-            </p>
-            <p style="margin-bottom: 14px; color: #dcdcdc;">
-                "Scatti a Spasso" nasce dalla voglia di raccogliere gli attimi in cui mi sono preso il tempo per fermarmi a guardare quello che spesso ci scorre davanti troppo in fretta. Di condividerli alla "vecchia maniera". Senza social, algoritmi e like a tutti i costi.
-            </p>
-            <p style="margin-bottom: 14px; color: #b5b5b5;">
-                Per me la fotografia è passione. E' camminare in silenzio tra natura e arte, montagne e città. E' stare fermo ad aspettare un cambio di luce o chinarmi su un dettaglio minimo. Non cerco lo scatto perfetto.
-            </p>
-            <p style="margin-bottom: 14px; color: #b5b5b5;">
-                Tra paesaggi, fauna e macro cerco di portare a casa immagini sincere, legate al momento e al luogo in cui sono nate, senza troppi fronzoli. Se una foto riesce a farti venire voglia di mettere le scarpe e uscire, ha già fatto il suo lavoro.
-            </p>
-            <p style="margin-bottom: 14px; color: #dcdcdc;">
-                Le foto si possono scaricare liberamente dall'apposito pulsante e ripubblicate purché ne venga citata la fonte. Zero cookie, zero tracciamenti, solo fotografia.
-            </p>
-            <p style="color: #888; font-size: 0.9rem;">
-                Ti interessa una foto in alta risoluzione? <a onclick="closeAboutModal(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
-            </p>
-        </div>
-    </div>
-
-    <div id="gear-modal" class="modal" onclick="closeGearModalOnOutside(event)">
-        <div class="modal-content" style="max-width: 560px;">
-            <span class="close-modal" onclick="closeGearModal()">&times;</span>
-            <h2>La mia attrezzatura</h2>
-            <p style="margin-bottom: 14px; color: #dcdcdc;">
-                Testo segnaposto per provare la finestra: qui metteremo ciò che porto davvero nello zaino tra sentieri, boschi e uscite fotografiche.
-            </p>
-            <p style="color: #888; font-size: 0.9rem;">
-                Quando il box ti convince dimmi pure cosa vuoi scrivere e lo aggiorniamo al volo.
-            </p>
-        </div>
-    </div>
-
     <script>
         let currentCategory = 'all';
+        let activePageSection = null;
         let allPhotosData = [];
         let lastFeaturedIndex = -1;
         let featuredTimer = null;
@@ -925,7 +966,7 @@
         }
 
         function updateFeaturedPhoto() {
-            if (allPhotosData.length === 0) return;
+            if (allPhotosData.length === 0 || activePageSection) return;
 
             let randomIndex;
             do {
@@ -1044,7 +1085,36 @@
             history.pushState(null, null, window.location.pathname + window.location.search);
         }
 
+        function hidePageSections() {
+            activePageSection = null;
+            document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
+            document.getElementById('gallery-container').style.display = '';
+        }
+
+        function togglePageSection(sectionName, element) {
+            const targetSection = document.getElementById(`${sectionName}-section`);
+            if (!targetSection) return;
+
+            if (activePageSection === sectionName) {
+                goToHome(document.getElementById('home-nav-link'));
+                return;
+            }
+
+            stopFeaturedTimer();
+            document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
+            targetSection.style.display = 'block';
+            activePageSection = sectionName;
+
+            document.getElementById('featured-section').style.display = 'none';
+            document.getElementById('gallery-divider-label').style.display = 'none';
+            document.getElementById('gallery-container').style.display = 'none';
+
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element) element.classList.add('active');
+        }
+
         function goToHome(element) {
+            hidePageSections();
             currentCategory = 'all';
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
@@ -1067,6 +1137,7 @@
         }
 
         function filterGallery(category, element) {
+            hidePageSections();
             currentCategory = category;
             
             const galleryContainer = document.getElementById('gallery-container');
@@ -1114,62 +1185,6 @@
             const emptyEl = document.getElementById('gallery-empty');
             if (emptyEl) {
                 emptyEl.style.display = (visibleCount === 0) ? 'block' : 'none';
-            }
-        }
-
-        function openAboutModal(element) {
-            closeGearModal();
-            document.getElementById('about-modal').style.display = 'flex';
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
-            if (element) element.classList.add('active');
-        }
-
-        function closeAboutModal() {
-            document.getElementById('about-modal').style.display = 'none';
-            const aboutLink = document.getElementById('about-nav-link');
-            if (aboutLink) aboutLink.classList.remove('active');
-        }
-
-        function closeAboutModalOnOutside(event) {
-            if (event.target.id === 'about-modal') {
-                closeAboutModal();
-            }
-        }
-
-        function toggleAboutModal(element) {
-            const modal = document.getElementById('about-modal');
-            if (modal.style.display === 'flex') {
-                closeAboutModal();
-            } else {
-                openAboutModal(element);
-            }
-        }
-
-        function openGearModal(element) {
-            closeAboutModal();
-            document.getElementById('gear-modal').style.display = 'flex';
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
-            if (element) element.classList.add('active');
-        }
-
-        function closeGearModal() {
-            document.getElementById('gear-modal').style.display = 'none';
-            const gearLink = document.getElementById('gear-nav-link');
-            if (gearLink) gearLink.classList.remove('active');
-        }
-
-        function closeGearModalOnOutside(event) {
-            if (event.target.id === 'gear-modal') {
-                closeGearModal();
-            }
-        }
-
-        function toggleGearModal(element) {
-            const modal = document.getElementById('gear-modal');
-            if (modal.style.display === 'flex') {
-                closeGearModal();
-            } else {
-                openGearModal(element);
             }
         }
 
@@ -1230,6 +1245,3 @@
 
 </body>
 </html>
-```[cite: 2]
-
-Per verificare che funzioni: apri il sito sul telefono e controlla che **In primo piano** e una buona porzione della foto siano già visibili appena entri, senza toccare nulla su PC[cite: 2, 3]. Se vuoi ancora più spazio per la foto sul telefono, possiamo anche nascondere la seconda riga dell'introduzione (*"Nessun cookie..."*) solo sotto i 768 px o stringere ancora un po' le categorie[cite: 2, 3].
