@@ -208,34 +208,55 @@
             text-align: center;
         }
 
-        .page-section {
+        /* Pannello a fisarmonica sotto l'introduzione */
+        .accordion-panel {
             display: none;
             width: 100%;
             max-width: 820px;
-            margin: 20px auto 110px auto;
+            margin: 0 auto 28px auto;
             padding: 0 4%;
         }
-        .page-box {
+        .accordion-box {
             background-color: #141414;
-            border: 1px solid #242424;
-            border-radius: 18px;
-            padding: 28px 26px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(184, 124, 36, 0.35);
+            border-radius: 16px;
+            padding: 22px 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+            position: relative;
         }
-        .page-box h2 {
-            font-size: 1rem;
-            letter-spacing: 3px;
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .accordion-box h2 {
+            font-size: 0.95rem;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             color: #f3d58d;
-            margin-bottom: 18px;
             font-weight: 600;
         }
-        .page-box p {
-            margin-bottom: 14px;
-            font-size: 0.98rem;
-            line-height: 1.68;
+        .accordion-close {
+            background: transparent;
+            border: 1px solid #333;
+            color: #999;
+            border-radius: 999px;
+            padding: 3px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .page-box p:last-child {
+        .accordion-close:hover {
+            color: #fff;
+            border-color: #777;
+        }
+        .accordion-box p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            line-height: 1.62;
+        }
+        .accordion-box p:last-child {
             margin-bottom: 0;
         }
 
@@ -391,6 +412,17 @@
                 margin-top: 6px !important;
                 font-size: 0.72rem !important;
             }
+            .accordion-panel {
+                margin: 0 auto 18px auto;
+                padding: 0 3%;
+            }
+            .accordion-box {
+                padding: 16px 16px;
+                border-radius: 12px;
+            }
+            .accordion-box p {
+                font-size: 0.9rem;
+            }
             .featured-section {
                 margin: 0 auto 24px auto;
             }
@@ -400,17 +432,6 @@
             }
             .featured-card img {
                 max-height: 58vh !important;
-            }
-            .page-section {
-                margin: 12px auto 95px auto;
-                padding: 0 3%;
-            }
-            .page-box {
-                padding: 20px 18px;
-                border-radius: 14px;
-            }
-            .page-box p {
-                font-size: 0.94rem;
             }
         }
 
@@ -720,9 +741,9 @@
                 <span class="cat-link" style="cursor: default; padding: 0; font-size: 0.72rem; color: #888;">portfolio di stefano adami</span>
             </div>
             <nav class="nav-main" style="padding-right: 10px;">
-                <a id="home-nav-link" class="active" onclick="goToHome(this)">Home</a>
-                <a id="about-nav-link" onclick="togglePageSection('about', this)">Chi sono</a>
-                <a id="gear-nav-link" onclick="togglePageSection('gear', this)">Attrezzatura</a>
+                <a class="active" onclick="goToHome(this)">Home</a>
+                <a id="about-nav-link" onclick="toggleAccordion('about', this)">Chi sono</a>
+                <a id="gear-nav-link" onclick="toggleAccordion('gear', this)">Attrezzatura</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Condividi sito">
@@ -774,9 +795,12 @@
         <p style="margin-top: 12px; font-size: 0.82rem; color: #665; font-style: normal; letter-spacing: 1px;">Nessun cookie, nessun tracciamento, zero dati personali. Solo fotografia in libertà.</p>
     </div>
 
-    <section id="about-section" class="page-section">
-        <div class="page-box">
-            <h2>Chi sono</h2>
+    <div id="about-panel" class="accordion-panel">
+        <div class="accordion-box">
+            <div class="accordion-header">
+                <h2>Chi sono</h2>
+                <button type="button" class="accordion-close" onclick="closeAccordion()">Chiudi &times;</button>
+            </div>
             <p style="color: #dcdcdc;">
                 Ciao, sono Stefano Adami.
             </p>
@@ -793,22 +817,25 @@
                 Le foto si possono scaricare liberamente dall'apposito pulsante e ripubblicate purché ne venga citata la fonte. Zero cookie, zero tracciamenti, solo fotografia.
             </p>
             <p style="color: #888; font-size: 0.9rem;">
-                Ti interessa una foto in alta risoluzione? <a onclick="openContactModal()" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
+                Ti interessa una foto in alta risoluzione? <a onclick="closeAccordion(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
             </p>
         </div>
-    </section>
+    </div>
 
-    <section id="gear-section" class="page-section">
-        <div class="page-box">
-            <h2>La mia attrezzatura</h2>
+    <div id="gear-panel" class="accordion-panel">
+        <div class="accordion-box">
+            <div class="accordion-header">
+                <h2>La mia attrezzatura</h2>
+                <button type="button" class="accordion-close" onclick="closeAccordion()">Chiudi &times;</button>
+            </div>
             <p style="color: #dcdcdc;">
-                Testo segnaposto per provare la vista a tutta pagina: qui metteremo ciò che porto davvero nello zaino tra sentieri, boschi e uscite fotografiche.
+                Testo segnaposto per la versione a tendina: qui metteremo ciò che porto davvero nello zaino tra sentieri, boschi e uscite fotografiche.
             </p>
             <p style="color: #888; font-size: 0.9rem;">
-                Quando il layout ti convince dimmi pure cosa vuoi scrivere e lo aggiorniamo al volo.
+                Cliccando di nuovo su "Attrezzatura" o su "Chiudi" il pannello si ripiega senza spostare il resto.
             </p>
         </div>
-    </section>
+    </div>
 
     <div id="featured-section" class="featured-section">
         <div class="featured-label">In primo piano</div>
@@ -892,7 +919,7 @@
 
     <script>
         let currentCategory = 'all';
-        let activePageSection = null;
+        let activeAccordion = null;
         let allPhotosData = [];
         let lastFeaturedIndex = -1;
         let featuredTimer = null;
@@ -966,7 +993,7 @@
         }
 
         function updateFeaturedPhoto() {
-            if (allPhotosData.length === 0 || activePageSection) return;
+            if (allPhotosData.length === 0) return;
 
             let randomIndex;
             do {
@@ -1085,36 +1112,31 @@
             history.pushState(null, null, window.location.pathname + window.location.search);
         }
 
-        function hidePageSections() {
-            activePageSection = null;
-            document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
-            document.getElementById('gallery-container').style.display = '';
+        function closeAccordion() {
+            activeAccordion = null;
+            document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact)').forEach(link => link.classList.remove('active'));
         }
 
-        function togglePageSection(sectionName, element) {
-            const targetSection = document.getElementById(`${sectionName}-section`);
-            if (!targetSection) return;
+        function toggleAccordion(panelName, element) {
+            const targetPanel = document.getElementById(`${panelName}-panel`);
+            if (!targetPanel) return;
 
-            if (activePageSection === sectionName) {
-                goToHome(document.getElementById('home-nav-link'));
+            if (activeAccordion === panelName) {
+                closeAccordion();
                 return;
             }
 
-            stopFeaturedTimer();
-            document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
-            targetSection.style.display = 'block';
-            activePageSection = sectionName;
+            document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
+            targetPanel.style.display = 'block';
+            activeAccordion = panelName;
 
-            document.getElementById('featured-section').style.display = 'none';
-            document.getElementById('gallery-divider-label').style.display = 'none';
-            document.getElementById('gallery-container').style.display = 'none';
-
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact)').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
         }
 
         function goToHome(element) {
-            hidePageSections();
+            closeAccordion();
             currentCategory = 'all';
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
@@ -1137,7 +1159,7 @@
         }
 
         function filterGallery(category, element) {
-            hidePageSections();
+            closeAccordion();
             currentCategory = category;
             
             const galleryContainer = document.getElementById('gallery-container');
@@ -1245,3 +1267,8 @@
 
 </body>
 </html>
+```[cite: 4]
+
+### Come verificare che funzioni
+1. Apri la pagina sul telefono e tocca **Chi sono**: il pannello deve comparire subito sotto l'introduzione senza coprire lo schermo con una finestra modale[cite: 4].
+2. Tocca di nuovo **Chi sono** (oppure il tasto **Chiudi ×** in alto a destra del box): il pannello deve sparire e il layout sottostante deve tornare al suo posto[cite: 4].
