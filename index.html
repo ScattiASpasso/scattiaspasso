@@ -114,7 +114,7 @@
             gap: 12px;
         }
         .logo-img {
-            height: 40px;
+            height: 80px;
             width: auto;
             object-fit: contain;
             border-radius: 50%;
@@ -1021,11 +1021,11 @@
                 return { splash, logoWrap, titleWrap };
             }
 
-            function moveElTowardTopLeft(el, targetEl, baseTranslateYFn) {
-                if (!el) return { x: 0, y: 0 };
+            function moveLogoTowardTopLeft(el, targetEl) {
+                if (!el) return { x: 0, y: 0, scale: 0.45 };
                 const rect = el.getBoundingClientRect();
-                const targetRect = targetEl ? targetEl.getBoundingClientRect() : { left: 28, top: 28, height: 36 };
-                const scale = targetEl ? Math.max(0.28, Math.min(1, targetRect.height / Math.max(rect.height, 1))) : 0.45;
+                const targetRect = targetEl ? targetEl.getBoundingClientRect() : { left: 28, top: 28, height: 80 };
+                const scale = targetEl ? Math.max(0.2, Math.min(1.6, targetRect.height / Math.max(rect.height, 1))) : 0.45;
 
                 const fromCenterX = rect.left + rect.width / 2;
                 const fromCenterY = rect.top + rect.height / 2;
@@ -1034,10 +1034,27 @@
 
                 const dx = toCenterX - fromCenterX;
                 const dy = toCenterY - fromCenterY;
-                const ty = baseTranslateYFn(dy);
 
-                el.style.transform = `translate(calc(-50% + ${dx}px), ${ty}) scale(${scale})`;
-                return { x: dx, y: ty, scale };
+                el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${scale})`;
+                return { x: dx, y: `calc(-50% + ${dy}px)`, scale };
+            }
+
+            function moveTitleTowardTopLeft(el, targetEl) {
+                if (!el) return { x: 0, y: '0px', scale: 0.55 };
+                const rect = el.getBoundingClientRect();
+                const targetRect = targetEl ? targetEl.getBoundingClientRect() : { left: 120, top: 44, height: 36 };
+                const scale = targetEl ? Math.max(0.28, Math.min(1, targetRect.height / Math.max(rect.height, 1))) : 0.55;
+
+                const fromCenterX = rect.left + rect.width / 2;
+                const fromCenterY = rect.top + rect.height / 2;
+                const toCenterX = targetRect.left + (rect.width * scale) / 2;
+                const toCenterY = targetRect.top + targetRect.height / 2;
+
+                const dx = toCenterX - fromCenterX;
+                const dy = toCenterY - fromCenterY;
+
+                el.style.transform = `translate(calc(-50% + ${dx}px), ${dy}px) scale(${scale})`;
+                return { x: dx, y: `${dy}px`, scale };
             }
 
             window.triggerEntryIntro = function(force = false) {
@@ -1075,8 +1092,8 @@
                                 const headerLogo = document.querySelector('header .logo-img');
                                 const headerTitle = document.querySelector('header .logo');
 
-                                const logoMove = moveElTowardTopLeft(logoWrap, headerLogo, (dy) => `calc(-50% + ${dy}px)`);
-                                const titleMove = moveElTowardTopLeft(titleWrap, headerTitle, (dy) => `${dy}px`);
+                                const logoMove = moveLogoTowardTopLeft(logoWrap, headerLogo);
+                                const titleMove = moveTitleTowardTopLeft(titleWrap, headerTitle);
 
                                 // 4. Una volta arrivati in zona alto-sinistra, sfumano con effetto fumo verso destra
                                 timers.push(setTimeout(() => {
