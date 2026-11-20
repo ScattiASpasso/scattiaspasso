@@ -205,9 +205,9 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* Container for install app icon + label */
+        /* Container for install app icon + label (hidden on desktop, shown only on smartphones) */
         .install-container {
-            display: flex;
+            display: none;
             align-items: center;
             gap: 8px;
             cursor: pointer;
@@ -557,6 +557,9 @@
 
         /* On smartphones and narrow screens, switches automatically to 2 large columns and tightens vertical spacing */
         @media (max-width: 768px) {
+            .install-container {
+                display: flex !important;
+            }
             .splash-logo-wrap {
                 top: 45%;
             }
@@ -1411,10 +1414,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) {
-                installBtn.style.display = 'flex';
-            }
         });
 
         function installApp() {
