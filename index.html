@@ -22,14 +22,14 @@
             line-height: 1.6;
         }
 
-        /* Splash intro sequenziale: prima logo, poi scritta verso la propria posizione */
+        /* Splash intro: logo si sofferma e poi va al suo posto, poi scritta si sofferma e va al suo posto */
         #splash-intro {
             position: fixed;
             inset: 0;
             z-index: 2000;
             background-color: #0c0c0c;
             opacity: 1;
-            transition: opacity 0.45s ease;
+            transition: opacity 0.55s ease;
             pointer-events: none;
         }
         #splash-intro.fade-out {
@@ -44,10 +44,10 @@
             position: fixed;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) scale(0.92);
+            transform: translate(-50%, -50%) scale(0.94);
             opacity: 0;
             transform-origin: center center;
-            transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+            transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
             will-change: transform, opacity;
         }
         .splash-logo-wrap.visible {
@@ -55,7 +55,7 @@
             transform: translate(-50%, -50%) scale(1);
         }
         .splash-logo-wrap img {
-            height: 76px;
+            height: 78px;
             width: auto;
             object-fit: contain;
             border-radius: 6px;
@@ -65,11 +65,11 @@
         .splash-title-wrap {
             position: fixed;
             left: 50%;
-            top: calc(50% + 62px);
-            transform: translate(-50%, 0) scale(0.95);
+            top: calc(50% + 64px);
+            transform: translate(-50%, 0) scale(0.96);
             opacity: 0;
             transform-origin: center center;
-            transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+            transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
             will-change: transform, opacity;
         }
         .splash-title-wrap.visible {
@@ -92,7 +92,7 @@
             opacity: 0;
         }
         header .logo-container {
-            transition: opacity 0.3s ease;
+            transition: opacity 0.35s ease;
         }
 
         header {
@@ -960,77 +960,140 @@
     </div>
 
     <script>
-        (function runSequentialIntro() {
-            const KEY = 'scatti_a_spasso_intro_seq_v1';
-            if (sessionStorage.getItem(KEY)) return;
-            sessionStorage.setItem(KEY, '1');
+        (function setupPageEntryIntro() {
+            let introActive = false;
+            let timers = [];
 
-            const splash = document.getElementById('splash-intro');
-            const logoWrap = document.getElementById('splash-logo-wrap');
-            const titleWrap = document.getElementById('splash-title-wrap');
-            if (!splash || !logoWrap || !titleWrap) return;
-
-            document.body.classList.add('intro-running');
-            splash.style.display = 'block';
-
-            function finishIntro() {
-                splash.classList.add('fade-out');
-                document.body.classList.remove('intro-running');
-                setTimeout(() => splash.remove(), 460);
+            function clearIntroTimers() {
+                timers.forEach(t => clearTimeout(t));
+                timers = [];
             }
 
-            requestAnimationFrame(() => {
-                // 1. Appare il logo al centro
+            function resetSplashElements() {
+                let splash = document.getElementById('splash-intro');
+                if (!splash) {
+                    splash = document.createElement('div');
+                    splash.id = 'splash-intro';
+                    splash.innerHTML = `
+                        <div class="splash-stage">
+                            <div class="splash-logo-wrap" id="splash-logo-wrap">
+                                <img src="foto/logo1.jpg" alt="Logo">
+                            </div>
+                            <div class="splash-title-wrap" id="splash-title-wrap">
+                                <div class="splash-title">Scatti a Spasso</div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.prepend(splash);
+                }
+                const logoWrap = document.getElementById('splash-logo-wrap');
+                const titleWrap = document.getElementById('splash-title-wrap');
+
+                splash.classList.remove('fade-out');
+                splash.style.display = 'none';
+
+                logoWrap.style.transition = 'none';
+                logoWrap.classList.remove('visible');
+                logoWrap.style.transform = 'translate(-50%, -50%) scale(0.94)';
+
+                titleWrap.style.transition = 'none';
+                titleWrap.classList.remove('visible');
+                titleWrap.style.transform = 'translate(-50%, 0) scale(0.96)';
+
+                return { splash, logoWrap, titleWrap };
+            }
+
+            window.triggerEntryIntro = function(force = false) {
+                if (introActive && !force) return;
+                clearIntroTimers();
+                introActive = true;
+
+                const { splash, logoWrap, titleWrap } = resetSplashElements();
+                document.body.classList.add('intro-running');
+                splash.style.display = 'block';
+
+                function finishIntro() {
+                    splash.classList.add('fade-out');
+                    document.body.classList.remove('intro-running');
+                    timers.push(setTimeout(() => {
+                        splash.style.display = 'none';
+                        introActive = false;
+                    }, 580));
+                }
+
                 requestAnimationFrame(() => {
-                    logoWrap.classList.add('visible');
-                });
+                    requestAnimationFrame(() => {
+                        logoWrap.style.transition = 'transform 1.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease';
+                        titleWrap.style.transition = 'transform 1.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease';
 
-                // 2. Il logo parte verso la sua posizione nell'header e, subito dopo, appare la scritta e va al suo posto
-                setTimeout(() => {
-                    const headerLogo = document.querySelector('header .logo-img');
-                    const headerTitle = document.querySelector('header .logo');
+                        // 1. Appare il logo al centro e si sofferma un attimo
+                        logoWrap.classList.add('visible');
 
-                    if (headerLogo) {
-                        const fromRect = logoWrap.getBoundingClientRect();
-                        const toRect = headerLogo.getBoundingClientRect();
-                        const scale = toRect.height / Math.max(fromRect.height, 1);
+                        // 2. Dopo la sosta, il logo parte verso la sua posizione
+                        timers.push(setTimeout(() => {
+                            const headerLogo = document.querySelector('header .logo-img');
+                            if (headerLogo) {
+                                const fromRect = logoWrap.getBoundingClientRect();
+                                const toRect = headerLogo.getBoundingClientRect();
+                                const scale = toRect.height / Math.max(fromRect.height, 1);
 
-                        const fromCenterX = fromRect.left + fromRect.width / 2;
-                        const fromCenterY = fromRect.top + fromRect.height / 2;
-                        const toCenterX = toRect.left + toRect.width / 2;
-                        const toCenterY = toRect.top + toRect.height / 2;
+                                const fromCenterX = fromRect.left + fromRect.width / 2;
+                                const fromCenterY = fromRect.top + fromRect.height / 2;
+                                const toCenterX = toRect.left + toRect.width / 2;
+                                const toCenterY = toRect.top + toRect.height / 2;
 
-                        const dx = toCenterX - fromCenterX;
-                        const dy = toCenterY - fromCenterY;
+                                const dx = toCenterX - fromCenterX;
+                                const dy = toCenterY - fromCenterY;
 
-                        logoWrap.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${scale})`;
-                    }
-
-                    // Dopo un breve stacco, compare la scritta e vola verso la sua posizione
-                    setTimeout(() => {
-                        titleWrap.classList.add('visible');
-
-                        requestAnimationFrame(() => {
-                            if (headerTitle) {
-                                const tFrom = titleWrap.getBoundingClientRect();
-                                const tTo = headerTitle.getBoundingClientRect();
-                                const tScale = tTo.height / Math.max(tFrom.height, 1);
-
-                                const tFromCenterX = tFrom.left + tFrom.width / 2;
-                                const tFromCenterY = tFrom.top + tFrom.height / 2;
-                                const tToCenterX = tTo.left + tTo.width / 2;
-                                const tToCenterY = tTo.top + tTo.height / 2;
-
-                                const tdx = tToCenterX - tFromCenterX;
-                                const tdy = tToCenterY - tFromCenterY;
-
-                                titleWrap.style.transform = `translate(calc(-50% + ${tdx}px), ${tdy}px) scale(${tScale})`;
+                                logoWrap.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${scale})`;
                             }
-                        });
 
-                        setTimeout(finishIntro, 680);
-                    }, 220);
-                }, 420);
+                            // 3. Appare la scritta e si sofferma un attimo prima di partire
+                            timers.push(setTimeout(() => {
+                                titleWrap.classList.add('visible');
+
+                                timers.push(setTimeout(() => {
+                                    const headerTitle = document.querySelector('header .logo');
+                                    if (headerTitle) {
+                                        const tFrom = titleWrap.getBoundingClientRect();
+                                        const tTo = headerTitle.getBoundingClientRect();
+                                        const tScale = tTo.height / Math.max(tFrom.height, 1);
+
+                                        const tFromCenterX = tFrom.left + tFrom.width / 2;
+                                        const tFromCenterY = tFrom.top + tFrom.height / 2;
+                                        const tToCenterX = tTo.left + tTo.width / 2;
+                                        const tToCenterY = tTo.top + tTo.height / 2;
+
+                                        const tdx = tToCenterX - tFromCenterX;
+                                        const tdy = tToCenterY - tFromCenterY;
+
+                                        titleWrap.style.transform = `translate(calc(-50% + ${tdx}px), ${tdy}px) scale(${tScale})`;
+                                    }
+
+                                    timers.push(setTimeout(finishIntro, 1180));
+                                }, 650));
+                            }, 280));
+                        }, 750));
+                    });
+                });
+            };
+
+            // Parte al caricamento / aggiornamento pagina
+            window.triggerEntryIntro(true);
+
+            // Parte quando rientri nella pagina/scheda (es. da altra app o bfcache su smartphone)
+            window.addEventListener('pageshow', (e) => {
+                if (e.persisted) {
+                    window.triggerEntryIntro(true);
+                }
+            });
+
+            let wasHidden = document.hidden;
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && wasHidden) {
+                    window.triggerEntryIntro(true);
+                }
+                wasHidden = document.hidden;
             });
         })();
     </script>
