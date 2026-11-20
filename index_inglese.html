@@ -1432,14 +1432,9 @@
             } else {
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 if (isIOS) {
-                    alert("To install 'Scatti a Spasso' on iPhone:
-
-1. Tap the Share button at the bottom (the square with an arrow).
-2. Scroll down and select 'Add to Home Screen'.");
+                    alert("To install 'Scatti a Spasso' on iPhone:\n\n1. Tap the Share button at the bottom (the square with an arrow).\n2. Scroll down and select 'Add to Home Screen'.");
                 } else {
-                    alert("Your browser does not support direct installation.
-
-If you use Chrome or a compatible browser, open the menu (the three dots in the top-right corner) and select 'Install app' or 'Add to Home screen'.");
+                    alert("Your browser does not support direct installation.\n\nIf you use Chrome or a compatible browser, open the menu (the three dots in the top-right corner) and select 'Install app' or 'Add to Home screen'.");
                 }
             }
         }
@@ -1858,7 +1853,7 @@ If you use Chrome or a compatible browser, open the menu (the three dots in the 
 
             data.forEach(photo => {
                 const safeTitle = photo.titolo.replace(/"/g, '&quot;');
-                const safeTitleEscaped = photo.titolo.replace(/'/g, "\'").replace(/"/g, '&quot;');
+                const safeTitleEscaped = photo.titolo.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 const tagsStr = photo.tags && Array.isArray(photo.tags) ? photo.tags.join(' ').toLowerCase() : '';
 
                 const html = `
