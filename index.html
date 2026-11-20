@@ -1478,6 +1478,7 @@
 
         function installApp() {
             if (deferredPrompt) {
+                closeInstallModal();
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
@@ -1488,11 +1489,12 @@
                     deferredPrompt = null;
                 });
             } else {
+                closeInstallModal();
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 if (isIOS) {
-                    alert("Per installare 'Scatti a Spasso' su iPhone:\n\n1. Tocca il pulsante di condivisione in basso (il quadrato con la freccia).\n2. Scorri e seleziona 'Aggiungi alla schermata Home'.");
+                    alert("Installazione diretta non disponibile su iPhone/Safari.\n\nPer aggiungere la scorciatoia sulla home:\n1. Tocca il pulsante Condividi (quadrato con la freccia in basso).\n2. Seleziona 'Aggiungi alla schermata Home' e conferma.");
                 } else {
-                    alert("Il tuo browser non supporta l'installazione diretta.\n\nSe usi Chrome o un browser compatibile, apri il menu (i tre puntini in alto a destra) e seleziona 'Installa app' o 'Aggiungi a schermata Home'.");
+                    alert("Installazione diretta non disponibile in questo momento.\n\nPer aggiungere la scorciatoia sulla home su Chrome o altri browser:\n1. Apri il menu del browser (i tre puntini).\n2. Seleziona 'Aggiungi a schermata Home' o 'Installa app' e conferma.");
                 }
             }
         }
