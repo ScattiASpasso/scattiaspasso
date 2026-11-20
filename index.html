@@ -21,6 +21,80 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
         }
+
+        /* Splash intro sequenziale: prima logo, poi scritta verso la propria posizione */
+        #splash-intro {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background-color: #0c0c0c;
+            opacity: 1;
+            transition: opacity 0.45s ease;
+            pointer-events: none;
+        }
+        #splash-intro.fade-out {
+            opacity: 0;
+        }
+        .splash-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .splash-logo-wrap {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0.92);
+            opacity: 0;
+            transform-origin: center center;
+            transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+            will-change: transform, opacity;
+        }
+        .splash-logo-wrap.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .splash-logo-wrap img {
+            height: 76px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75);
+            display: block;
+        }
+        .splash-title-wrap {
+            position: fixed;
+            left: 50%;
+            top: calc(50% + 62px);
+            transform: translate(-50%, 0) scale(0.95);
+            opacity: 0;
+            transform-origin: center center;
+            transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+            will-change: transform, opacity;
+        }
+        .splash-title-wrap.visible {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
+        .splash-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.7rem, 4.2vw, 2.8rem);
+            letter-spacing: 4.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b87c24 15%, #f3d58d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 14px rgba(184, 124, 36, 0.35));
+            white-space: nowrap;
+        }
+        body.intro-running header .logo-container {
+            opacity: 0;
+        }
+        header .logo-container {
+            transition: opacity 0.3s ease;
+        }
+
         header {
             padding: 30px 3% 15px 3%;
             width: 100%;
@@ -873,6 +947,93 @@
     </script>
  </head>
 <body>
+
+    <div id="splash-intro" style="display: none;">
+        <div class="splash-stage">
+            <div class="splash-logo-wrap" id="splash-logo-wrap">
+                <img src="foto/logo1.jpg" alt="Logo">
+            </div>
+            <div class="splash-title-wrap" id="splash-title-wrap">
+                <div class="splash-title">Scatti a Spasso</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function runSequentialIntro() {
+            const KEY = 'scatti_a_spasso_intro_seq_v1';
+            if (sessionStorage.getItem(KEY)) return;
+            sessionStorage.setItem(KEY, '1');
+
+            const splash = document.getElementById('splash-intro');
+            const logoWrap = document.getElementById('splash-logo-wrap');
+            const titleWrap = document.getElementById('splash-title-wrap');
+            if (!splash || !logoWrap || !titleWrap) return;
+
+            document.body.classList.add('intro-running');
+            splash.style.display = 'block';
+
+            function finishIntro() {
+                splash.classList.add('fade-out');
+                document.body.classList.remove('intro-running');
+                setTimeout(() => splash.remove(), 460);
+            }
+
+            requestAnimationFrame(() => {
+                // 1. Appare il logo al centro
+                requestAnimationFrame(() => {
+                    logoWrap.classList.add('visible');
+                });
+
+                // 2. Il logo parte verso la sua posizione nell'header e, subito dopo, appare la scritta e va al suo posto
+                setTimeout(() => {
+                    const headerLogo = document.querySelector('header .logo-img');
+                    const headerTitle = document.querySelector('header .logo');
+
+                    if (headerLogo) {
+                        const fromRect = logoWrap.getBoundingClientRect();
+                        const toRect = headerLogo.getBoundingClientRect();
+                        const scale = toRect.height / Math.max(fromRect.height, 1);
+
+                        const fromCenterX = fromRect.left + fromRect.width / 2;
+                        const fromCenterY = fromRect.top + fromRect.height / 2;
+                        const toCenterX = toRect.left + toRect.width / 2;
+                        const toCenterY = toRect.top + toRect.height / 2;
+
+                        const dx = toCenterX - fromCenterX;
+                        const dy = toCenterY - fromCenterY;
+
+                        logoWrap.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${scale})`;
+                    }
+
+                    // Dopo un breve stacco, compare la scritta e vola verso la sua posizione
+                    setTimeout(() => {
+                        titleWrap.classList.add('visible');
+
+                        requestAnimationFrame(() => {
+                            if (headerTitle) {
+                                const tFrom = titleWrap.getBoundingClientRect();
+                                const tTo = headerTitle.getBoundingClientRect();
+                                const tScale = tTo.height / Math.max(tFrom.height, 1);
+
+                                const tFromCenterX = tFrom.left + tFrom.width / 2;
+                                const tFromCenterY = tFrom.top + tFrom.height / 2;
+                                const tToCenterX = tTo.left + tTo.width / 2;
+                                const tToCenterY = tTo.top + tTo.height / 2;
+
+                                const tdx = tToCenterX - tFromCenterX;
+                                const tdy = tToCenterY - tFromCenterY;
+
+                                titleWrap.style.transform = `translate(calc(-50% + ${tdx}px), ${tdy}px) scale(${tScale})`;
+                            }
+                        });
+
+                        setTimeout(finishIntro, 680);
+                    }, 220);
+                }, 420);
+            });
+        })();
+    </script>
 
     <header>
         <div class="header-top">
