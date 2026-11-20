@@ -22,14 +22,14 @@
             line-height: 1.6;
         }
 
-        /* Splash intro: logo grande -> sosta -> scritta -> sosta -> dissoluzione fumo verso destra */
+        /* Splash intro: logo grande -> sosta -> scritta -> sosta -> volo verso alto a sinistra -> fumo verso destra */
         #splash-intro {
             position: fixed;
             inset: 0;
             z-index: 2000;
             background-color: #0c0c0c;
             opacity: 1;
-            transition: opacity 0.75s ease-out;
+            transition: opacity 0.65s ease-out;
             pointer-events: none;
         }
         #splash-intro.fade-out {
@@ -48,18 +48,13 @@
             opacity: 0;
             filter: blur(0px);
             transform-origin: center center;
-            transition: opacity 1.1s ease-out, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), filter 0.95s ease-out;
+            transition: opacity 1.1s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease-out;
             will-change: transform, opacity, filter;
         }
         .splash-logo-wrap.visible {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
             filter: blur(0px);
-        }
-        .splash-logo-wrap.smoke-exit {
-            opacity: 0;
-            transform: translate(calc(-50% + 140px), -50%) scale(1.06);
-            filter: blur(18px);
         }
         .splash-logo-wrap img {
             height: 400px;
@@ -79,18 +74,13 @@
             opacity: 0;
             filter: blur(0px);
             transform-origin: center center;
-            transition: opacity 0.75s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.95s ease-out;
+            transition: opacity 0.75s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease-out;
             will-change: transform, opacity, filter;
         }
         .splash-title-wrap.visible {
             opacity: 1;
             transform: translate(-50%, 0) scale(1);
             filter: blur(0px);
-        }
-        .splash-title-wrap.smoke-exit {
-            opacity: 0;
-            transform: translate(calc(-50% + 140px), 0) scale(1.04);
-            filter: blur(16px);
         }
         .splash-title {
             font-family: 'Cinzel', serif;
@@ -573,12 +563,6 @@
             .splash-title-wrap {
                 top: calc(45% + 66px);
             }
-            .splash-title-wrap.smoke-exit {
-                transform: translate(calc(-50% + 95px), 0) scale(1.04);
-            }
-            .splash-logo-wrap.smoke-exit {
-                transform: translate(calc(-50% + 95px), -50%) scale(1.06);
-            }
             .gallery.grid-view {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 15px !important;
@@ -1018,10 +1002,38 @@
                 splash.classList.remove('fade-out');
                 splash.style.display = 'none';
 
-                logoWrap.classList.remove('visible', 'smoke-exit');
-                titleWrap.classList.remove('visible', 'smoke-exit');
+                logoWrap.style.transition = 'none';
+                logoWrap.classList.remove('visible');
+                logoWrap.style.opacity = '0';
+                logoWrap.style.filter = 'blur(0px)';
+                logoWrap.style.transform = 'translate(-50%, -50%) scale(0.92)';
+
+                titleWrap.style.transition = 'none';
+                titleWrap.classList.remove('visible');
+                titleWrap.style.opacity = '0';
+                titleWrap.style.filter = 'blur(0px)';
+                titleWrap.style.transform = 'translate(-50%, 0) scale(0.96)';
 
                 return { splash, logoWrap, titleWrap };
+            }
+
+            function moveElTowardTopLeft(el, targetEl, baseTranslateYFn) {
+                if (!el) return { x: 0, y: 0 };
+                const rect = el.getBoundingClientRect();
+                const targetRect = targetEl ? targetEl.getBoundingClientRect() : { left: 28, top: 28, height: 36 };
+                const scale = targetEl ? Math.max(0.28, Math.min(1, targetRect.height / Math.max(rect.height, 1))) : 0.45;
+
+                const fromCenterX = rect.left + rect.width / 2;
+                const fromCenterY = rect.top + rect.height / 2;
+                const toCenterX = targetRect.left + (rect.width * scale) / 2;
+                const toCenterY = targetRect.top + targetRect.height / 2;
+
+                const dx = toCenterX - fromCenterX;
+                const dy = toCenterY - fromCenterY;
+                const ty = baseTranslateYFn(dy);
+
+                el.style.transform = `translate(calc(-50% + ${dx}px), ${ty}) scale(${scale})`;
+                return { x: dx, y: ty, scale };
             }
 
             window.triggerEntryIntro = function(force = false) {
@@ -1036,26 +1048,47 @@
                     splash.classList.add('fade-out');
                     timers.push(setTimeout(() => {
                         splash.style.display = 'none';
-                        logoWrap.classList.remove('visible', 'smoke-exit');
-                        titleWrap.classList.remove('visible', 'smoke-exit');
                         introActive = false;
-                    }, 780));
+                    }, 680));
                 }
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
+                        logoWrap.style.transition = 'opacity 1.1s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease-out';
+                        titleWrap.style.transition = 'opacity 0.75s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease-out';
+
                         // 1. Appare il logo grande in modo graduale e si sofferma
-                        logoWrap.classList.add('visible');
+                        logoWrap.style.opacity = '1';
+                        logoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
 
-                        // 2. Dopo la sosta del logo, appare la scritta e si sofferma
+                        // 2. Dopo la sosta, appare la scritta e si sofferma
                         timers.push(setTimeout(() => {
-                            titleWrap.classList.add('visible');
+                            titleWrap.style.opacity = '1';
+                            titleWrap.style.transform = 'translate(-50%, 0) scale(1)';
 
-                            // 3. Dopo la sosta anche della scritta, entrambi escono con effetto fumo verso destra
+                            // 3. Dopo la sosta, entrambi vanno verso l'alto a sinistra
                             timers.push(setTimeout(() => {
-                                logoWrap.classList.add('smoke-exit');
-                                titleWrap.classList.add('smoke-exit');
-                                timers.push(setTimeout(finishIntro, 520));
+                                const headerLogo = document.querySelector('header .logo-img');
+                                const headerTitle = document.querySelector('header .logo');
+
+                                const logoMove = moveElTowardTopLeft(logoWrap, headerLogo, (dy) => `calc(-50% + ${dy}px)`);
+                                const titleMove = moveElTowardTopLeft(titleWrap, headerTitle, (dy) => `${dy}px`);
+
+                                // 4. Una volta arrivati in zona alto-sinistra, sfumano con effetto fumo verso destra
+                                timers.push(setTimeout(() => {
+                                    logoWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s ease-out, filter 0.7s ease-out';
+                                    titleWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s ease-out, filter 0.7s ease-out';
+
+                                    logoWrap.style.opacity = '0';
+                                    logoWrap.style.filter = 'blur(18px)';
+                                    logoWrap.style.transform = `translate(calc(-50% + ${logoMove.x + 120}px), ${logoMove.y}) scale(${(logoMove.scale || 0.45) * 1.05})`;
+
+                                    titleWrap.style.opacity = '0';
+                                    titleWrap.style.filter = 'blur(16px)';
+                                    titleWrap.style.transform = `translate(calc(-50% + ${titleMove.x + 120}px), ${titleMove.y}) scale(${(titleMove.scale || 0.55) * 1.04})`;
+
+                                    timers.push(setTimeout(finishIntro, 720));
+                                }, 950));
                             }, 850));
                         }, 1450));
                     });
