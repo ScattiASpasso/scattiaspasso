@@ -98,16 +98,33 @@
             padding: 8px 14px !important;
             color: #ccc !important;
             transition: all 0.3s ease !important;
+            text-transform: none !important;
         }
         .nav-contact:hover {
             border-color: #777;
             background-color: rgba(255, 255, 255, 0.03);
             color: #ffffff !important;
         }
-
-        .nav-contact {
+        .nav-lang {
+            border: 1px solid rgba(184, 124, 36, 0.45);
+            border-radius: 4px;
+            padding: 7px 11px !important;
+            color: #f3d58d !important;
+            font-size: 0.8rem !important;
+            letter-spacing: 1px !important;
             text-transform: none !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(184, 124, 36, 0.08);
+            transition: all 0.3s ease !important;
         }
+        .nav-lang:hover {
+            border-color: #f3d58d !important;
+            background-color: rgba(184, 124, 36, 0.18) !important;
+            color: #ffffff !important;
+        }
+
         /* Contenitore per icona + scritta installa app */
         .install-container {
             display: none; /* Gestito da JS */
@@ -494,6 +511,10 @@
             .nav-contact {
                 padding: 5px 10px !important;
             }
+            .nav-lang {
+                padding: 4px 8px !important;
+                font-size: 0.72rem !important;
+            }
             .header-categories {
                 margin-top: 10px;
                 padding-bottom: 0;
@@ -863,6 +884,7 @@
                 <a id="gear-nav-link" onclick="toggleAccordion('gear', this)">Attrezzatura</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
+                <a href="index_inglese.html" class="nav-lang" title="Switch to English version">🇬🇧 EN</a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Condividi sito">
                     <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="18" cy="5" r="3"></circle>
@@ -1641,7 +1663,7 @@
         function closeAccordion() {
             activeAccordion = null;
             document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact)').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang)').forEach(link => link.classList.remove('active'));
         }
 
         function toggleAccordion(panelName, element) {
@@ -1657,7 +1679,7 @@
             targetPanel.style.display = 'block';
             activeAccordion = panelName;
 
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact)').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang)').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
         }
 
@@ -1678,7 +1700,7 @@
             }
             galleryContainer.classList.remove('grid-view');
 
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang), .cat-link').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
 
             applyFilters();
@@ -1701,8 +1723,8 @@
             }
             galleryContainer.classList.add('grid-view');
             
-            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact), .cat-link').forEach(link => link.classList.remove('active'));
-            if (element && !element.classList.contains('nav-contact') && !element.classList.contains('install-container')) {
+            document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang), .cat-link').forEach(link => link.classList.remove('active'));
+            if (element && !element.classList.contains('nav-contact') && !element.classList.contains('install-container') && !element.classList.contains('nav-lang')) {
                 element.classList.add('active');
             }
 
