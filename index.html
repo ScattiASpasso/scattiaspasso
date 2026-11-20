@@ -106,23 +106,25 @@
             color: #ffffff !important;
         }
         .nav-lang {
-            border: 1px solid rgba(184, 124, 36, 0.45);
+            border: 1px solid #333;
             border-radius: 4px;
-            padding: 7px 11px !important;
-            color: #f3d58d !important;
-            font-size: 0.8rem !important;
-            letter-spacing: 1px !important;
-            text-transform: none !important;
+            padding: 6px 8px !important;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background-color: rgba(184, 124, 36, 0.08);
+            justify-content: center;
+            background-color: #141414;
             transition: all 0.3s ease !important;
         }
         .nav-lang:hover {
             border-color: #f3d58d !important;
-            background-color: rgba(184, 124, 36, 0.18) !important;
-            color: #ffffff !important;
+            background-color: rgba(243, 213, 141, 0.08) !important;
+        }
+        .flag-icon {
+            width: 22px;
+            height: 15px;
+            border-radius: 2px;
+            display: block;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
         /* Contenitore per icona + scritta installa app */
@@ -512,8 +514,11 @@
                 padding: 5px 10px !important;
             }
             .nav-lang {
-                padding: 4px 8px !important;
-                font-size: 0.72rem !important;
+                padding: 5px 7px !important;
+            }
+            .flag-icon {
+                width: 20px;
+                height: 14px;
             }
             .header-categories {
                 margin-top: 10px;
@@ -884,7 +889,20 @@
                 <a id="gear-nav-link" onclick="toggleAccordion('gear', this)">Attrezzatura</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
-                <a href="index_inglese.html" class="nav-lang" title="Switch to English version">🇬🇧 EN</a>
+                <a href="index_inglese.html" class="nav-lang" title="English version" aria-label="English version">
+                    <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+                        <clipPath id="uk-clip">
+                            <rect width="60" height="40" rx="2"/>
+                        </clipPath>
+                        <g clip-path="url(#uk-clip)">
+                            <rect width="60" height="40" fill="#012169"/>
+                            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="6.5"/>
+                            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3.5"/>
+                            <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="11"/>
+                            <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="6.5"/>
+                        </g>
+                    </svg>
+                </a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Condividi sito">
                     <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="18" cy="5" r="3"></circle>
