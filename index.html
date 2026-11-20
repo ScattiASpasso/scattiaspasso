@@ -22,14 +22,14 @@
             line-height: 1.6;
         }
 
-        /* Splash intro: logo grande con apparizione graduale, poi scritta con pausa e volo */
+        /* Splash intro: logo grande -> sosta -> scritta -> sosta -> dissoluzione fumo verso destra */
         #splash-intro {
             position: fixed;
             inset: 0;
             z-index: 2000;
             background-color: #0c0c0c;
             opacity: 1;
-            transition: opacity 0.55s ease;
+            transition: opacity 0.75s ease-out;
             pointer-events: none;
         }
         #splash-intro.fade-out {
@@ -43,38 +43,54 @@
         .splash-logo-wrap {
             position: fixed;
             left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) scale(0.88);
+            top: 46%;
+            transform: translate(-50%, -50%) scale(0.92);
             opacity: 0;
+            filter: blur(0px);
             transform-origin: center center;
-            transition: opacity 1.1s ease-out, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform, opacity;
+            transition: opacity 1.1s ease-out, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), filter 0.95s ease-out;
+            will-change: transform, opacity, filter;
         }
         .splash-logo-wrap.visible {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
+            filter: blur(0px);
+        }
+        .splash-logo-wrap.smoke-exit {
+            opacity: 0;
+            transform: translate(calc(-50% + 140px), -50%) scale(1.06);
+            filter: blur(18px);
         }
         .splash-logo-wrap img {
-            height: 155px;
+            height: 400px;
+            max-height: 48vh;
+            max-width: 85vw;
             width: auto;
             object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85);
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
             display: block;
         }
         .splash-title-wrap {
             position: fixed;
             left: 50%;
-            top: calc(50% + 102px);
-            transform: translate(-50%, 0) scale(0.95);
+            top: calc(46% + 235px);
+            transform: translate(-50%, 0) scale(0.96);
             opacity: 0;
+            filter: blur(0px);
             transform-origin: center center;
-            transition: opacity 0.7s ease-out, transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform, opacity;
+            transition: opacity 0.75s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.95s ease-out;
+            will-change: transform, opacity, filter;
         }
         .splash-title-wrap.visible {
             opacity: 1;
             transform: translate(-50%, 0) scale(1);
+            filter: blur(0px);
+        }
+        .splash-title-wrap.smoke-exit {
+            opacity: 0;
+            transform: translate(calc(-50% + 140px), 0) scale(1.04);
+            filter: blur(16px);
         }
         .splash-title {
             font-family: 'Cinzel', serif;
@@ -87,12 +103,6 @@
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 14px rgba(184, 124, 36, 0.35));
             white-space: nowrap;
-        }
-        body.intro-running header .logo-container {
-            opacity: 0;
-        }
-        header .logo-container {
-            transition: opacity 0.35s ease;
         }
 
         header {
@@ -553,11 +563,21 @@
 
         /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi e compatta gli spazi verticali */
         @media (max-width: 768px) {
+            .splash-logo-wrap {
+                top: 45%;
+            }
             .splash-logo-wrap img {
-                height: 115px;
+                height: 96px;
+                max-height: 36vh;
             }
             .splash-title-wrap {
-                top: calc(50% + 78px);
+                top: calc(45% + 66px);
+            }
+            .splash-title-wrap.smoke-exit {
+                transform: translate(calc(-50% + 95px), 0) scale(1.04);
+            }
+            .splash-logo-wrap.smoke-exit {
+                transform: translate(calc(-50% + 95px), -50%) scale(1.06);
             }
             .gallery.grid-view {
                 grid-template-columns: repeat(2, 1fr) !important;
@@ -998,13 +1018,8 @@
                 splash.classList.remove('fade-out');
                 splash.style.display = 'none';
 
-                logoWrap.style.transition = 'none';
-                logoWrap.classList.remove('visible');
-                logoWrap.style.transform = 'translate(-50%, -50%) scale(0.88)';
-
-                titleWrap.style.transition = 'none';
-                titleWrap.classList.remove('visible');
-                titleWrap.style.transform = 'translate(-50%, 0) scale(0.95)';
+                logoWrap.classList.remove('visible', 'smoke-exit');
+                titleWrap.classList.remove('visible', 'smoke-exit');
 
                 return { splash, logoWrap, titleWrap };
             }
@@ -1015,71 +1030,34 @@
                 introActive = true;
 
                 const { splash, logoWrap, titleWrap } = resetSplashElements();
-                document.body.classList.add('intro-running');
                 splash.style.display = 'block';
 
                 function finishIntro() {
                     splash.classList.add('fade-out');
-                    document.body.classList.remove('intro-running');
                     timers.push(setTimeout(() => {
                         splash.style.display = 'none';
+                        logoWrap.classList.remove('visible', 'smoke-exit');
+                        titleWrap.classList.remove('visible', 'smoke-exit');
                         introActive = false;
-                    }, 580));
+                    }, 780));
                 }
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
-                        logoWrap.style.transition = 'opacity 1.1s ease-out, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
-                        titleWrap.style.transition = 'opacity 0.7s ease-out, transform 1.15s cubic-bezier(0.22, 1, 0.36, 1)';
-
                         // 1. Appare il logo grande in modo graduale e si sofferma
                         logoWrap.classList.add('visible');
 
-                        // 2. Dopo l'apparizione graduale e la sosta, il logo parte verso la sua posizione
+                        // 2. Dopo la sosta del logo, appare la scritta e si sofferma
                         timers.push(setTimeout(() => {
-                            const headerLogo = document.querySelector('header .logo-img');
-                            if (headerLogo) {
-                                const fromRect = logoWrap.getBoundingClientRect();
-                                const toRect = headerLogo.getBoundingClientRect();
-                                const scale = toRect.height / Math.max(fromRect.height, 1);
+                            titleWrap.classList.add('visible');
 
-                                const fromCenterX = fromRect.left + fromRect.width / 2;
-                                const fromCenterY = fromRect.top + fromRect.height / 2;
-                                const toCenterX = toRect.left + toRect.width / 2;
-                                const toCenterY = toRect.top + toRect.height / 2;
-
-                                const dx = toCenterX - fromCenterX;
-                                const dy = toCenterY - fromCenterY;
-
-                                logoWrap.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${scale})`;
-                            }
-
-                            // 3. Appare la scritta e si sofferma un attimo prima di partire
+                            // 3. Dopo la sosta anche della scritta, entrambi escono con effetto fumo verso destra
                             timers.push(setTimeout(() => {
-                                titleWrap.classList.add('visible');
-
-                                timers.push(setTimeout(() => {
-                                    const headerTitle = document.querySelector('header .logo');
-                                    if (headerTitle) {
-                                        const tFrom = titleWrap.getBoundingClientRect();
-                                        const tTo = headerTitle.getBoundingClientRect();
-                                        const tScale = tTo.height / Math.max(tFrom.height, 1);
-
-                                        const tFromCenterX = tFrom.left + tFrom.width / 2;
-                                        const tFromCenterY = tFrom.top + tFrom.height / 2;
-                                        const tToCenterX = tTo.left + tTo.width / 2;
-                                        const tToCenterY = tTo.top + tTo.height / 2;
-
-                                        const tdx = tToCenterX - tFromCenterX;
-                                        const tdy = tToCenterY - tFromCenterY;
-
-                                        titleWrap.style.transform = `translate(calc(-50% + ${tdx}px), ${tdy}px) scale(${tScale})`;
-                                    }
-
-                                    timers.push(setTimeout(finishIntro, 1180));
-                                }, 650));
-                            }, 300));
-                        }, 1350));
+                                logoWrap.classList.add('smoke-exit');
+                                titleWrap.classList.add('smoke-exit');
+                                timers.push(setTimeout(finishIntro, 520));
+                            }, 850));
+                        }, 1450));
                     });
                 });
             };
