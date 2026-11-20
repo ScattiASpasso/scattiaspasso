@@ -327,14 +327,36 @@
         .featured-card {
             border-radius: 0 !important;
             padding: 0 !important;
-            background: transparent !important;
+            background: #090909 !important;
             border: none !important;
             border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
             box-shadow: none !important;
+            overflow: hidden;
             touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: grab;
         }
-        .featured-card img {
+        .featured-card.is-dragging {
+            cursor: grabbing;
+        }
+
+        /* Binario orizzontale per far scorrere due foto attaccate insieme */
+        .featured-track {
+            display: flex;
+            width: 100%;
+            will-change: transform;
+        }
+        .featured-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .featured-slide img {
             width: 100% !important;
             height: auto !important;
             max-height: 85vh !important;
@@ -342,10 +364,10 @@
             border-radius: 0 !important;
             display: block;
             margin: 0 auto;
-            transition: opacity 0.45s ease-in-out, transform 0s !important;
             transform: scale(1) !important;
+            -webkit-user-drag: none;
         }
-        .featured-card:hover img {
+        .featured-card:hover .featured-slide img {
             transform: scale(1) !important;
         }
 
@@ -356,6 +378,7 @@
             border-radius: 0 !important;
             padding: 30px 3% 20px 3% !important;
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+            pointer-events: none;
         }
 
         /* Frecce laterali per scorrere "In primo piano" su PC */
@@ -521,7 +544,7 @@
                 font-size: 1.35rem;
                 margin-bottom: 8px;
             }
-            .featured-card img {
+            .featured-slide img {
                 max-height: 58vh !important;
             }
             .featured-nav-btn {
@@ -564,7 +587,7 @@
             cursor: zoom-in;
             border: 1px solid #1f1f1f;
         }
-        .photo-card img {
+        .photo-card:not(.featured-card) img {
             width: 100%;
             height: auto;
             max-height: 65vh;
@@ -573,7 +596,7 @@
             margin: 0 auto;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .photo-card:hover img {
+        .photo-card:not(.featured-card):hover img {
             transform: scale(2.0);
         }
         .photo-card img, .lightbox img {
@@ -911,7 +934,7 @@
                 Le foto si possono scaricare liberamente dall'apposito pulsante e ripubblicate purché ne venga citata la fonte. Zero cookie, zero tracciamenti, solo fotografia.
             </p>
             <p style="color: #888; font-size: 0.9rem;">
-                Ti interessa una foto in alta risoluzione? <a onclick="closeAccordion(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi!</a>.
+                Ti interessa una foto in alta risoluzione? <a onclick="closeAccordion(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Scrivimi pure</a>.
             </p>
         </div>
     </div>
@@ -926,7 +949,7 @@
                 <div class="gear-item">
                     <div class="gear-name">Corpo macchina Canon EOS 5D Mark III</div>
                     <div class="gear-why">
-                        La mia professionale full frame per andare sul sicuro senza compromessi. Completa di obiettivo ha un peso che si fa sentire, quindi mi accompagna nelle uscite più "importanti" e mai casuali, negli eventi sportivi e teatrali.
+                        La mia professionale full frame per andare sul sicuro senza compromessi. Completa di obiettivo ha un peso importante, quindi mi accompagna nelle uscite più "importanti" e mai casuali, negli eventi sportivi e teatrali.
                     </div>
                 </div>
 
@@ -987,15 +1010,19 @@
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
-            <img id="featured-img" src="" alt="" loading="lazy" oncontextmenu="return false;">
+            <div class="featured-track" id="featured-track">
+                <div class="featured-slide" id="featured-slide-main">
+                    <img id="featured-img" src="" alt="" loading="lazy" oncontextmenu="return false;">
+                    <div class="photo-overlay">
+                        <span id="featured-title" class="photo-title"></span>
+                    </div>
+                </div>
+            </div>
             <button type="button" class="featured-nav-btn featured-next" onclick="event.stopPropagation(); nextFeaturedPhoto();" title="Prossima foto random">
                 <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </button>
-            <div class="photo-overlay">
-                <span id="featured-title" class="photo-title"></span>
-            </div>
         </div>
     </div>
     
@@ -1076,8 +1103,8 @@
         let lastFeaturedIndex = -1;
         let featuredHistory = [];
         let featuredHistoryPos = -1;
-        let featuredFadeTimeout = null;
         let featuredTimer = null;
+        let isFeaturedAnimating = false;
         let deferredPrompt = null;
 
         // Gestione dell'evento di installazione PWA
@@ -1118,7 +1145,7 @@
                 allPhotosData = data || [];
 
                 if (allPhotosData.length > 0) {
-                    updateFeaturedPhoto(false);
+                    initFeaturedPhoto();
                     startFeaturedTimer();
                 }
 
@@ -1137,7 +1164,7 @@
 
         function startFeaturedTimer() {
             if (featuredTimer) clearInterval(featuredTimer);
-            featuredTimer = setInterval(() => updateFeaturedPhoto(false), 5000);
+            featuredTimer = setInterval(() => advanceFeaturedPhoto('next', false), 5000);
         }
 
         function stopFeaturedTimer() {
@@ -1147,119 +1174,357 @@
             }
         }
 
-        function showFeaturedByIndex(photoIndex, fastTransition = false) {
-            if (allPhotosData.length === 0) return;
-
-            lastFeaturedIndex = photoIndex;
-            const featured = allPhotosData[photoIndex];
-
-            const featuredSection = document.getElementById('featured-section');
-            const featuredCard = document.getElementById('featured-card');
-            const featuredImg = document.getElementById('featured-img');
-            const featuredTitle = document.getElementById('featured-title');
-
-            if (featuredFadeTimeout) clearTimeout(featuredFadeTimeout);
-
-            const delay = fastTransition ? 160 : 400;
-            featuredImg.style.opacity = 0;
-
-            featuredFadeTimeout = setTimeout(() => {
-                featuredImg.src = `foto/${featured.file}`;
-                featuredImg.alt = featured.titolo;
-                featuredTitle.textContent = featured.titolo;
-                featuredImg.style.opacity = 1;
-            }, delay);
-
-            featuredCard.onclick = () => openLightbox(`foto/${featured.file}`, featured.titolo, featured.file);
-            featuredSection.style.display = 'block';
+        function setFeaturedSlideContent(slideEl, photo) {
+            const img = slideEl.querySelector('img');
+            const title = slideEl.querySelector('.photo-title');
+            img.src = `foto/${photo.file}`;
+            img.alt = photo.titolo;
+            if (title) title.textContent = photo.titolo;
         }
 
-        function updateFeaturedPhoto(fastTransition = false) {
+        function bindFeaturedClick(photo) {
+            const card = document.getElementById('featured-card');
+            card.onclick = () => openLightbox(`foto/${photo.file}`, photo.titolo, photo.file);
+        }
+
+        function initFeaturedPhoto() {
             if (allPhotosData.length === 0) return;
+            const idx = Math.floor(Math.random() * allPhotosData.length);
+            lastFeaturedIndex = idx;
+            featuredHistory = [idx];
+            featuredHistoryPos = 0;
 
-            // Se ci sono foto già viste più avanti nella cronologia, avanza su quelle prima di estrarne una nuova
-            if (featuredHistoryPos < featuredHistory.length - 1) {
-                featuredHistoryPos++;
-                showFeaturedByIndex(featuredHistory[featuredHistoryPos], fastTransition);
-                return;
-            }
+            const mainSlide = document.getElementById('featured-slide-main');
+            const track = document.getElementById('featured-track');
+            track.style.transition = 'none';
+            track.style.transform = 'translateX(0px)';
+            setFeaturedSlideContent(mainSlide, allPhotosData[idx]);
+            bindFeaturedClick(allPhotosData[idx]);
+            document.getElementById('featured-section').style.display = 'block';
+        }
 
+        function pickNextRandomIndex() {
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * allPhotosData.length);
             } while (randomIndex === lastFeaturedIndex && allPhotosData.length > 1);
+            return randomIndex;
+        }
 
-            featuredHistory.push(randomIndex);
-            if (featuredHistory.length > 30) {
-                featuredHistory.shift();
+        function createAdjacentSlide(photo) {
+            const slide = document.createElement('div');
+            slide.className = 'featured-slide';
+            slide.innerHTML = `
+                <img src="foto/${photo.file}" alt="${photo.titolo.replace(/"/g, '&quot;')}" loading="eager" oncontextmenu="return false;">
+                <div class="photo-overlay">
+                    <span class="photo-title">${photo.titolo}</span>
+                </div>
+            `;
+            return slide;
+        }
+
+        // direction: 'next' (nuova/avanti -> scorre da destra verso sinistra) o 'prev' (indietro -> scorre da sinistra verso destra)
+        function advanceFeaturedPhoto(direction = 'next', fast = true) {
+            if (allPhotosData.length === 0 || isFeaturedAnimating) return;
+            if (allPhotosData.length === 1) return;
+
+            let targetIndex;
+            if (direction === 'next') {
+                if (featuredHistoryPos < featuredHistory.length - 1) {
+                    featuredHistoryPos++;
+                    targetIndex = featuredHistory[featuredHistoryPos];
+                } else {
+                    targetIndex = pickNextRandomIndex();
+                    featuredHistory.push(targetIndex);
+                    if (featuredHistory.length > 30) featuredHistory.shift();
+                    featuredHistoryPos = featuredHistory.length - 1;
+                }
+            } else {
+                if (featuredHistoryPos > 0) {
+                    featuredHistoryPos--;
+                    targetIndex = featuredHistory[featuredHistoryPos];
+                } else {
+                    targetIndex = pickNextRandomIndex();
+                    featuredHistory.unshift(targetIndex);
+                    if (featuredHistory.length > 30) featuredHistory.pop();
+                    featuredHistoryPos = 0;
+                }
             }
-            featuredHistoryPos = featuredHistory.length - 1;
 
-            showFeaturedByIndex(randomIndex, fastTransition);
+            animateSlideToIndex(targetIndex, direction, fast);
+        }
+
+        function animateSlideToIndex(targetIndex, direction, fast = true) {
+            const track = document.getElementById('featured-track');
+            const mainSlide = document.getElementById('featured-slide-main');
+            const card = document.getElementById('featured-card');
+            const width = card.clientWidth || window.innerWidth;
+
+            isFeaturedAnimating = true;
+            const targetPhoto = allPhotosData[targetIndex];
+            const adjSlide = createAdjacentSlide(targetPhoto);
+
+            // Rimuove eventuali slide temporanee residue
+            track.querySelectorAll('.featured-slide:not(#featured-slide-main)').forEach(el => el.remove());
+
+            track.style.transition = 'none';
+            if (direction === 'next') {
+                // La nuova foto sta subito a destra di quella attuale e scorrono insieme verso sinistra
+                track.appendChild(adjSlide);
+                track.style.transform = 'translateX(0px)';
+            } else {
+                // La foto precedente sta subito a sinistra di quella attuale e scorrono insieme verso destra
+                track.insertBefore(adjSlide, mainSlide);
+                track.style.transform = `translateX(${-width}px)`;
+            }
+
+            // Forza il reflow per far partire l'animazione in modo affidabile
+            track.getBoundingClientRect();
+
+            const duration = fast ? 320 : 520;
+            track.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
+            track.style.transform = direction === 'next' ? `translateX(${-width}px)` : 'translateX(0px)';
+
+            setTimeout(() => {
+                track.style.transition = 'none';
+                setFeaturedSlideContent(mainSlide, targetPhoto);
+                adjSlide.remove();
+                track.style.transform = 'translateX(0px)';
+                lastFeaturedIndex = targetIndex;
+                bindFeaturedClick(targetPhoto);
+                isFeaturedAnimating = false;
+            }, duration + 20);
         }
 
         function nextFeaturedPhoto() {
             if (allPhotosData.length === 0) return;
-            updateFeaturedPhoto(true);
+            advanceFeaturedPhoto('next', true);
             startFeaturedTimer();
         }
 
         function prevFeaturedPhoto() {
             if (allPhotosData.length === 0) return;
-            if (featuredHistoryPos > 0) {
-                featuredHistoryPos--;
-                showFeaturedByIndex(featuredHistory[featuredHistoryPos], true);
-            } else {
-                // Se sei alla prima foto vista, pesca comunque un altro scatto random
-                let randomIndex;
-                do {
-                    randomIndex = Math.floor(Math.random() * allPhotosData.length);
-                } while (randomIndex === lastFeaturedIndex && allPhotosData.length > 1);
-                featuredHistory.unshift(randomIndex);
-                if (featuredHistory.length > 30) featuredHistory.pop();
-                featuredHistoryPos = 0;
-                showFeaturedByIndex(randomIndex, true);
-            }
+            advanceFeaturedPhoto('prev', true);
             startFeaturedTimer();
         }
 
-        // Gestione swipe col dito su cellulare per "In primo piano"
-        (function setupFeaturedTouchSwipe() {
+        // Gestione trascinamento continuo col dito (cellulare) e col mouse (PC) con arresto anche a metà
+        (function setupFeaturedPointerDrag() {
             const card = document.getElementById('featured-card');
-            if (!card) return;
+            const track = document.getElementById('featured-track');
+            const mainSlide = document.getElementById('featured-slide-main');
+            if (!card || !track || !mainSlide) return;
 
-            let touchStartX = 0;
-            let touchStartY = 0;
-            let swiped = false;
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let isDragging = false;
+            let isHorizontalSwipe = false;
+            let previewIndex = -1;
+            let previewSide = null; // 'next' (a destra, si trascina a sinistra) o 'prev' (a sinistra, si trascina a destra)
+            let suppressClick = false;
 
+            function cleanupDragSlides() {
+                track.querySelectorAll('.featured-slide:not(#featured-slide-main)').forEach(el => el.remove());
+                previewIndex = -1;
+                previewSide = null;
+            }
+
+            function ensurePreviewSide(side) {
+                if (previewSide === side && previewIndex !== -1) return;
+                cleanupDragSlides();
+
+                let idx;
+                if (side === 'next') {
+                    if (featuredHistoryPos < featuredHistory.length - 1) {
+                        idx = featuredHistory[featuredHistoryPos + 1];
+                    } else {
+                        idx = pickNextRandomIndex();
+                    }
+                    const slide = createAdjacentSlide(allPhotosData[idx]);
+                    track.appendChild(slide);
+                    track.style.transform = 'translateX(0px)';
+                } else {
+                    if (featuredHistoryPos > 0) {
+                        idx = featuredHistory[featuredHistoryPos - 1];
+                    } else {
+                        idx = pickNextRandomIndex();
+                    }
+                    const width = card.clientWidth || window.innerWidth;
+                    const slide = createAdjacentSlide(allPhotosData[idx]);
+                    track.insertBefore(slide, mainSlide);
+                    track.style.transform = `translateX(${-width}px)`;
+                }
+
+                previewSide = side;
+                previewIndex = idx;
+            }
+
+            function beginDrag(clientX, clientY) {
+                if (isFeaturedAnimating || allPhotosData.length <= 1) return;
+                startX = clientX;
+                startY = clientY;
+                currentX = clientX;
+                isDragging = true;
+                isHorizontalSwipe = false;
+                cleanupDragSlides();
+                track.style.transition = 'none';
+            }
+
+            function moveDrag(clientX, clientY, allowAxisFree = false) {
+                if (!isDragging) return;
+                currentX = clientX;
+                const dx = currentX - startX;
+                const dy = clientY - startY;
+
+                if (!isHorizontalSwipe) {
+                    if (allowAxisFree && Math.abs(dx) > 6) {
+                        isHorizontalSwipe = true;
+                        suppressClick = true;
+                        card.classList.add('is-dragging');
+                        stopFeaturedTimer();
+                    } else if (!allowAxisFree && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+                        isHorizontalSwipe = true;
+                        suppressClick = true;
+                        stopFeaturedTimer();
+                    } else if (!allowAxisFree && Math.abs(dy) > 12) {
+                        isDragging = false;
+                        return;
+                    } else {
+                        return;
+                    }
+                }
+
+                const width = card.clientWidth || window.innerWidth;
+                if (dx < 0) {
+                    ensurePreviewSide('next');
+                    const clamped = Math.max(-width, dx);
+                    track.style.transform = `translateX(${clamped}px)`;
+                } else if (dx > 0) {
+                    ensurePreviewSide('prev');
+                    const clamped = Math.min(width, dx);
+                    track.style.transform = `translateX(${-width + clamped}px)`;
+                }
+            }
+
+            function endDrag(finalClientX) {
+                card.classList.remove('is-dragging');
+                if (!isDragging) return;
+                isDragging = false;
+
+                if (!isHorizontalSwipe) {
+                    cleanupDragSlides();
+                    return;
+                }
+
+                const dx = (typeof finalClientX === 'number' ? finalClientX : currentX) - startX;
+                const width = card.clientWidth || window.innerWidth;
+                const threshold = Math.min(80, width * 0.22);
+
+                if (previewSide === 'next' && dx < -threshold) {
+                    isFeaturedAnimating = true;
+                    const chosenIdx = previewIndex;
+                    const chosenPhoto = allPhotosData[chosenIdx];
+
+                    if (featuredHistoryPos < featuredHistory.length - 1) {
+                        featuredHistoryPos++;
+                    } else {
+                        featuredHistory.push(chosenIdx);
+                        if (featuredHistory.length > 30) featuredHistory.shift();
+                        featuredHistoryPos = featuredHistory.length - 1;
+                    }
+
+                    track.style.transition = 'transform 240ms cubic-bezier(0.22, 1, 0.36, 1)';
+                    track.style.transform = `translateX(${-width}px)`;
+
+                    setTimeout(() => {
+                        track.style.transition = 'none';
+                        setFeaturedSlideContent(mainSlide, chosenPhoto);
+                        cleanupDragSlides();
+                        track.style.transform = 'translateX(0px)';
+                        lastFeaturedIndex = chosenIdx;
+                        bindFeaturedClick(chosenPhoto);
+                        isFeaturedAnimating = false;
+                        startFeaturedTimer();
+                    }, 255);
+                } else if (previewSide === 'prev' && dx > threshold) {
+                    isFeaturedAnimating = true;
+                    const chosenIdx = previewIndex;
+                    const chosenPhoto = allPhotosData[chosenIdx];
+
+                    if (featuredHistoryPos > 0) {
+                        featuredHistoryPos--;
+                    } else {
+                        featuredHistory.unshift(chosenIdx);
+                        if (featuredHistory.length > 30) featuredHistory.pop();
+                        featuredHistoryPos = 0;
+                    }
+
+                    track.style.transition = 'transform 240ms cubic-bezier(0.22, 1, 0.36, 1)';
+                    track.style.transform = 'translateX(0px)';
+
+                    setTimeout(() => {
+                        track.style.transition = 'none';
+                        setFeaturedSlideContent(mainSlide, chosenPhoto);
+                        cleanupDragSlides();
+                        track.style.transform = 'translateX(0px)';
+                        lastFeaturedIndex = chosenIdx;
+                        bindFeaturedClick(chosenPhoto);
+                        isFeaturedAnimating = false;
+                        startFeaturedTimer();
+                    }, 255);
+                } else {
+                    isFeaturedAnimating = true;
+                    track.style.transition = 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)';
+                    track.style.transform = previewSide === 'prev' ? `translateX(${-width}px)` : 'translateX(0px)';
+
+                    setTimeout(() => {
+                        track.style.transition = 'none';
+                        cleanupDragSlides();
+                        track.style.transform = 'translateX(0px)';
+                        isFeaturedAnimating = false;
+                        startFeaturedTimer();
+                    }, 235);
+                }
+            }
+
+            // Touch su cellulare
             card.addEventListener('touchstart', (e) => {
                 if (e.touches.length !== 1) return;
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                swiped = false;
+                beginDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+
+            card.addEventListener('touchmove', (e) => {
+                if (e.touches.length !== 1) return;
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY, false);
             }, { passive: true });
 
             card.addEventListener('touchend', (e) => {
-                if (e.changedTouches.length !== 1) return;
-                const deltaX = e.changedTouches[0].clientX - touchStartX;
-                const deltaY = e.changedTouches[0].clientY - touchStartY;
-
-                // Riconosce solo trascinamenti orizzontali decisi (almeno 40px e più larghi che alti)
-                if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
-                    swiped = true;
-                    if (deltaX < 0) {
-                        nextFeaturedPhoto();
-                    } else {
-                        prevFeaturedPhoto();
-                    }
-                }
+                const endX = e.changedTouches[0] ? e.changedTouches[0].clientX : undefined;
+                endDrag(endX);
             }, { passive: true });
 
-            // Evita di aprire il lightbox subito dopo uno swipe orizzontale
+            // Mouse su PC (tasto sinistro premuto, arresto anche a metà fermando il mouse)
+            card.addEventListener('mousedown', (e) => {
+                if (e.button !== 0) return;
+                if (e.target.closest('.featured-nav-btn')) return;
+                beginDrag(e.clientX, e.clientY);
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                moveDrag(e.clientX, e.clientY, true);
+            });
+
+            window.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                endDrag(e.clientX);
+            });
+
             card.addEventListener('click', (e) => {
-                if (swiped) {
+                if (suppressClick) {
                     e.stopImmediatePropagation();
-                    swiped = false;
+                    suppressClick = false;
                 }
             }, true);
         })();
@@ -1405,7 +1670,7 @@
             
             if (featuredSection) {
                 featuredSection.style.display = 'block';
-                updateFeaturedPhoto(false);
+                initFeaturedPhoto();
                 startFeaturedTimer();
             }
             if (dividerLabel) {
