@@ -207,7 +207,7 @@
 
         /* Contenitore per icona + scritta installa app */
         .install-container {
-            display: none; /* Gestito da JS */
+            display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
@@ -1415,7 +1415,7 @@
             deferredPrompt = e;
             const installBtn = document.getElementById('install-btn');
             if (installBtn) {
-                installBtn.style.display = 'flex'; // Mostra il blocco se il browser supporta l'installazione
+                installBtn.style.display = 'flex';
             }
         });
 
@@ -1425,7 +1425,6 @@
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('Utente ha accettato l\'installazione');
-                        document.getElementById('install-btn').style.display = 'none';
                     } else {
                         console.log('Utente ha rifiutato l\'installazione');
                     }
