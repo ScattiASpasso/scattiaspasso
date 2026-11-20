@@ -207,7 +207,7 @@
 
         /* Container for install app icon + label */
         .install-container {
-            display: none; /* Managed by JS */
+            display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
@@ -1413,7 +1413,7 @@
             deferredPrompt = e;
             const installBtn = document.getElementById('install-btn');
             if (installBtn) {
-                installBtn.style.display = 'flex'; // Show block if the browser supports installation
+                installBtn.style.display = 'flex';
             }
         });
 
@@ -1423,7 +1423,6 @@
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the installation');
-                        document.getElementById('install-btn').style.display = 'none';
                     } else {
                         console.log('User dismissed the installation');
                     }
