@@ -1007,6 +1007,15 @@
             let introActive = false;
             let timers = [];
 
+            function shouldSkipIntro() {
+                const h = window.location.hash || '';
+                return h.startsWith('#from-storie') ||
+                       h.startsWith('#cat=') ||
+                       h.startsWith('#search=') ||
+                       h.startsWith('#foto=') ||
+                       ['#about', '#gear', '#contact', '#install'].includes(h);
+            }
+
             function clearIntroTimers() {
                 timers.forEach(t => clearTimeout(t));
                 timers = [];
@@ -1087,6 +1096,7 @@
             }
 
             window.triggerEntryIntro = function(force = false) {
+                if (!force && shouldSkipIntro()) return;
                 if (introActive && !force) return;
                 clearIntroTimers();
                 introActive = true;
@@ -1148,12 +1158,14 @@
                 });
             };
 
-            // Parte al caricamento / aggiornamento pagina
-            window.triggerEntryIntro(true);
+            // Parte al caricamento / aggiornamento pagina (salta se arrivi da Storie con hash dedicato)
+            if (!shouldSkipIntro()) {
+                window.triggerEntryIntro(true);
+            }
 
             // Parte quando rientri nella pagina/scheda (es. da altra app o bfcache su smartphone)
             window.addEventListener('pageshow', (e) => {
-                if (e.persisted) {
+                if (e.persisted && !shouldSkipIntro()) {
                     window.triggerEntryIntro(true);
                 }
             });
@@ -1165,7 +1177,7 @@
 
             let wasHidden = document.hidden;
             document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && wasHidden && !isDesktopView()) {
+                if (!document.hidden && wasHidden && !isDesktopView() && !shouldSkipIntro()) {
                     window.triggerEntryIntro(true);
                 }
                 wasHidden = document.hidden;
@@ -1526,6 +1538,32 @@
                     if (targetPhoto) {
                         openLightbox(`foto/${targetPhoto.file}`, targetPhoto.titolo, targetPhoto.file);
                     }
+                } else if (hash.startsWith('#cat=')) {
+                    const cat = decodeURIComponent(hash.replace('#cat=', ''));
+                    if (cat === 'all') {
+                        goToHome(document.querySelector('.nav-main a'));
+                    } else {
+                        const targetCatLink = Array.from(document.querySelectorAll('.cat-link')).find(el => {
+                            const txt = (el.textContent || '').trim().toLowerCase();
+                            return txt === cat.toLowerCase();
+                        });
+                        filterGallery(cat, targetCatLink || null);
+                    }
+                } else if (hash.startsWith('#search=')) {
+                    const q = decodeURIComponent(hash.replace('#search=', ''));
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) {
+                        searchInput.value = q;
+                        filterGallery('all', null);
+                    }
+                } else if (hash === '#about') {
+                    toggleAccordion('about', document.getElementById('about-nav-link'));
+                } else if (hash === '#gear') {
+                    toggleAccordion('gear', document.getElementById('gear-nav-link'));
+                } else if (hash === '#contact') {
+                    openContactModal();
+                } else if (hash === '#install') {
+                    openInstallModal();
                 }
             })
             .catch(err => console.error('Errore nel caricamento delle foto:', err));
