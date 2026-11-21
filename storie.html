@@ -271,6 +271,69 @@
             padding: 0 2%;
         }
 
+        /* Elenco collegamenti alle singole storie */
+        .stories-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 24px;
+            margin-top: 10px;
+        }
+        .story-link-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #141414;
+            border: 1px solid #242424;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: #dcdcdc;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+        .story-link-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(184, 124, 36, 0.65);
+        }
+        .story-link-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            display: block;
+            background-color: #0e0e0e;
+        }
+        .story-link-body {
+            padding: 4px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .story-link-date {
+            font-size: 0.72rem;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: #8fa38f;
+            font-weight: 600;
+        }
+        .story-link-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 1.5px;
+            color: #f3d58d;
+        }
+        .story-link-sub {
+            font-size: 0.86rem;
+            color: #a0a0a0;
+        }
+        .story-link-go {
+            margin-top: 6px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #b87c24;
+            font-weight: 600;
+        }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -429,7 +492,18 @@
     <div class="section-label">Storie</div>
 
     <main class="story-container" id="story-container">
-        <!-- Qui inseriremo la storia vera e propria -->
+        <div class="stories-list">
+            <!-- Aggiungi qui il collegamento a ogni nuova pagina HTML di storia -->
+            <a href="storie/gita%20soffietto%201-5-10/gita_soffietto1-5-10.html" class="story-link-card">
+                <img src="storie/gita%20soffietto%201-5-10/IMG_1469.JPG" alt="Gita Soffietto — 1° Maggio" class="story-link-thumb" loading="lazy" oncontextmenu="return false;">
+                <div class="story-link-body">
+                    <span class="story-link-date">1 Maggio 2010</span>
+                    <h2 class="story-link-title">Gita Soffietto — 1° Maggio</h2>
+                    <p class="story-link-sub">Sequenza dell'uscita tra acqua, prati e primi incontri.</p>
+                    <span class="story-link-go">Apri la storia &rarr;</span>
+                </div>
+            </a>
+        </div>
     </main>
 
     <div class="divider-line"></div>
