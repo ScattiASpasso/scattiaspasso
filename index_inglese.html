@@ -22,7 +22,7 @@
             line-height: 1.6;
         }
 
-        /* Splash intro: large logo -> pause -> title -> pause -> flight toward top-left -> smoke drift to the right */
+        /* Splash intro: large logo -> pause -> title -> pause -> flight toward top-left -> smoke fade-out toward right */
         #splash-intro {
             position: fixed;
             inset: 0;
@@ -205,7 +205,7 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* Container for install app icon + label (hidden on desktop, shown only on smartphones) */
+        /* Container for install icon + label (hidden on desktop, visible on mobile) */
         .install-container {
             display: none;
             align-items: center;
@@ -331,7 +331,7 @@
             text-align: center;
         }
 
-        /* Accordion panel below the intro */
+        /* Accordion panel below intro */
         .accordion-panel {
             display: none;
             width: 100%;
@@ -383,7 +383,7 @@
             margin-bottom: 0;
         }
 
-        /* Dedicated styles for Gear: name vs description */
+        /* Dedicated styles for Gear: name vs why */
         .gear-list {
             display: flex;
             flex-direction: column;
@@ -465,7 +465,7 @@
             cursor: grabbing;
         }
 
-        /* Horizontal track to slide two photos side by side */
+        /* Horizontal track for sliding adjacent photos together */
         .featured-track {
             display: flex;
             width: 100%;
@@ -504,7 +504,7 @@
             pointer-events: none;
         }
 
-        /* Side arrows to scroll "Featured" on desktop */
+        /* Side arrows for browsing "Featured" on desktop */
         .featured-nav-btn {
             position: absolute;
             top: 50%;
@@ -545,7 +545,7 @@
             right: 20px;
         }
 
-        /* Gallery for smartphones (100% width) */
+        /* Gallery for mobile (100% width) */
         .gallery {
             width: 100% !important;
             max-width: none !important;
@@ -558,7 +558,7 @@
             transition: all 0.3s ease;
         }
 
-        /* On desktop (wide screens), home narrows to 50% */
+        /* On wide desktop screens, home narrows to 50% */
         @media (min-width: 900px) {
             .gallery:not(.grid-view) {
                 width: 50% !important;
@@ -581,7 +581,7 @@
             object-fit: contain;
         }
 
-        /* On smartphones and narrow screens, switches automatically to 2 large columns and tightens vertical spacing */
+        /* On smartphones and narrow screens, switch to 2 large columns and compact vertical spacing */
         @media (max-width: 768px) {
             .install-container {
                 display: flex !important;
@@ -978,7 +978,7 @@
 
     <meta property="og:title" content="Scatti a Spasso - Photography Portfolio">
     <meta property="og:image" content="https://scattiaspasso.github.io/scattiaspasso/foto/logo1.jpg">
-    <meta property="og:url" content="https://scattiaspasso.github.io/scattiaspasso/">
+    <meta property="og:url" content="https://scattiaspasso.github.io/scattiaspasso/index_inglese.html">
     <meta property="og:type" content="website">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="38d4ade3-e2cb-444d-b45e-6ccc71b71736"></script>
     <script>
@@ -1085,6 +1085,7 @@
                 el.style.transform = `translate(calc(-50% + ${dx}px), ${dy}px) scale(${scale})`;
                 return { x: dx, y: `${dy}px`, scale };
             }
+
             window.triggerEntryIntro = function(force = false) {
                 if (introActive && !force) return;
                 clearIntroTimers();
@@ -1146,10 +1147,11 @@
                     });
                 });
             };
+
             // Runs on page load / refresh
             window.triggerEntryIntro(true);
 
-            // Runs when returning to the page/tab (e.g., from another app or bfcache on mobile)
+            // Runs when returning to the page/tab (e.g. from another app or bfcache on mobile)
             window.addEventListener('pageshow', (e) => {
                 if (e.persisted) {
                     window.triggerEntryIntro(true);
@@ -1184,7 +1186,7 @@
                 <a class="active" onclick="goToHome(this)">Home</a>
                 <a id="about-nav-link" onclick="toggleAccordion('about', this)">About me</a>
                 <a id="gear-nav-link" onclick="toggleAccordion('gear', this)">Gear</a>
-                <input type="text" id="search-input" class="search-input" placeholder="Search photos..." oninput="applyFilters()">
+                <input type="text" id="search-input" class="search-input" placeholder="Search..." oninput="applyFilters()">
                 <a class="nav-contact" onclick="openContactModal()">Contact me</a>
                 <a href="index.html" class="nav-lang" title="Versione italiana" aria-label="Versione italiana">
                     <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
@@ -1242,9 +1244,9 @@
         <div class="divider-line"></div>
     </header>
     
-    <div class="intro">
-        <p>My way of freezing time during outdoor outings: light, mountains, and unexpected encounters.</p>
-        <p style="margin-top: 12px; font-size: 0.82rem; color: #665; font-style: normal; letter-spacing: 1px;">No cookies, no tracking, zero personal data. Just photography in complete freedom.</p>
+    <div id="home-intro" class="intro">
+        <p>My way of freezing time during outings in the open air: light, mountains, and unexpected encounters.</p>
+        <p style="margin-top: 12px; font-size: 0.82rem; color: #665; font-style: normal; letter-spacing: 1px;">No cookies, no tracking, zero personal data. Just photography in freedom.</p>
     </div>
 
     <div id="about-panel" class="accordion-panel">
@@ -1257,19 +1259,19 @@
                 Hi, I'm Stefano Adami.
             </p>
             <p style="color: #dcdcdc;">
-                "Scatti a Spasso" comes from the desire to gather the moments when I took the time to stop and look at what often passes us by too quickly. To share them the "old-fashioned" way. Without social media, algorithms, and chasing likes at all costs.
+                "Scatti a Spasso" comes from the desire to collect the moments when I took the time to stop and look at what often rushes past us too quickly. To share them the "old-fashioned" way. Without social media, algorithms, and likes at any cost.
             </p>
             <p style="color: #b5b5b5;">
-                For me, photography is a passion. It's walking in silence between nature and art, mountains and cities. It's standing still waiting for a shift in light or bending down over a tiny detail. I don't look for the perfect shot.
+                For me, photography is passion. It's walking quietly between nature and art, mountains and cities. It's standing still waiting for a shift in light or bending down over a tiny detail. I don't look for the perfect shot.
             </p>
             <p style="color: #b5b5b5;">
-                Between landscapes, wildlife, and macro, I try to bring home honest images tied to the moment and place where they were born, without too many frills. If a photo makes you want to lace up your shoes and head outside, it has already done its job.
+                Between landscapes, wildlife, and macro, I try to bring home honest images tied to the moment and place where they were born, without too many frills. If a photo makes you want to lace up your shoes and step outside, it has already done its job.
             </p>
             <p style="color: #dcdcdc;">
                 Photos can be freely downloaded using the dedicated button and republished as long as the source is credited. Zero cookies, zero tracking, just photography.
             </p>
             <p style="color: #888; font-size: 0.9rem;">
-                Interested in a high-resolution photo? <a onclick="closeAccordion(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Feel free to write to me</a>.
+                Interested in a high-resolution photo? <a onclick="closeAccordion(); openContactModal();" style="color: #f3d58d; text-decoration: underline; cursor: pointer;">Write to me</a>.
             </p>
         </div>
     </div>
@@ -1284,14 +1286,14 @@
                 <div class="gear-item">
                     <div class="gear-name">Canon EOS 5D Mark III camera body</div>
                     <div class="gear-why">
-                        My professional full-frame camera for going in with zero compromises. With a lens attached it carries considerable weight, so it comes along on more "important" and never-casual outings, as well as sports and theater events.
+                        My full-frame professional camera to play it safe with no compromises. With a lens attached it has significant weight, so it comes along on more "important" and never-casual outings, as well as sports and theater events.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Canon EOS 50D camera body</div>
                     <div class="gear-why">
-                        A more compact and lighter semi-professional camera than its pro sibling, and my very first digital camera. Now used only paired with the 5D. When capturing the moment matters more than the weight of two cameras.
+                        A semi-pro camera that is more compact and lighter than its pro sibling, and it was my first digital camera. Now used only paired with the 5D. When the moment matters more than the weight of two cameras.
                     </div>
                 </div>
 
@@ -1299,38 +1301,38 @@
                     <div class="gear-name">Sony RX10 IV camera</div>
                     <div class="gear-why">
                         <span class="gear-spec">1" CMOS sensor, 24–600mm optical zoom (f/2.4–4.0)</span>
-                        My most-used camera. Light and versatile as an all-rounder compromise. It lets me go from wide-angle landscapes all the way to 600mm while keeping quality that has little to envy from a professional setup.
+                        The most used one. Light and versatile all-rounder compromise. It lets me go from wide landscape shots up to 600mm while keeping a quality that has little to envy a professional camera.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Samsung Galaxy S25 Ultra</div>
                     <div class="gear-why">
-                        My lifeline against fleeting moments when I don't have a camera with me. Even with a quad camera featuring a 200 MP main sensor, a 50 MP ultra-wide, a 50 MP 5x telephoto, and a 10 MP 3x telephoto, like any smartphone it doesn't compete with real cameras, but it's enough so I don't regret leaving them behind.
+                        The lifeline against the fleeting moment when I don't have a camera with me. Even with a quad camera featuring a 200 MP main sensor, 50 MP ultra-wide, 50 MP 5x telephoto, and 10 MP 3x telephoto, like any smartphone it doesn't compete with real cameras, yet it's enough not to regret leaving them behind.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Canon EF 24-70mm f/2.8L USM lens</div>
                     <div class="gear-why">
-                        <span class="gear-spec">Professional standard ultrasonic f/2.8 zoom</span>
-                        The quintessential quality all-rounder between wide-angle and medium telephoto. Bright, solid, and immediate. The most used lens of all.
+                        <span class="gear-spec">Professional standard zoom f/2.8 ultrasonic</span>
+                        The quality all-rounder par excellence between wide angle and medium telephoto. Bright, solid, and immediate. The most used overall.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Canon EF 70-200mm f/2.8L IS USM</div>
                     <div class="gear-why">
-                        <span class="gear-spec">Professional telephoto zoom, constant f/2.8, image stabilized</span>
-                        Heavy and you feel it. Brought along on planned missions! When I'm out on the hunt and distance matters. It compresses perspective and separates the subject with soft bokeh.
+                        <span class="gear-spec">Professional telephoto zoom, constant f/2.8, stabilized</span>
+                        Heavy and noticeable. Brought along on planned missions! When I go hunting for shots and distance matters. It compresses planes and separates the subject with soft bokeh.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Canon EF 100mm f/2.8L Macro IS USM</div>
                     <div class="gear-why">
-                        <span class="gear-spec">Stabilized macro and medium telephoto lens, f/2.8</span>
-                        When I want to dive into tiny details, as well as for portraits and close-up views with a clean, precise rendering.
+                        <span class="gear-spec">Macro and medium telephoto lens f/2.8 stabilized</span>
+                        When I want to dive into tiny details, as well as for portraits and close-up glimpses with a clean, accurate rendering.
                     </div>
                 </div>
             </div>
@@ -1361,12 +1363,12 @@
         </div>
     </div>
     
-    <div class="featured-label" id="gallery-divider-label">Latest shots</div>
+    <div class="featured-label" id="gallery-divider-label">New shots</div>
     
     <main class="gallery" id="gallery-container">
         <div id="gallery-empty" class="gallery-empty">
             Shots coming soon for this section...
-            <span>Work in Progress &mdash; Online soon</span>
+            <span>Work in Progress &mdash; Coming Soon</span>
         </div>
     </main>
 
@@ -1422,7 +1424,7 @@
                 </div>
                 <span>install app</span>
             </button>
-            <p class="modal-install-note">for unsupported browsers, install a home screen shortcut</p>
+            <p class="modal-install-note">for unsupported browsers, add a shortcut to your home screen</p>
         </div>
     </div>
 
@@ -1460,7 +1462,7 @@
         let isFeaturedAnimating = false;
         let deferredPrompt = null;
 
-        // PWA installation event handling
+        // PWA install prompt event handling
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -1486,9 +1488,9 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the installation');
+                        console.log('User accepted the install');
                     } else {
-                        console.log('User dismissed the installation');
+                        console.log('User dismissed the install');
                     }
                     deferredPrompt = null;
                 });
@@ -1496,9 +1498,9 @@
                 closeInstallModal();
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 if (isIOS) {
-                    alert("Direct installation is not available on iPhone/Safari.\n\nTo add a home screen shortcut:\n1. Tap the Share button (the square with an arrow at the bottom).\n2. Select 'Add to Home Screen' and confirm.");
+                    alert("Direct installation is not available on iPhone/Safari.\n\nTo add a home screen shortcut:\n1. Tap the Share button (square with an arrow at the bottom).\n2. Select 'Add to Home Screen' and confirm.");
                 } else {
-                    alert("Direct installation is not available right now.\n\nTo add a home screen shortcut in Chrome or other browsers:\n1. Open the browser menu (the three dots).\n2. Select 'Add to Home Screen' or 'Install app' and confirm.");
+                    alert("Direct installation is not available right now.\n\nTo add a home screen shortcut on Chrome or other browsers:\n1. Open the browser menu (three dots).\n2. Select 'Add to Home screen' or 'Install app' and confirm.");
                 }
             }
         }
@@ -1633,16 +1635,16 @@
 
             track.style.transition = 'none';
             if (direction === 'next') {
-                // New photo sits right next to the current one and both slide left together
+                // New photo sits right next to the current one and slides left together
                 track.appendChild(adjSlide);
                 track.style.transform = 'translateX(0px)';
             } else {
-                // Previous photo sits just left of the current one and both slide right together
+                // Previous photo sits right to the left of the current one and slides right together
                 track.insertBefore(adjSlide, mainSlide);
                 track.style.transform = `translateX(${-width}px)`;
             }
 
-            // Force reflow so the animation triggers reliably
+            // Force reflow so transition starts reliably
             track.getBoundingClientRect();
 
             const duration = fast ? 320 : 520;
@@ -1672,7 +1674,7 @@
             startFeaturedTimer();
         }
 
-        // Continuous drag handling via touch (mobile) and mouse (desktop), including stopping mid-drag
+        // Continuous finger (mobile) and mouse (desktop) drag handling with mid-drag hold support
         (function setupFeaturedPointerDrag() {
             const card = document.getElementById('featured-card');
             const track = document.getElementById('featured-track');
@@ -1852,7 +1854,7 @@
                 }
             }
 
-            // Mobile touch
+            // Touch on mobile
             card.addEventListener('touchstart', (e) => {
                 if (e.touches.length !== 1) return;
                 beginDrag(e.touches[0].clientX, e.touches[0].clientY);
@@ -1868,7 +1870,7 @@
                 endDrag(endX);
             }, { passive: true });
 
-            // Desktop mouse (left button pressed, stops mid-drag when holding mouse still)
+            // Mouse on desktop (left button held, holds even mid-drag when mouse stops)
             card.addEventListener('mousedown', (e) => {
                 if (e.button !== 0) return;
                 if (e.target.closest('.featured-nav-btn')) return;
@@ -2007,6 +2009,8 @@
             activeAccordion = null;
             document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
             document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang)').forEach(link => link.classList.remove('active'));
+            const introEl = document.getElementById('home-intro');
+            if (introEl && currentCategory === 'all') introEl.style.display = 'block';
         }
 
         function toggleAccordion(panelName, element) {
@@ -2021,6 +2025,8 @@
             document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
             targetPanel.style.display = 'block';
             activeAccordion = panelName;
+            const introEl = document.getElementById('home-intro');
+            if (introEl) introEl.style.display = 'none';
 
             document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang)').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
@@ -2029,10 +2035,12 @@
         function goToHome(element) {
             closeAccordion();
             currentCategory = 'all';
+            const introEl = document.getElementById('home-intro');
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
             const galleryContainer = document.getElementById('gallery-container');
             
+            if (introEl) introEl.style.display = 'block';
             if (featuredSection) {
                 featuredSection.style.display = 'block';
                 initFeaturedPhoto();
@@ -2053,10 +2061,12 @@
             closeAccordion();
             currentCategory = category;
             
+            const introEl = document.getElementById('home-intro');
             const galleryContainer = document.getElementById('gallery-container');
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
 
+            if (introEl) introEl.style.display = 'none';
             if (featuredSection) {
                 featuredSection.style.display = 'none';
                 stopFeaturedTimer();
@@ -2137,7 +2147,7 @@
 
                 if (response.ok) {
                     status.style.color = '#a3d9a5';
-                    status.textContent = "Message sent! I'll get back to you soon.";
+                    status.textContent = 'Message sent! I will reply soon.';
                     form.reset();
                     setTimeout(() => {
                         closeContactModal();
@@ -2158,4 +2168,3 @@
 
 </body>
 </html>
-```[cite: 2]
