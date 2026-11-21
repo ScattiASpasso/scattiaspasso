@@ -1,5 +1,299 @@
 [
     {
+        "file": "IMG_1480.jpg",
+        "categoria": "fiori",
+        "titolo": "Dandelion meadow",
+        "tags": ["dandelion", "flowers", "yellow", "meadow", "nature", "spring", "green", "blur", "field"]
+    },
+    {
+        "file": "IMG_1481.jpg",
+        "categoria": "fiori",
+        "titolo": "Twin yellow blooms",
+        "tags": ["dandelion", "flower", "yellow", "bud", "seed head", "nature", "green", "spring", "detail"]
+    },
+    {
+        "file": "IMG_1487.jpg",
+        "categoria": "acqua",
+        "titolo": "Swift stream flow",
+        "tags": ["water", "stream", "current", "foam", "motion", "rock", "nature", "long exposure", "flow"]
+    },
+    {
+        "file": "IMG_1488.jpg",
+        "categoria": "acqua",
+        "titolo": "Rock and foam",
+        "tags": ["water", "stream", "rock", "foam", "bubbles", "reflections", "current", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1498.jpg",
+        "categoria": "natura",
+        "titolo": "Willow catkins",
+        "tags": ["willow", "catkins", "branches", "sprouts", "spring", "nature", "plant", "woods", "green"]
+    },
+    {
+        "file": "IMG_1499.jpg",
+        "categoria": "acqua",
+        "titolo": "Mossy little cascade",
+        "tags": ["stream", "water", "waterfall", "moss", "rocks", "branches", "woods", "nature", "reflections"]
+    },
+    {
+        "file": "IMG_1511.jpg",
+        "categoria": "astratta",
+        "titolo": "Trunk in dark water",
+        "tags": ["trunk", "tree", "water", "reflections", "blue", "nature", "detail", "stem", "surface"]
+    },
+    {
+        "file": "IMG_1545.jpg",
+        "categoria": "fauna",
+        "titolo": "Water strider on stream",
+        "tags": ["insect", "water strider", "water", "shadow", "reflection", "stone", "wildlife", "nature", "surface"]
+    },
+    {
+        "file": "IMG_1600.jpg",
+        "categoria": "acqua",
+        "titolo": "Water splash",
+        "tags": ["water", "splash", "drops", "stream", "pebbles", "motion", "reflections", "nature", "clear"]
+    },
+    {
+        "file": "IMG_1605.jpg",
+        "categoria": "acqua",
+        "titolo": "Crown of droplets",
+        "tags": ["water", "droplets", "splash", "stream", "rock", "motion", "nature", "transparency"]
+    },
+    {
+        "file": "IMG_1433.jpg",
+        "categoria": "macro",
+        "titolo": "Spring sun bloom",
+        "tags": ["dandelion", "flower", "yellow", "macro", "petals", "nature", "detail", "spring"]
+    },
+    {
+        "file": "IMG_1436.jpg",
+        "categoria": "fiori",
+        "titolo": "Dandelions in the grass",
+        "tags": ["dandelion", "flowers", "yellow", "bud", "meadow", "nature", "green", "depth of field"]
+    },
+    {
+        "file": "IMG_1444.jpg",
+        "categoria": "natura",
+        "titolo": "Stems by the creek",
+        "tags": ["plant", "flowers", "spikes", "buds", "branches", "stream", "rocks", "nature", "spring"]
+    },
+    {
+        "file": "IMG_1465.jpg",
+        "categoria": "acqua",
+        "titolo": "Clear water jet",
+        "tags": ["water", "jet", "drops", "motion", "light", "transparency", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1467.jpg",
+        "categoria": "acqua",
+        "titolo": "Jet on smooth stone",
+        "tags": ["water", "jet", "foam", "rock", "stone", "current", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1468.jpg",
+        "categoria": "acqua",
+        "titolo": "Suspended drops over creek",
+        "tags": ["water", "drops", "splash", "jet", "rock", "foam", "nature", "motion"]
+    },
+    {
+        "file": "IMG_1469.jpg",
+        "categoria": "fiori",
+        "titolo": "Seed heads and stems",
+        "tags": ["seed head", "dandelion", "seeds", "white", "stems", "nature", "meadow", "detail"]
+    },
+    {
+        "file": "IMG_1472.jpg",
+        "categoria": "fiori",
+        "titolo": "Yellow blooms in a row",
+        "tags": ["dandelion", "flowers", "yellow", "stems", "nature", "green", "spring"]
+    },
+    {
+        "file": "IMG_1473.jpg",
+        "categoria": "fiori",
+        "titolo": "Cluster of dandelions",
+        "tags": ["dandelion", "flowers", "yellow", "seed head", "nature", "detail", "spring"]
+    },
+    {
+        "file": "IMG_1479.jpg",
+        "categoria": "bianco-e-nero",
+        "titolo": "Silhouettes among branches",
+        "tags": ["branches", "leaves", "backlit", "silhouette", "shadows", "tree", "sky", "nature"]
+    },
+    {
+        "file": "IMG_1420.jpg",
+        "categoria": "fauna",
+        "titolo": "Caterpillars on dry leaves",
+        "tags": ["caterpillars", "insects", "wildlife", "dry leaves", "undergrowth", "nature", "spring", "detail"]
+    },
+    {
+        "file": "IMG_1421.jpg",
+        "categoria": "natura",
+        "titolo": "Buds on the twig",
+        "tags": ["buds", "twig", "sprouts", "wood", "spring", "nature", "plant", "detail"]
+    },
+    {
+        "file": "IMG_1423.jpg",
+        "categoria": "macro",
+        "titolo": "Lichens on wood",
+        "tags": ["lichens", "fungi", "wood", "branch", "pine needles", "macro", "woods", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1424.jpg",
+        "categoria": "macro",
+        "titolo": "Lichen colony",
+        "tags": ["lichens", "wood", "bark", "dry leaves", "macro", "woods", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1427.jpg",
+        "categoria": "fiori",
+        "titolo": "White blossoms on branch",
+        "tags": ["white flowers", "flowers", "branch", "spring", "petals", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1428.jpg",
+        "categoria": "macro",
+        "titolo": "Orange lichen on branch",
+        "tags": ["lichen", "orange", "yellow", "branch", "macro", "nature", "plant", "detail"]
+    },
+    {
+        "file": "IMG_1429.jpg",
+        "categoria": "fiori",
+        "titolo": "Branch in bloom",
+        "tags": ["white flowers", "flowers", "branch", "sprouts", "spring", "nature", "tree"]
+    },
+    {
+        "file": "IMG_1430.jpg",
+        "categoria": "fiori",
+        "titolo": "White blooms and leaves",
+        "tags": ["white flowers", "flowers", "leaves", "branch", "spring", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1431.jpg",
+        "categoria": "fiori",
+        "titolo": "White flowers in the light",
+        "tags": ["white flowers", "flowers", "light", "leaves", "branch", "spring", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1432.jpg",
+        "categoria": "fiori",
+        "titolo": "Buds and white blossoms",
+        "tags": ["white flowers", "flowers", "buds", "branch", "spring", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1385.jpg",
+        "categoria": "natura",
+        "titolo": "Branch by the still water",
+        "tags": ["branch", "leaves", "water", "pond", "reflections", "woods", "green", "nature"]
+    },
+    {
+        "file": "IMG_1386.jpg",
+        "categoria": "natura",
+        "titolo": "Green leaves on soft bokeh",
+        "tags": ["leaves", "branch", "green", "nature", "plant", "woods", "bokeh", "detail"]
+    },
+    {
+        "file": "IMG_1398.jpg",
+        "categoria": "fauna",
+        "titolo": "Water strider on blue ripples",
+        "tags": ["insect", "water strider", "water", "blue", "ripples", "reflection", "wildlife", "nature"]
+    },
+    {
+        "file": "IMG_1405.jpg",
+        "categoria": "natura",
+        "titolo": "Broken trunk in the woods",
+        "tags": ["trunk", "wood", "bark", "dry leaves", "undergrowth", "woods", "nature"]
+    },
+    {
+        "file": "IMG_1408.jpg",
+        "categoria": "bianco-e-nero",
+        "titolo": "Winter canopy in b&w",
+        "tags": ["tree", "branches", "black and white", "clouds", "sky", "backlit", "nature", "silhouette"]
+    },
+    {
+        "file": "IMG_1409.jpg",
+        "categoria": "fiori",
+        "titolo": "Wood anemone",
+        "tags": ["anemone", "white flower", "flowers", "undergrowth", "spring", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1410.jpg",
+        "categoria": "natura",
+        "titolo": "Sprout among dry leaves",
+        "tags": ["sprout", "leaves", "dry leaves", "soil", "spring", "regrowth", "nature", "woods"]
+    },
+    {
+        "file": "IMG_1413.jpg",
+        "categoria": "fauna",
+        "titolo": "Insect on green blade",
+        "tags": ["insect", "fly", "stem", "grass", "green", "wildlife", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1415.JPG",
+        "categoria": "natura",
+        "titolo": "Peeled bark and sprout",
+        "tags": ["bark", "trunk", "wood", "sprout", "leaves", "nature", "tree", "detail"]
+    },
+    {
+        "file": "IMG_1418.jpg",
+        "categoria": "fauna",
+        "titolo": "Hairy caterpillar in the woods",
+        "tags": ["caterpillar", "insect", "wildlife", "stone", "dry leaves", "undergrowth", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1358.jpg",
+        "categoria": "fiori",
+        "titolo": "White anemones in the woods",
+        "tags": ["anemone", "white flowers", "flowers", "undergrowth", "spring", "grass", "nature"]
+    },
+    {
+        "file": "IMG_1359.jpg",
+        "categoria": "fiori",
+        "titolo": "White flower in dry grass",
+        "tags": ["anemone", "white flower", "flowers", "leaves", "dry grass", "spring", "nature"]
+    },
+    {
+        "file": "IMG_1360.jpg",
+        "categoria": "fiori",
+        "titolo": "White blooms in sequence",
+        "tags": ["anemone", "white flowers", "flowers", "undergrowth", "spring", "nature", "blur"]
+    },
+    {
+        "file": "IMG_1361.jpg",
+        "categoria": "fiori",
+        "titolo": "Patch of anemones in sunlight",
+        "tags": ["anemone", "white flowers", "flowers", "leaves", "sun", "spring", "nature"]
+    },
+    {
+        "file": "IMG_1363.jpg",
+        "categoria": "fiori",
+        "titolo": "Anemone and green leaves",
+        "tags": ["anemone", "white flower", "flowers", "leaves", "undergrowth", "spring", "nature", "detail"]
+    },
+    {
+        "file": "IMG_1368.jpg",
+        "categoria": "natura",
+        "titolo": "Fresh leaves backlit",
+        "tags": ["leaves", "branch", "backlit", "green", "light", "spring", "nature", "woods"]
+    },
+    {
+        "file": "IMG_1371.jpg",
+        "categoria": "natura",
+        "titolo": "Twig with pale buds",
+        "tags": ["twig", "buds", "sprouts", "spring", "green", "nature", "plant", "detail"]
+    },
+    {
+        "file": "IMG_1373.jpg",
+        "categoria": "fiori",
+        "titolo": "White flowers and periwinkle",
+        "tags": ["anemone", "periwinkle", "white flowers", "purple flowers", "flowers", "undergrowth", "spring", "nature"]
+    },
+    {
+        "file": "IMG_1384.jpg",
+        "categoria": "natura",
+        "titolo": "Driftwood in still water",
+        "tags": ["wood", "branch", "water", "reflections", "autumn", "nature", "detail"]
+    },
+    {
         "file": "Bardi.JPG",
         "categoria": "strutture",
         "titolo": "Castello di Bardi",
