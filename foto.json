@@ -1,5 +1,299 @@
 [
     {
+        "file": "IMG_1480.jpg",
+        "categoria": "fiori",
+        "titolo": "Prato di tarassaco",
+        "tags": ["tarassaco", "dente di leone", "fiori", "giallo", "prato", "natura", "primavera", "verde", "sfocato", "campo"]
+    },
+    {
+        "file": "IMG_1481.jpg",
+        "categoria": "fiori",
+        "titolo": "Doppia corolla gialla",
+        "tags": ["tarassaco", "dente di leone", "fiore", "giallo", "bocciolo", "soffione", "natura", "verde", "primavera", "dettaglio"]
+    },
+    {
+        "file": "IMG_1487.jpg",
+        "categoria": "acqua",
+        "titolo": "Corso d'acqua veloce",
+        "tags": ["acqua", "torrente", "corrente", "schiuma", "movimento", "roccia", "natura", "lunga esposizione", "flusso"]
+    },
+    {
+        "file": "IMG_1488.jpg",
+        "categoria": "acqua",
+        "titolo": "Roccia e schiuma",
+        "tags": ["acqua", "torrente", "roccia", "schiuma", "bolle", "riflessi", "corrente", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1498.jpg",
+        "categoria": "natura",
+        "titolo": "Gattici di salice",
+        "tags": ["salice", "gattici", "rami", "germogli", "primavera", "natura", "pianta", "bosco", "verde"]
+    },
+    {
+        "file": "IMG_1499.jpg",
+        "categoria": "acqua",
+        "titolo": "Cascatella nel muschio",
+        "tags": ["torrente", "acqua", "cascata", "muschio", "rocce", "rami", "bosco", "natura", "riflessi"]
+    },
+    {
+        "file": "IMG_1511.jpg",
+        "categoria": "astratta",
+        "titolo": "Tronco nell'acqua scura",
+        "tags": ["tronco", "albero", "acqua", "riflessi", "blu", "natura", "dettaglio", "stelo", "superficie"]
+    },
+    {
+        "file": "IMG_1545.jpg",
+        "categoria": "fauna",
+        "titolo": "Gerride sull'acqua",
+        "tags": ["insetto", "gerride", "acqua", "ombra", "riflesso", "sasso", "fauna", "natura", "superficie"]
+    },
+    {
+        "file": "IMG_1600.jpg",
+        "categoria": "acqua",
+        "titolo": "Schizzo d'acqua",
+        "tags": ["acqua", "schizzo", "gocce", "torrente", "ciottoli", "movimento", "riflessi", "natura", "cristallino"]
+    },
+    {
+        "file": "IMG_1605.jpg",
+        "categoria": "acqua",
+        "titolo": "Corona di gocce",
+        "tags": ["acqua", "gocce", "schizzo", "torrente", "roccia", "movimento", "natura", "trasparenza"]
+    },
+    {
+        "file": "IMG_1433.jpg",
+        "categoria": "macro",
+        "titolo": "Sole di primavera",
+        "tags": ["tarassaco", "dente di leone", "fiore", "giallo", "macro", "petali", "natura", "dettaglio", "primavera"]
+    },
+    {
+        "file": "IMG_1436.jpg",
+        "categoria": "fiori",
+        "titolo": "Tarassaci nel prato",
+        "tags": ["tarassaco", "dente di leone", "fiori", "giallo", "bocciolo", "prato", "natura", "verde", "profondita di campo"]
+    },
+    {
+        "file": "IMG_1444.jpg",
+        "categoria": "natura",
+        "titolo": "Spighe in riva al rio",
+        "tags": ["pianta", "fiori", "spighe", "boccioli", "rami", "torrente", "rocce", "natura", "primavera"]
+    },
+    {
+        "file": "IMG_1465.jpg",
+        "categoria": "acqua",
+        "titolo": "Getto d'acqua limpida",
+        "tags": ["acqua", "getto", "gocce", "movimento", "luce", "trasparenza", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1467.jpg",
+        "categoria": "acqua",
+        "titolo": "Getto su pietra levigata",
+        "tags": ["acqua", "getto", "schiuma", "roccia", "pietra", "corrente", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1468.jpg",
+        "categoria": "acqua",
+        "titolo": "Gocce sospese sul rio",
+        "tags": ["acqua", "gocce", "schizzo", "getto", "roccia", "schiuma", "natura", "movimento"]
+    },
+    {
+        "file": "IMG_1469.jpg",
+        "categoria": "fiori",
+        "titolo": "Soffioni e steli",
+        "tags": ["soffione", "tarassaco", "semi", "bianco", "steli", "natura", "prato", "dettaglio"]
+    },
+    {
+        "file": "IMG_1472.jpg",
+        "categoria": "fiori",
+        "titolo": "Corolle gialle in fila",
+        "tags": ["tarassaco", "dente di leone", "fiori", "giallo", "steli", "natura", "verde", "primavera"]
+    },
+    {
+        "file": "IMG_1473.jpg",
+        "categoria": "fiori",
+        "titolo": "Gruppo di tarassaci",
+        "tags": ["tarassaco", "dente di leone", "fiori", "giallo", "soffione", "natura", "dettaglio", "primavera"]
+    },
+    {
+        "file": "IMG_1479.jpg",
+        "categoria": "bianco-e-nero",
+        "titolo": "Sagome tra i rami",
+        "tags": ["rami", "foglie", "controluce", "silhoutte", "ombre", "albero", "cielo", "natura"]
+    },
+    {
+        "file": "IMG_1420.jpg",
+        "categoria": "fauna",
+        "titolo": "Bruchi sulle foglie secche",
+        "tags": ["bruchi", "insetti", "fauna", "foglie secche", "sottobosco", "natura", "primavera", "dettaglio"]
+    },
+    {
+        "file": "IMG_1421.jpg",
+        "categoria": "natura",
+        "titolo": "Gemme sul ramo",
+        "tags": ["gemme", "ramo", "germogli", "legno", "primavera", "natura", "pianta", "dettaglio"]
+    },
+    {
+        "file": "IMG_1423.jpg",
+        "categoria": "macro",
+        "titolo": "Licheni sul legno",
+        "tags": ["licheni", "funghi", "legno", "ramo", "aghi di pino", "macro", "bosco", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1424.jpg",
+        "categoria": "macro",
+        "titolo": "Colonia di licheni",
+        "tags": ["licheni", "legno", "corteccia", "foglie secche", "macro", "bosco", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1427.jpg",
+        "categoria": "fiori",
+        "titolo": "Fioritura bianca sul ramo",
+        "tags": ["fiori bianchi", "fiori", "ramo", "primavera", "petali", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1428.jpg",
+        "categoria": "macro",
+        "titolo": "Lichene arancio sul ramo",
+        "tags": ["lichene", "arancione", "giallo", "ramo", "macro", "natura", "pianta", "dettaglio"]
+    },
+    {
+        "file": "IMG_1429.jpg",
+        "categoria": "fiori",
+        "titolo": "Ramo in fiore",
+        "tags": ["fiori bianchi", "fiori", "ramo", "germogli", "primavera", "natura", "albero"]
+    },
+    {
+        "file": "IMG_1430.jpg",
+        "categoria": "fiori",
+        "titolo": "Corolle bianche e foglie",
+        "tags": ["fiori bianchi", "fiori", "foglie", "ramo", "primavera", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1431.jpg",
+        "categoria": "fiori",
+        "titolo": "Fiori bianchi nella luce",
+        "tags": ["fiori bianchi", "fiori", "luce", "foglie", "ramo", "primavera", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1432.jpg",
+        "categoria": "fiori",
+        "titolo": "Boccioli e fiori bianchi",
+        "tags": ["fiori bianchi", "fiori", "boccioli", "ramo", "primavera", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1385.jpg",
+        "categoria": "natura",
+        "titolo": "Ramo davanti allo specchio d'acqua",
+        "tags": ["ramo", "foglie", "acqua", "laghetto", "riflessi", "bosco", "verde", "natura"]
+    },
+    {
+        "file": "IMG_1386.jpg",
+        "categoria": "natura",
+        "titolo": "Foglie verdi sullo sfondo sfocato",
+        "tags": ["foglie", "ramo", "verde", "natura", "pianta", "bosco", "bokeh", "dettaglio"]
+    },
+    {
+        "file": "IMG_1398.jpg",
+        "categoria": "fauna",
+        "titolo": "Gerride su onde blu",
+        "tags": ["insetto", "gerride", "acqua", "blu", "onde", "riflesso", "fauna", "natura"]
+    },
+    {
+        "file": "IMG_1405.jpg",
+        "categoria": "natura",
+        "titolo": "Tronco spezzato nel bosco",
+        "tags": ["tronco", "legno", "corteccia", "foglie secche", "sottobosco", "bosco", "natura"]
+    },
+    {
+        "file": "IMG_1408.jpg",
+        "categoria": "bianco-e-nero",
+        "titolo": "Chioma invernale in b/n",
+        "tags": ["albero", "rami", "bianco e nero", "nuvole", "cielo", "controluce", "natura", "sagoma"]
+    },
+    {
+        "file": "IMG_1409.jpg",
+        "categoria": "fiori",
+        "titolo": "Anemone del bosco",
+        "tags": ["anemone", "fiore bianco", "fiori", "sottobosco", "primavera", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1410.jpg",
+        "categoria": "natura",
+        "titolo": "Germoglio tra le foglie secche",
+        "tags": ["germoglio", "foglie", "foglie secche", "terra", "primavera", "rinascita", "natura", "bosco"]
+    },
+    {
+        "file": "IMG_1413.jpg",
+        "categoria": "fauna",
+        "titolo": "Insetto sullo stelo verde",
+        "tags": ["insetto", "dittero", "stelo", "erba", "verde", "fauna", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1415.JPG",
+        "categoria": "natura",
+        "titolo": "Corteccia scortecciata e germoglio",
+        "tags": ["corteccia", "tronco", "legno", "germoglio", "foglie", "natura", "albero", "dettaglio"]
+    },
+    {
+        "file": "IMG_1418.jpg",
+        "categoria": "fauna",
+        "titolo": "Bruco peloso nel sottobosco",
+        "tags": ["bruco", "insetto", "fauna", "sasso", "foglie secche", "sottobosco", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1358.jpg",
+        "categoria": "fiori",
+        "titolo": "Anemoni bianchi nel bosco",
+        "tags": ["anemone", "fiori bianchi", "fiori", "sottobosco", "primavera", "erba", "natura"]
+    },
+    {
+        "file": "IMG_1359.jpg",
+        "categoria": "fiori",
+        "titolo": "Fiore bianco tra l'erba secca",
+        "tags": ["anemone", "fiore bianco", "fiori", "foglie", "erba secca", "primavera", "natura"]
+    },
+    {
+        "file": "IMG_1360.jpg",
+        "categoria": "fiori",
+        "titolo": "Corolle bianche in sequenza",
+        "tags": ["anemone", "fiori bianchi", "fiori", "sottobosco", "primavera", "natura", "sfocato"]
+    },
+    {
+        "file": "IMG_1361.jpg",
+        "categoria": "fiori",
+        "titolo": "Ciuffo di anemoni al sole",
+        "tags": ["anemone", "fiori bianchi", "fiori", "foglie", "sole", "primavera", "natura"]
+    },
+    {
+        "file": "IMG_1363.jpg",
+        "categoria": "fiori",
+        "titolo": "Anemone e foglie verdi",
+        "tags": ["anemone", "fiore bianco", "fiori", "foglie", "sottobosco", "primavera", "natura", "dettaglio"]
+    },
+    {
+        "file": "IMG_1368.jpg",
+        "categoria": "natura",
+        "titolo": "Foglie nuove controluce",
+        "tags": ["foglie", "ramo", "controluce", "verde", "luce", "primavera", "natura", "bosco"]
+    },
+    {
+        "file": "IMG_1371.jpg",
+        "categoria": "natura",
+        "titolo": "Ramo con gemme chiare",
+        "tags": ["ramo", "gemme", "germogli", "primavera", "verde", "natura", "pianta", "dettaglio"]
+    },
+    {
+        "file": "IMG_1373.jpg",
+        "categoria": "fiori",
+        "titolo": "Fiori bianchi e pervinca",
+        "tags": ["anemone", "pervinca", "fiori bianchi", "fiori viola", "fiori", "sottobosco", "primavera", "natura"]
+    },
+    {
+        "file": "IMG_1384.jpg",
+        "categoria": "natura",
+        "titolo": "Legnetto nell'acqua ferma",
+        "tags": ["legno", "ramo", "acqua", "riflessi", "autunno", "natura", "dettaglio"]
+    },
+    {
         "file": "Bardi.JPG",
         "categoria": "strutture",
         "titolo": "Castello di Bardi",
@@ -18,10 +312,10 @@
         "tags": ["insetto", "macro", "natura", "fiore", "dettaglio", "fauna"]
     },
     {
-    "file": "Cimon delle Pale.jpg",
-    "categoria": "bianco-e-nero",
-    "titolo": "Cimon delle Pale",
-    "tags": ["pale di san martino", "montagna", "dolomiti", "rocce", "cielo", "paesaggio", "bianco e nero"]
+        "file": "Cimon delle Pale.jpg",
+        "categoria": "bianco-e-nero",
+        "titolo": "Cimon delle Pale",
+        "tags": ["pale di san martino", "montagna", "dolomiti", "rocce", "cielo", "paesaggio", "bianco e nero"]
     },
     {
         "file": "Coniglietto.JPG",
@@ -84,4 +378,3 @@
         "tags": ["uva", "frutto", "macro", "autunno", "dettaglio", "natura"]
     }
 ]
-
