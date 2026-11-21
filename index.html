@@ -1008,6 +1008,12 @@
             let timers = [];
 
             function shouldSkipIntro() {
+                const fromStorieFlag = sessionStorage.getItem('skipIntroFromStorie') === '1';
+                if (fromStorieFlag) {
+                    sessionStorage.removeItem('skipIntroFromStorie');
+                    return true;
+                }
+
                 const h = window.location.hash || '';
                 return h.startsWith('#from-storie') ||
                        h.startsWith('#cat=') ||
@@ -1158,7 +1164,7 @@
                 });
             };
 
-            // Parte al caricamento / aggiornamento pagina (salta se arrivi da Storie con hash dedicato)
+            // Parte al caricamento / aggiornamento pagina (salta una volta se arrivi da Storie)
             if (!shouldSkipIntro()) {
                 window.triggerEntryIntro(true);
             }
