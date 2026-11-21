@@ -358,6 +358,158 @@
             text-shadow: 0 0 14px rgba(52, 211, 153, 0.85);
         }
 
+        /* Overlay modals for About me, Gear and Contact me */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1100;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #111815;
+            border: 1px solid #1e3329;
+            border-radius: 14px;
+            padding: 32px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 24px rgba(52, 211, 153, 0.14);
+        }
+        .modal-content.info-modal-content {
+            max-width: 780px;
+            max-height: 86vh;
+            overflow-y: auto;
+        }
+        .close-modal {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            color: #88a095;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .close-modal:hover {
+            color: #ffffff;
+        }
+        .modal-content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #6ee7b7;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .info-modal-content > p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            line-height: 1.62;
+        }
+        .info-modal-content > p:last-child {
+            margin-bottom: 0;
+        }
+        .gear-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .gear-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .gear-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #6ee7b7;
+            border-left: 3px solid #34d399;
+            padding-left: 10px;
+            line-height: 1.35;
+        }
+        .gear-why {
+            background-color: #0d1210;
+            border: 1px solid #1b2c24;
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-left: 13px;
+            color: #c2d0ca;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+        .gear-spec {
+            display: block;
+            font-size: 0.78rem;
+            color: #4ade80;
+            letter-spacing: 0.4px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: #8ea59b;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background-color: #0c0c0c;
+            border: 1px solid #24382f;
+            border-radius: 6px;
+            padding: 12px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #34d399;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #34d399;
+            color: #09120e;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s;
+            margin-top: 8px;
+        }
+        .submit-btn:hover {
+            background-color: #6ee7b7;
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #form-status {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            color: #a3d9a5;
+            letter-spacing: 0.5px;
+        }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -433,6 +585,18 @@
                 font-size: 1.35rem;
                 margin-bottom: 10px;
             }
+            .modal-content {
+                padding: 24px 18px;
+            }
+            .gear-name {
+                font-size: 0.84rem;
+                letter-spacing: 0.7px;
+            }
+            .gear-why {
+                margin-left: 8px;
+                padding: 9px 12px;
+                font-size: 0.86rem;
+            }
         }
     </style>
     <meta name="description" content="Stories — Scatti a Spasso by Stefano Adami">
@@ -451,10 +615,10 @@
             </a>
             <nav class="nav-main" style="padding-right: 10px;">
                 <a href="index_inglese.html#from-storie">Home</a>
-                <a href="index_inglese.html#about">About me</a>
-                <a href="index_inglese.html#gear">Gear</a>
+                <a id="about-nav-link" onclick="openInfoModal('about', this)">About me</a>
+                <a id="gear-nav-link" onclick="openInfoModal('gear', this)">Gear</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Search..." onkeydown="handleSearchEnter(event)">
-                <a href="index_inglese.html#contact" class="nav-contact">Contact me</a>
+                <a class="nav-contact" onclick="openContactModal()">Contact me</a>
                 <a href="storie.html" class="nav-lang" title="Versione italiana" aria-label="Versione italiana">
                     <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
                         <clipPath id="it-clip">
@@ -529,6 +693,115 @@
 
     <div class="divider-line"></div>
 
+    <div id="about-modal" class="modal" onclick="closeInfoModalOnOutside(event, 'about-modal')">
+        <div class="modal-content info-modal-content">
+            <span class="close-modal" onclick="closeInfoModal('about-modal')">&times;</span>
+            <h2>About me</h2>
+            <p style="color: #dcdcdc;">
+                Hi, I'm Stefano Adami.
+            </p>
+            <p style="color: #dcdcdc;">
+                "Scatti a Spasso" comes from the desire to collect the moments when I took the time to stop and look at what often rushes past us too quickly. To share them the "old-fashioned" way. Without social media, algorithms, and likes at any cost.
+            </p>
+            <p style="color: #b5b5b5;">
+                For me, photography is passion. It's walking quietly between nature and art, mountains and cities. It's standing still waiting for a shift in light or bending down over a tiny detail. I don't look for the perfect shot.
+            </p>
+            <p style="color: #b5b5b5;">
+                Between landscapes, wildlife, and macro, I try to bring home honest images tied to the moment and place where they were born, without too many frills. If a photo makes you want to lace up your shoes and step outside, it has already done its job.
+            </p>
+            <p style="color: #dcdcdc;">
+                Photos can be freely downloaded using the dedicated button and republished as long as the source is credited. Zero cookies, zero tracking, just photography.
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">
+                Interested in a high-resolution photo? <a onclick="closeInfoModal('about-modal'); openContactModal();" style="color: #6ee7b7; text-decoration: underline; cursor: pointer;">Write to me</a>.
+            </p>
+        </div>
+    </div>
+
+    <div id="gear-modal" class="modal" onclick="closeInfoModalOnOutside(event, 'gear-modal')">
+        <div class="modal-content info-modal-content">
+            <span class="close-modal" onclick="closeInfoModal('gear-modal')">&times;</span>
+            <h2>My gear</h2>
+            <div class="gear-list">
+                <div class="gear-item">
+                    <div class="gear-name">Canon EOS 5D Mark III camera body</div>
+                    <div class="gear-why">
+                        My full-frame professional camera to play it safe with no compromises. With a lens attached it has significant weight, so it comes along on more "important" and never-casual outings, as well as sports and theater events.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Canon EOS 50D camera body</div>
+                    <div class="gear-why">
+                        A semi-pro camera that is more compact and lighter than its pro sibling, and it was my first digital camera. Now used only paired with the 5D. When the moment matters more than the weight of two cameras.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Sony RX10 IV camera</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">1" CMOS sensor, 24–600mm optical zoom (f/2.4–4.0)</span>
+                        The most used one. Light and versatile all-rounder compromise. It lets me go from wide landscape shots up to 600mm while keeping a quality that has little to envy a professional camera.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Samsung Galaxy S25 Ultra</div>
+                    <div class="gear-why">
+                        The lifeline against the fleeting moment when I don't have a camera with me. Even with a quad camera featuring a 200 MP main sensor, 50 MP ultra-wide, 50 MP 5x telephoto, and 10 MP 3x telephoto, like any smartphone it doesn't compete with real cameras, yet it's enough not to regret leaving them behind.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Canon EF 24-70mm f/2.8L USM lens</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Professional standard zoom f/2.8 ultrasonic</span>
+                        The quality all-rounder par excellence between wide angle and medium telephoto. Bright, solid, and immediate. The most used overall.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Canon EF 70-200mm f/2.8L IS USM</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Professional telephoto zoom, constant f/2.8, stabilized</span>
+                        Heavy and noticeable. Brought along on planned missions! When I go hunting for shots and distance matters. It compresses planes and separates the subject with soft bokeh.
+                    </div>
+                </div>
+
+                <div class="gear-item">
+                    <div class="gear-name">Canon EF 100mm f/2.8L Macro IS USM</div>
+                    <div class="gear-why">
+                        <span class="gear-spec">Macro and medium telephoto lens f/2.8 stabilized</span>
+                        When I want to dive into tiny details, as well as for portraits and close-up glimpses with a clean, accurate rendering.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal" onclick="closeContactModalOnOutside(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeContactModal()">&times;</span>
+            <h2>Write to me</h2>
+            <form id="contact-form" action="https://formspree.io/f/xnpdjdnp" method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Write your message here..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submit-btn">Send Message</button>
+                <div id="form-status"></div>
+            </form>
+        </div>
+    </div>
+
     <footer>
         &copy; 2026 Scatti a Spasso — Stefano Adami
     </footer>
@@ -561,6 +834,103 @@
                 alert('Link copied to clipboard!');
             }
         }
+
+        function openInfoModal(type, element) {
+            const modalId = type === 'about' ? 'about-modal' : 'gear-modal';
+            document.querySelectorAll('#about-modal, #gear-modal').forEach(m => {
+                m.style.display = 'none';
+            });
+            document.querySelectorAll('#about-nav-link, #gear-nav-link').forEach(a => {
+                a.classList.remove('active');
+            });
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = 'flex';
+            if (element) element.classList.add('active');
+        }
+
+        function closeInfoModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = 'none';
+            document.querySelectorAll('#about-nav-link, #gear-nav-link').forEach(a => {
+                a.classList.remove('active');
+            });
+        }
+
+        function closeInfoModalOnOutside(event, modalId) {
+            if (event.target.id === modalId) {
+                closeInfoModal(modalId);
+            }
+        }
+
+        function openContactModal() {
+            document.getElementById('contact-modal').style.display = 'flex';
+            document.getElementById('form-status').textContent = '';
+        }
+
+        function closeContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
+
+        function closeContactModalOnOutside(event) {
+            if (event.target.id === 'contact-modal') {
+                closeContactModal();
+            }
+        }
+
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const status = document.getElementById('form-status');
+            const btn = document.getElementById('submit-btn');
+            const data = new FormData(event.target);
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(event.target.action, {
+                    method: contactForm.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    status.style.color = '#a3d9a5';
+                    status.textContent = 'Message sent! I will reply soon.';
+                    contactForm.reset();
+                    setTimeout(() => {
+                        closeContactModal();
+                    }, 2000);
+                } else {
+                    status.style.color = '#ff8a80';
+                    status.textContent = 'Something went wrong. Please try again shortly.';
+                }
+            } catch (error) {
+                status.style.color = '#ff8a80';
+                status.textContent = 'Connection error. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Message';
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (document.getElementById('contact-modal').style.display === 'flex') {
+                    closeContactModal();
+                    return;
+                }
+                if (document.getElementById('about-modal').style.display === 'flex') {
+                    closeInfoModal('about-modal');
+                    return;
+                }
+                if (document.getElementById('gear-modal').style.display === 'flex') {
+                    closeInfoModal('gear-modal');
+                }
+            }
+        });
     </script>
 
 </body>
