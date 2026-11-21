@@ -1085,6 +1085,7 @@
                 el.style.transform = `translate(calc(-50% + ${dx}px), ${dy}px) scale(${scale})`;
                 return { x: dx, y: `${dy}px`, scale };
             }
+
             window.triggerEntryIntro = function(force = false) {
                 if (introActive && !force) return;
                 clearIntroTimers();
@@ -1146,6 +1147,7 @@
                     });
                 });
             };
+
             // Parte al caricamento / aggiornamento pagina
             window.triggerEntryIntro(true);
 
@@ -1244,7 +1246,7 @@
         <div class="divider-line"></div>
     </header>
     
-    <div class="intro">
+    <div id="home-intro" class="intro">
         <p>Il mio modo di fermare il tempo durante le uscite all'aria aperta: luce, montagne e incontri inaspettati.</p>
         <p style="margin-top: 12px; font-size: 0.82rem; color: #665; font-style: normal; letter-spacing: 1px;">Nessun cookie, nessun tracciamento, zero dati personali. Solo fotografia in libertà.</p>
     </div>
@@ -2009,6 +2011,8 @@
             activeAccordion = null;
             document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
             document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang)').forEach(link => link.classList.remove('active'));
+            const introEl = document.getElementById('home-intro');
+            if (introEl && currentCategory === 'all') introEl.style.display = 'block';
         }
 
         function toggleAccordion(panelName, element) {
@@ -2023,6 +2027,8 @@
             document.querySelectorAll('.accordion-panel').forEach(panel => panel.style.display = 'none');
             targetPanel.style.display = 'block';
             activeAccordion = panelName;
+            const introEl = document.getElementById('home-intro');
+            if (introEl) introEl.style.display = 'none';
 
             document.querySelectorAll('.nav-main a:not(.install-container, .nav-contact, .nav-lang)').forEach(link => link.classList.remove('active'));
             if (element) element.classList.add('active');
@@ -2031,10 +2037,12 @@
         function goToHome(element) {
             closeAccordion();
             currentCategory = 'all';
+            const introEl = document.getElementById('home-intro');
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
             const galleryContainer = document.getElementById('gallery-container');
             
+            if (introEl) introEl.style.display = 'block';
             if (featuredSection) {
                 featuredSection.style.display = 'block';
                 initFeaturedPhoto();
@@ -2055,10 +2063,12 @@
             closeAccordion();
             currentCategory = category;
             
+            const introEl = document.getElementById('home-intro');
             const galleryContainer = document.getElementById('gallery-container');
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
 
+            if (introEl) introEl.style.display = 'none';
             if (featuredSection) {
                 featuredSection.style.display = 'none';
                 stopFeaturedTimer();
@@ -2160,4 +2170,3 @@
 
 </body>
 </html>
-```[cite: 1]
