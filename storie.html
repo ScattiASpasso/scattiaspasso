@@ -355,7 +355,7 @@
 
     <header>
         <div class="header-top">
-            <a href="index.html" class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px; text-decoration: none;">
+            <a href="index.html#from-storie" class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px; text-decoration: none;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
                     <div class="logo">Scatti a Spasso</div>
@@ -363,7 +363,7 @@
                 <span class="cat-link" style="cursor: pointer; padding: 0; font-size: 0.72rem; color: #888;">portfolio di stefano adami</span>
             </a>
             <nav class="nav-main" style="padding-right: 10px;">
-                <a href="index.html">Home</a>
+                <a href="index.html#from-storie">Home</a>
                 <a href="index.html#about">Chi sono</a>
                 <a href="index.html#gear">Attrezzatura</a>
                 <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." onkeydown="handleSearchEnter(event)">
@@ -443,7 +443,7 @@
             if (event.key === 'Enter') {
                 event.preventDefault();
                 const q = encodeURIComponent(event.target.value.trim());
-                window.location.href = q ? `index.html#search=${q}` : 'index.html';
+                window.location.href = q ? `index.html#search=${q}` : 'index.html#from-storie';
             }
         }
 
