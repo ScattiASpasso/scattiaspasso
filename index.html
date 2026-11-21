@@ -1164,23 +1164,10 @@
                 });
             };
 
-            // Parte al caricamento / aggiornamento pagina (salta una volta se arrivi da Storie)
+            // Parte SOLO al caricamento / aggiornamento pagina (salta una volta se arrivi da Storie)
             if (!shouldSkipIntro()) {
                 window.triggerEntryIntro(true);
             }
-
-            function isDesktopView() {
-                const hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-                return !hasTouch && window.innerWidth > 768;
-            }
-
-            let wasHidden = document.hidden;
-            document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && wasHidden && !isDesktopView() && !shouldSkipIntro()) {
-                    window.triggerEntryIntro(true);
-                }
-                wasHidden = document.hidden;
-            });
         })();
     </script>
 
@@ -2210,4 +2197,3 @@
 
 </body>
 </html>
-```[cite: 3]
