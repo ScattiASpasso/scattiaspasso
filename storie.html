@@ -815,14 +815,15 @@
             });
         });
 
-        function handleSearchEnter(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                sessionStorage.setItem('skipIntroFromStorie', '1');
-                const q = encodeURIComponent(event.target.value.trim());
-                window.location.href = q ? `index.html#search=${q}` : 'index.html#from-storie';
-            }
-        }
+     function handleSearchEnter(event) {
+         if (event.key === 'Enter') {
+             event.preventDefault();
+             sessionStorage.setItem('skipIntroFromStorie', '1');
+             const raw = event.target.value.trim();
+             const q = encodeURIComponent(raw);
+             window.location.href = q ? `index.html?search=${q}#search=${q}` : 'index.html#from-storie';
+         }
+     }
 
         function sharePage() {
             if (navigator.share) {
