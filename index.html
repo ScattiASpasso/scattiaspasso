@@ -1547,7 +1547,10 @@
                 } else if (hash.startsWith('#cat=')) {
                     const cat = decodeURIComponent(hash.replace('#cat=', ''));
                     if (cat === 'all') {
-                        goToHome(document.querySelector('.nav-main a'));
+                        const tutteLink = Array.from(document.querySelectorAll('.categories-nav .cat-link')).find(
+                            el => (el.textContent || '').trim().toLowerCase() === 'tutte'
+                        );
+                        filterGallery('all', tutteLink || null);
                     } else {
                         const targetCatLink = Array.from(document.querySelectorAll('.cat-link')).find(el => {
                             const txt = (el.textContent || '').trim().toLowerCase();
