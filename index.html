@@ -1175,23 +1175,9 @@
             }
 
             let wasHidden = document.hidden;
-            let hadFocusOnHide = document.hasFocus();
-
-            window.addEventListener('blur', () => {
-                hadFocusOnHide = false;
-            });
-
-            window.addEventListener('focus', () => {
-                hadFocusOnHide = true;
-            });
-
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    hadFocusOnHide = document.hasFocus();
-                } else if (wasHidden && !isDesktopView() && !shouldSkipIntro()) {
-                    if (!hadFocusOnHide) {
-                        window.triggerEntryIntro(true);
-                    }
+                if (!document.hidden && wasHidden && !isDesktopView() && !shouldSkipIntro()) {
+                    window.triggerEntryIntro(true);
                 }
                 wasHidden = document.hidden;
             });
@@ -2224,4 +2210,4 @@
 
 </body>
 </html>
-```[cite: 1]
+```[cite: 3]
