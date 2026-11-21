@@ -1007,6 +1007,21 @@
             let introActive = false;
             let timers = [];
 
+            function shouldSkipIntro() {
+                const fromStorieFlag = sessionStorage.getItem('skipIntroFromStorie') === '1';
+                if (fromStorieFlag) {
+                    sessionStorage.removeItem('skipIntroFromStorie');
+                    return true;
+                }
+
+                const h = window.location.hash || '';
+                return h.startsWith('#from-storie') ||
+                       h.startsWith('#cat=') ||
+                       h.startsWith('#search=') ||
+                       h.startsWith('#foto=') ||
+                       ['#about', '#gear', '#contact', '#install'].includes(h);
+            }
+
             function clearIntroTimers() {
                 timers.forEach(t => clearTimeout(t));
                 timers = [];
@@ -1087,6 +1102,7 @@
             }
 
             window.triggerEntryIntro = function(force = false) {
+                if (!force && shouldSkipIntro()) return;
                 if (introActive && !force) return;
                 clearIntroTimers();
                 introActive = true;
@@ -1148,12 +1164,14 @@
                 });
             };
 
-            // Runs on page load / refresh
-            window.triggerEntryIntro(true);
+            // Runs on page load / refresh (skips once when coming from Stories)
+            if (!shouldSkipIntro()) {
+                window.triggerEntryIntro(true);
+            }
 
             // Runs when returning to the page/tab (e.g. from another app or bfcache on mobile)
             window.addEventListener('pageshow', (e) => {
-                if (e.persisted) {
+                if (e.persisted && !shouldSkipIntro()) {
                     window.triggerEntryIntro(true);
                 }
             });
@@ -1165,7 +1183,7 @@
 
             let wasHidden = document.hidden;
             document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && wasHidden && !isDesktopView()) {
+                if (!document.hidden && wasHidden && !isDesktopView() && !shouldSkipIntro()) {
                     window.triggerEntryIntro(true);
                 }
                 wasHidden = document.hidden;
@@ -1505,6 +1523,41 @@
             }
         }
 
+        function normalizeCategoryFromHash(rawCat) {
+            const clean = (rawCat || '').trim().toLowerCase();
+            const map = {
+                'all': 'all',
+                'tutte': 'all',
+                'landscapes': 'paesaggi',
+                'paesaggi': 'paesaggi',
+                'nature': 'natura',
+                'natura': 'natura',
+                'wildlife': 'fauna',
+                'fauna': 'fauna',
+                'macro': 'macro',
+                'events': 'eventi',
+                'eventi': 'eventi',
+                'street': 'street',
+                'street photography': 'street',
+                'sports': 'sport',
+                'sport': 'sport',
+                'astrophotography': 'astrofotografia',
+                'astrofotografia': 'astrofotografia',
+                'flowers & flora': 'fiori',
+                'flowers and flora': 'fiori',
+                'fiori': 'fiori',
+                'structures & architecture': 'strutture',
+                'structures and architecture': 'strutture',
+                'strutture': 'strutture',
+                'black & white': 'bianco-e-nero',
+                'black and white': 'bianco-e-nero',
+                'bianco-e-nero': 'bianco-e-nero',
+                'abstract': 'astratta',
+                'astratta': 'astratta'
+            };
+            return map[clean] || clean;
+        }
+
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
@@ -1524,6 +1577,36 @@
                     if (targetPhoto) {
                         openLightbox(`foto/${targetPhoto.file}`, targetPhoto.titolo, targetPhoto.file);
                     }
+                } else if (hash.startsWith('#cat=')) {
+                    const rawCat = decodeURIComponent(hash.replace('#cat=', ''));
+                    const cat = normalizeCategoryFromHash(rawCat);
+                    if (cat === 'all') {
+                        const allLink = Array.from(document.querySelectorAll('.categories-nav .cat-link')).find(
+                            el => (el.textContent || '').trim().toLowerCase() === 'all'
+                        );
+                        filterGallery('all', allLink || null);
+                    } else {
+                        const targetCatLink = Array.from(document.querySelectorAll('.cat-link')).find(el => {
+                            const txt = (el.textContent || '').trim().toLowerCase();
+                            return txt === rawCat.trim().toLowerCase() || normalizeCategoryFromHash(txt) === cat;
+                        });
+                        filterGallery(cat, targetCatLink || null);
+                    }
+                } else if (hash.startsWith('#search=')) {
+                    const q = decodeURIComponent(hash.replace('#search=', ''));
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) {
+                        searchInput.value = q;
+                        filterGallery('all', null);
+                    }
+                } else if (hash === '#about') {
+                    toggleAccordion('about', document.getElementById('about-nav-link'));
+                } else if (hash === '#gear') {
+                    toggleAccordion('gear', document.getElementById('gear-nav-link'));
+                } else if (hash === '#contact') {
+                    openContactModal();
+                } else if (hash === '#install') {
+                    openInstallModal();
                 }
             })
             .catch(err => console.error('Error loading photos:', err));
