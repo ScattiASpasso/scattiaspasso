@@ -217,41 +217,50 @@
 
         .story-header-box {
             width: 94%;
-            max-width: 1100px;
+            max-width: 820px;
             margin: 10px auto 30px auto;
-            padding: 24px 28px;
+            padding: 22px 26px;
             background-color: #111815;
             border: 1px solid #1e3329;
             border-radius: 18px;
             box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
         }
-        .story-back-link {
-            display: inline-block;
-            margin-bottom: 14px;
-            font-size: 0.78rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #34d399;
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.25s ease, text-shadow 0.25s ease;
-        }
-        .story-back-link:hover {
-            color: #a7f3d0;
-            text-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+        .story-top-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
         }
         .story-date {
-            display: block;
             font-size: 0.75rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: #4ade80;
-            margin-bottom: 6px;
             font-weight: 600;
+        }
+        .story-back-link {
+            font-size: 0.75rem;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: #6ee7b7;
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            border-radius: 999px;
+            padding: 4px 12px;
+            transition: all 0.25s ease;
+        }
+        .story-back-link:hover {
+            color: #d1fae5;
+            border-color: #34d399;
+            background-color: rgba(52, 211, 153, 0.14);
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.45);
         }
         .story-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+            font-size: clamp(1.35rem, 3vw, 2rem);
             letter-spacing: 2px;
             color: #6ee7b7;
             margin-bottom: 8px;
@@ -269,7 +278,7 @@
             font-size: 1.6rem;
             color: #6ee7b7;
             text-shadow: 0 0 14px rgba(52, 211, 153, 0.4);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -282,43 +291,47 @@
             background: linear-gradient(to right, rgba(52, 211, 153, 0.45), transparent);
         }
 
-        .story-grid {
-            width: 94%;
-            max-width: 1300px;
-            margin: 0 auto 70px auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
+        .story-vertical-list {
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto 90px auto;
+            padding: 0 3%;
+            display: flex;
+            flex-direction: column;
+            gap: 42px;
         }
         .story-photo-card {
             position: relative;
+            width: 100%;
             background-color: #141414;
             border: 1px solid #1f2e27;
-            border-radius: 16px;
+            border-radius: 22px;
             overflow: hidden;
             cursor: zoom-in;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
-            transition: transform 0.25s ease, border-color 0.25s ease;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65);
+            transition: border-color 0.25s ease;
         }
         .story-photo-card:hover {
-            transform: translateY(-2px);
             border-color: rgba(52, 211, 153, 0.65);
         }
         .story-photo-card img {
             width: 100%;
-            aspect-ratio: 4 / 3;
-            object-fit: cover;
+            height: auto;
+            max-height: 82vh;
+            object-fit: contain;
             display: block;
+            margin: 0 auto;
+            background-color: #090909;
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
         }
         .story-photo-caption {
-            padding: 10px 14px;
-            font-size: 0.85rem;
-            color: #c7d4ce;
+            padding: 12px 18px;
+            font-size: 0.9rem;
+            color: #d2dfd9;
             background-color: #101512;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
         .story-photo-caption:empty {
             display: none;
@@ -385,12 +398,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        @media (max-width: 900px) {
-            .story-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         @media (max-width: 768px) {
             header {
                 padding: 14px 3% 6px 3%;
@@ -443,16 +450,19 @@
                 margin: 10px 0 12px 0;
             }
             .story-header-box {
-                padding: 18px 16px;
+                padding: 16px 14px;
                 border-radius: 14px;
             }
-            .story-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
+            .story-vertical-list {
+                gap: 28px;
+                padding: 0 2%;
+            }
+            .story-photo-card {
+                border-radius: 16px;
             }
             .section-label {
                 font-size: 1.35rem;
-                margin-bottom: 10px;
+                margin-bottom: 12px;
             }
         }
     </style>
@@ -525,15 +535,17 @@
     </header>
 
     <section class="story-header-box">
-        <a href="../../storie.html" class="story-back-link">&larr; Tutte le storie</a>
-        <span id="story-date" class="story-date">1 Maggio 2010</span>
+        <div class="story-top-meta">
+            <span id="story-date" class="story-date">1 Maggio 2010</span>
+            <a href="../../storie.html" class="story-back-link">&larr; Storie</a>
+        </div>
         <h1 id="story-title" class="story-title">Gita Club Soffietto — 1° Maggio</h1>
-        <p id="story-subtitle" class="story-subtitle">Sequenza tra acqua, prati e piccoli incontri lungo il percorso.</p>
+        <p id="story-subtitle" class="story-subtitle">Sequenza tra acqua, prati e piccoli incontri lungo il percorso</p>
     </section>
 
     <div class="section-label">Sequenza fotografica</div>
 
-    <main class="story-grid" id="story-grid"></main>
+    <main class="story-vertical-list" id="story-grid"></main>
 
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <div class="lightbox-inner" onclick="event.stopPropagation()">
@@ -599,7 +611,9 @@
                 document.title = `${data.titolo} — Scatti a Spasso`;
             }
             if (data.data) document.getElementById('story-date').textContent = data.data;
-            if (data.sottotitolo) document.getElementById('story-subtitle').textContent = data.sottotitolo;
+            if (data.sottotitolo) {
+                document.getElementById('story-subtitle').textContent = data.sottotitolo.replace(/\.\s*$/, '');
+            }
 
             storyPhotos = Array.isArray(data.foto) ? data.foto : [];
             const grid = document.getElementById('story-grid');
