@@ -1085,7 +1085,6 @@
                 el.style.transform = `translate(calc(-50% + ${dx}px), ${dy}px) scale(${scale})`;
                 return { x: dx, y: `${dy}px`, scale };
             }
-
             window.triggerEntryIntro = function(force = false) {
                 if (introActive && !force) return;
                 clearIntroTimers();
@@ -1099,35 +1098,38 @@
                     timers.push(setTimeout(() => {
                         splash.style.display = 'none';
                         introActive = false;
-                    }, 680));
+                    }, 500));
                 }
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
-                        logoWrap.style.transition = 'opacity 1.1s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease-out';
-                        titleWrap.style.transition = 'opacity 0.75s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease-out';
+                        logoWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
+                        titleWrap.style.transition = 'opacity 0.55s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
 
-                        // 1. Large logo fades in gradually and pauses
+                        // 1. Large logo fades in gradually with a brief pause
                         logoWrap.style.opacity = '1';
                         logoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
 
-                        // 2. After the pause, title appears and pauses
+                        // 2. Title appears with a brief pause for reading
                         timers.push(setTimeout(() => {
                             titleWrap.style.opacity = '1';
                             titleWrap.style.transform = 'translate(-50%, 0) scale(1)';
 
-                            // 3. After the pause, both move toward the top-left
+                            // 3. Smooth flight toward top-left (same travel speed)
                             timers.push(setTimeout(() => {
+                                logoWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
+                                titleWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
+
                                 const headerLogo = document.querySelector('header .logo-img');
                                 const headerTitle = document.querySelector('header .logo');
 
                                 const logoMove = moveLogoTowardTopLeft(logoWrap, headerLogo);
                                 const titleMove = moveTitleTowardTopLeft(titleWrap, headerTitle);
 
-                                // 4. Once in the top-left area, they fade out with a smoke effect to the right
+                                // 4. Smoke fade-out toward the right
                                 timers.push(setTimeout(() => {
-                                    logoWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s ease-out, filter 0.7s ease-out';
-                                    titleWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s ease-out, filter 0.7s ease-out';
+                                    logoWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
+                                    titleWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
 
                                     logoWrap.style.opacity = '0';
                                     logoWrap.style.filter = 'blur(18px)';
@@ -1137,14 +1139,13 @@
                                     titleWrap.style.filter = 'blur(16px)';
                                     titleWrap.style.transform = `translate(calc(-50% + ${titleMove.x + 120}px), ${titleMove.y}) scale(${(titleMove.scale || 0.55) * 1.04})`;
 
-                                    timers.push(setTimeout(finishIntro, 720));
-                                }, 950));
-                            }, 750));
-                        }, 1350));
+                                    timers.push(setTimeout(finishIntro, 580));
+                                }, 850));
+                            }, 550));
+                        }, 750));
                     });
                 });
             };
-
             // Runs on page load / refresh
             window.triggerEntryIntro(true);
 
