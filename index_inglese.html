@@ -1164,37 +1164,10 @@
                 });
             };
 
-            // Runs on page load / refresh (skips once when coming from Stories)
+            // Runs ONLY on page load / refresh (skips once when coming from Stories)
             if (!shouldSkipIntro()) {
                 window.triggerEntryIntro(true);
             }
-
-            function isDesktopView() {
-                const hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-                return !hasTouch && window.innerWidth > 768;
-            }
-
-            let wasHidden = document.hidden;
-            let hadFocusOnHide = document.hasFocus();
-
-            window.addEventListener('blur', () => {
-                hadFocusOnHide = false;
-            });
-
-            window.addEventListener('focus', () => {
-                hadFocusOnHide = true;
-            });
-
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    hadFocusOnHide = document.hasFocus();
-                } else if (wasHidden && !isDesktopView() && !shouldSkipIntro()) {
-                    if (!hadFocusOnHide) {
-                        window.triggerEntryIntro(true);
-                    }
-                }
-                wasHidden = document.hidden;
-            });
         })();
     </script>
 
@@ -2258,4 +2231,3 @@
 
 </body>
 </html>
-```[cite: 2]
