@@ -1558,7 +1558,7 @@
             return map[clean] || clean;
         }
 
-        fetch('foto.json?t=' + new Date().getTime())
+        fetch('foto_inglese.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
                 allPhotosData = data || [];
