@@ -39,7 +39,7 @@
             #rullini-dock {
                 position: absolute;
                 left: 16px;
-                top: 12px;
+                top: -88px;
                 z-index: 940;
                 display: flex;
                 flex-direction: column;
@@ -251,7 +251,7 @@
             @media (max-width: 768px) {
                 #rullini-dock {
                     left: 10px;
-                    top: 10px;
+                    top: -76px;
                 }
                 .rullini-toggle-btn {
                     padding: 8px 12px;
