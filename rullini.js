@@ -10,8 +10,7 @@
             rollPrefix: 'Roll',
             countSuffix: 'photos',
             prevRoll: 'Previous roll',
-            nextRoll: 'Next roll',
-            empty: 'No photos in this roll.'
+            nextRoll: 'Next roll'
         }
         : {
             toggle: 'Rullini',
@@ -19,8 +18,7 @@
             rollPrefix: 'Rullino',
             countSuffix: 'foto',
             prevRoll: 'Rullino precedente',
-            nextRoll: 'Rullino successivo',
-            empty: 'Nessuna foto in questo rullino.'
+            nextRoll: 'Rullino successivo'
         };
 
     function injectStyles() {
@@ -271,9 +269,100 @@
     let isOpen = false;
     let cachedPhotos = [];
     let fetchPromise = null;
+    const hiddenElementsState = new Map();
 
     function getJsonFilename() {
         return isEn ? 'foto_inglese.json' : 'foto.json';
+    }
+
+    function findHomeBlocksToHide() {
+        const targets = new Set();
+
+        const selectorCandidates = [
+            '#featured-photo',
+            '#featured-container',
+            '#featured-section',
+            '#hero-section',
+            '#hero-container',
+            '#hero-photo',
+            '#intro-section',
+            '#intro-container',
+            '#intro-text',
+            '.featured-photo',
+            '.featured-section',
+            '.hero-section',
+            '.hero-container',
+            '.intro-section',
+            '.intro-container',
+            '.intro-text',
+            '.site-intro'
+        ];
+
+        selectorCandidates.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                if (!el.closest('#rullini-dock') && !el.closest('#rullini-bar-root')) {
+                    targets.add(el);
+                }
+            });
+        });
+
+        // Cerca anche blocchi che contengono la frase introduttiva o la nota privacy
+        const markers = [
+            'fermare il tempo durante le uscite',
+            'nessun cookie',
+            'no cookies',
+            'stop time during outdoor'
+        ];
+
+        document.querySelectorAll('section, div, p, header, article').forEach(el => {
+            if (
+                el === document.body ||
+                el === document.documentElement ||
+                el.id === 'rullini-bar-root' ||
+                el.id === 'rullini-dock' ||
+                el.id === 'rullini-step-bar' ||
+                el.id === 'gallery-container' ||
+                el.closest('#rullini-dock') ||
+                el.closest('#gallery-container')
+            ) {
+                return;
+            }
+            // Evita contenitori troppo grandi che avvolgono l'intera galleria o il footer
+            if (el.querySelector('#gallery-container') || el.querySelector('#rullini-step-bar')) {
+                return;
+            }
+            const txt = (el.textContent || '').toLowerCase();
+            if (markers.some(m => txt.includes(m)) && txt.length < 700) {
+                targets.add(el);
+            }
+        });
+
+        // Se un elemento trovato è contenuto in un altro elemento già selezionato, tieni solo il più esterno adatto
+        const arr = Array.from(targets);
+        return arr.filter(el => !arr.some(other => other !== el && other.contains(el)));
+    }
+
+    function syncHomeVisibility() {
+        const shouldHide = selectedRoll !== null;
+
+        if (shouldHide) {
+            const blocks = findHomeBlocksToHide();
+            blocks.forEach(el => {
+                if (!hiddenElementsState.has(el)) {
+                    hiddenElementsState.set(el, el.style.display || '');
+                }
+                if (el.style.display !== 'none') {
+                    el.style.display = 'none';
+                }
+            });
+        } else {
+            hiddenElementsState.forEach((prevDisplay, el) => {
+                if (el && el.isConnected) {
+                    el.style.display = prevDisplay;
+                }
+            });
+            hiddenElementsState.clear();
+        }
     }
 
     function ensurePhotosLoaded() {
@@ -322,6 +411,8 @@
     }
 
     function applyRollFilterNow() {
+        syncHomeVisibility();
+
         const list = getPhotosList();
         if (selectedRoll === null) {
             if (typeof window.applyFilters === 'function') {
@@ -429,6 +520,7 @@
 
     function selectRoll(rollIdx) {
         selectedRoll = rollIdx;
+        syncHomeVisibility();
         ensurePhotosLoaded().then(() => {
             applyRollFilterNow();
             renderRollsList();
@@ -460,6 +552,7 @@
 
         window.applyFilters = function () {
             if (selectedRoll === null) {
+                syncHomeVisibility();
                 return origApplyFilters.apply(this, arguments);
             }
             applyRollFilterNow();
@@ -469,6 +562,7 @@
         if (typeof origLoadMore === 'function') {
             window.loadMorePhotos = function () {
                 selectedRoll = null;
+                syncHomeVisibility();
                 renderRollsList();
                 return origLoadMore.apply(this, arguments);
             };
@@ -478,6 +572,7 @@
         if (typeof origGoToHome === 'function') {
             window.goToHome = function () {
                 selectedRoll = null;
+                syncHomeVisibility();
                 const res = origGoToHome.apply(this, arguments);
                 renderRollsList();
                 return res;
