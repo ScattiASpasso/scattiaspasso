@@ -145,13 +145,6 @@
             flex-wrap: wrap;
             gap: 20px;
         }
-        .header-brand-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            gap: 12px;
-        }
         .logo-container {
             display: flex;
             align-items: center;
@@ -176,35 +169,6 @@
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 10px rgba(184, 124, 36, 0.25));
         }
-
-        /* Pulsante icona rullino in alto a destra: nascosto su PC, attivo solo su cell */
-        .rullini-btn {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(145deg, #191612, #111111);
-            border: 1px solid rgba(184, 124, 36, 0.55);
-            border-radius: 8px;
-            padding: 6px 8px;
-            color: #f3d58d;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
-        }
-        .rullini-btn:hover,
-        .rullini-btn.active {
-            border-color: #f3d58d;
-            background-color: rgba(243, 213, 141, 0.12);
-            color: #ffffff;
-        }
-        .rullini-icon {
-            width: 20px;
-            height: 20px;
-            display: block;
-            flex-shrink: 0;
-        }
-
         .nav-main {
             display: flex;
             align-items: center;
@@ -278,6 +242,7 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
+        /* Contenitore per icona + scritta installa app (nascosto su PC, visibile solo su smartphone) */
         .install-container {
             display: none;
             align-items: center;
@@ -403,6 +368,7 @@
             text-align: center;
         }
 
+        /* Pannello a fisarmonica sotto l'introduzione */
         .accordion-panel {
             display: none;
             width: 100%;
@@ -454,6 +420,7 @@
             margin-bottom: 0;
         }
 
+        /* Stili dedicati per Attrezzatura: nome vs perché */
         .gear-list {
             display: flex;
             flex-direction: column;
@@ -541,6 +508,7 @@
             cursor: grabbing;
         }
 
+        /* Binario orizzontale per far scorrere due foto attaccate insieme */
         .featured-track {
             display: flex;
             width: 100%;
@@ -579,6 +547,7 @@
             pointer-events: none;
         }
 
+        /* Frecce laterali per scorrere "In primo piano" su PC */
         .featured-nav-btn {
             position: absolute;
             top: 50%;
@@ -619,6 +588,7 @@
             right: 20px;
         }
 
+        /* Gallery per smartphone (100% di larghezza) */
         .gallery {
             width: 100% !important;
             max-width: none !important;
@@ -631,6 +601,7 @@
             transition: all 0.3s ease;
         }
 
+        /* Su desktop (schermi larghi), la home si restringe al 50% come volevi */
         @media (min-width: 900px) {
             .gallery:not(.grid-view) {
                 width: 50% !important;
@@ -653,6 +624,7 @@
             object-fit: contain;
         }
 
+        /* Pulsante "Carica altri contenuti" a blocchi di 50 */
         .load-more-container {
             display: none;
             justify-content: center;
@@ -689,6 +661,7 @@
             letter-spacing: 0.6px;
         }
 
+        /* Pulsante fisso "Torna su" in alto a destra (stile distintivo dorato) */
         .scroll-top-btn {
             position: fixed;
             top: 22px;
@@ -731,14 +704,8 @@
             height: 21px;
         }
 
-        /* Solo su smartphone: mostra l'icona in alto a destra e nasconde la barra/bottone rullini sull'introduzione */
+        /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi e compatta gli spazi verticali */
         @media (max-width: 768px) {
-            .rullini-btn {
-                display: inline-flex;
-            }
-            #rullini-bar-root {
-                display: none !important;
-            }
             .install-container {
                 display: flex !important;
             }
@@ -754,109 +721,97 @@
             }
             .gallery.grid-view {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 12px !important;
+                gap: 15px !important;
                 width: 98% !important;
             }
             header {
-                padding: 8px 3% 2px 3%;
+                padding: 14px 3% 6px 3%;
             }
             .header-top {
-                gap: 6px;
+                gap: 10px;
             }
             .logo {
-                font-size: 1.22rem;
-                letter-spacing: 2px;
+                font-size: 1.35rem;
+                letter-spacing: 2.5px;
             }
             .logo-img {
-                height: 28px;
+                height: 32px;
             }
             .nav-main {
-                gap: 4px;
+                gap: 6px;
             }
             .nav-main a {
-                font-size: 0.7rem;
-                letter-spacing: 0.6px;
-                padding: 3px 5px;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+                padding: 4px 6px;
             }
             .search-input {
-                padding: 3px 8px;
-                font-size: 0.76rem;
-                width: 74px;
-            }
-            .search-input:focus {
-                width: 130px;
+                padding: 4px 10px;
+                font-size: 0.8rem;
+                width: 85px;
             }
             .nav-contact {
-                padding: 4px 8px !important;
+                padding: 5px 10px !important;
             }
             .nav-lang {
-                padding: 4px 6px !important;
+                padding: 5px 7px !important;
             }
             .flag-icon {
-                width: 18px;
-                height: 12px;
-            }
-            .icon-btn,
-            .nav-install {
-                width: 30px;
-                height: 30px;
-            }
-            .install-text {
-                font-size: 0.7rem;
+                width: 20px;
+                height: 14px;
             }
             .header-categories {
-                margin-top: 6px;
+                margin-top: 10px;
                 padding-bottom: 0;
             }
             .categories-nav {
-                gap: 5px 9px;
+                gap: 8px 12px;
             }
             .cat-link {
-                font-size: 0.64rem;
-                letter-spacing: 0.7px;
+                font-size: 0.68rem;
+                letter-spacing: 1px;
             }
             .divider-line {
-                margin: 7px 0 8px 0;
+                margin: 10px 0 12px 0;
             }
             .intro {
-                margin: 0 auto 10px auto;
-                font-size: 0.78rem;
-                line-height: 1.3;
+                margin: 0 auto 14px auto;
+                font-size: 0.84rem;
+                line-height: 1.4;
             }
             .intro p + p {
-                margin-top: 4px !important;
-                font-size: 0.68rem !important;
-                line-height: 1.25 !important;
+                margin-top: 6px !important;
+                font-size: 0.72rem !important;
             }
             .accordion-panel {
-                margin: 0 auto 14px auto;
+                margin: 0 auto 18px auto;
                 padding: 0 3%;
             }
             .accordion-box {
-                padding: 14px 12px;
+                padding: 16px 14px;
                 border-radius: 12px;
             }
             .accordion-box > p {
-                font-size: 0.88rem;
+                font-size: 0.9rem;
             }
             .gear-name {
-                font-size: 0.82rem;
-                letter-spacing: 0.6px;
+                font-size: 0.84rem;
+                letter-spacing: 0.7px;
             }
             .gear-why {
                 margin-left: 8px;
-                padding: 8px 10px;
-                font-size: 0.84rem;
+                padding: 9px 12px;
+                font-size: 0.86rem;
             }
             .featured-section {
-                margin: 0 auto 18px auto;
+                margin: 0 auto 24px auto;
             }
             .featured-label {
-                font-size: 1.25rem;
-                margin-bottom: 6px;
+                font-size: 1.35rem;
+                margin-bottom: 8px;
             }
             .featured-slide img {
-                max-height: 62vh !important;
+                max-height: 58vh !important;
             }
             .featured-nav-btn {
                 display: none;
@@ -867,14 +822,14 @@
                 letter-spacing: 1.5px;
             }
             .scroll-top-btn {
-                top: 12px;
-                right: 12px;
-                width: 38px;
-                height: 38px;
+                top: 14px;
+                right: 14px;
+                width: 40px;
+                height: 40px;
             }
             .scroll-top-btn svg {
-                width: 17px;
-                height: 17px;
+                width: 18px;
+                height: 18px;
             }
         }
 
@@ -1285,10 +1240,7 @@
             }
 
             function fireRulliniFlash() {
-                const isMobile = window.matchMedia('(max-width: 768px)').matches;
-                const btn = isMobile
-                    ? document.getElementById('rullini-toggle-btn')
-                    : (document.querySelector('#rullini-bar-root button, #rullini-bar-root [role="button"]') || document.getElementById('rullini-toggle-btn'));
+                const btn = document.getElementById('rullini-toggle-btn');
                 if (!btn) return;
 
                 const rect = btn.getBoundingClientRect();
@@ -1331,13 +1283,16 @@
                         logoWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
                         titleWrap.style.transition = 'opacity 0.55s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
 
+                        // 1. Appare il logo grande in modo graduale e breve sosta
                         logoWrap.style.opacity = '1';
                         logoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
 
+                        // 2. Appare la scritta e breve pausa per leggere
                         timers.push(setTimeout(() => {
                             titleWrap.style.opacity = '1';
                             titleWrap.style.transform = 'translate(-50%, 0) scale(1)';
 
+                            // 3. Volo fluido verso l'alto a sinistra (velocità invariata)
                             timers.push(setTimeout(() => {
                                 logoWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
                                 titleWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
@@ -1348,6 +1303,7 @@
                                 const logoMove = moveLogoTowardTopLeft(logoWrap, headerLogo);
                                 const titleMove = moveTitleTowardTopLeft(titleWrap, headerTitle);
 
+                                // 4. Sfumano con effetto fumo verso destra
                                 timers.push(setTimeout(() => {
                                     logoWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
                                     titleWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
@@ -1368,6 +1324,7 @@
                 });
             };
 
+            // Parte SOLO al caricamento / aggiornamento pagina (salta una volta se arrivi da Storie)
             if (!shouldSkipIntro()) {
                 window.triggerEntryIntro(true);
             }
@@ -1382,22 +1339,10 @@
 
     <header>
         <div class="header-top">
-            <div style="display: flex; flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px; flex: 1; min-width: 240px;">
-                <div class="header-brand-row">
-                    <div class="logo-container">
-                        <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
-                        <div class="logo">Scatti a Spasso</div>
-                    </div>
-                    <button type="button" id="rullini-toggle-btn" class="rullini-btn" title="Rullini" aria-label="Rullini">
-                        <svg class="rullini-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="5" y="3.5" width="14" height="8.5" rx="2" fill="rgba(184, 124, 36, 0.22)" stroke="#f3d58d" stroke-width="1.6"></rect>
-                            <rect x="3" y="5.5" width="2" height="4.5" rx="0.8" fill="#b87c24" stroke="#f3d58d" stroke-width="1.2"></rect>
-                            <path d="M19 5.5 L21.5 7.75 L19 10 Z" fill="#f3d58d" stroke="#f3d58d" stroke-width="1.1"></path>
-                            <path d="M8.5 12 V19.5 Q8.5 21 10 21 H15.5 V12 Z" fill="rgba(243, 213, 141, 0.12)" stroke="#f3d58d" stroke-width="1.5"></path>
-                            <line x1="13.5" y1="13.8" x2="13.5" y2="15" stroke="#f3d58d" stroke-width="1.4"></line>
-                            <line x1="13.5" y1="16.8" x2="13.5" y2="18" stroke="#f3d58d" stroke-width="1.4"></line>
-                        </svg>
-                    </button>
+            <div class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
+                    <div class="logo">Scatti a Spasso</div>
                 </div>
                 <span class="cat-link" style="cursor: default; padding: 0; font-size: 0.72rem; color: #888;">portfolio di stefano adami</span>
             </div>
@@ -1693,22 +1638,6 @@
         let deferredPrompt = null;
         let currentFeaturedPhoto = null;
 
-        // Collega l'icona in alto a destra su cell all'apertura del controllo nativo di rullini.js
-        (function bindMobileRulliniButton() {
-            const mobileBtn = document.getElementById('rullini-toggle-btn');
-            if (!mobileBtn) return;
-
-            mobileBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const nativeTrigger = document.querySelector('#rullini-bar-root button, #rullini-bar-root [role="button"]');
-                if (nativeTrigger) {
-                    nativeTrigger.click();
-                    mobileBtn.classList.toggle('active');
-                }
-            });
-        })();
-
         function getRenderedImageRect(img) {
             const box = img.getBoundingClientRect();
             if (box.width <= 1 || box.height <= 1) return null;
@@ -1788,6 +1717,7 @@
         window.addEventListener('scroll', updateScrollTopButton, { passive: true });
         window.addEventListener('DOMContentLoaded', updateScrollTopButton);
 
+        // Gestione dell'evento di installazione PWA
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -1960,6 +1890,7 @@
             return slide;
         }
 
+        // direction: 'next' (nuova/avanti -> scorre da destra verso sinistra) o 'prev' (indietro -> scorre da sinistra verso destra)
         function advanceFeaturedPhoto(direction = 'next', fast = true) {
             if (allPhotosData.length === 0 || isFeaturedAnimating) return;
             if (allPhotosData.length === 1) return;
@@ -2000,17 +1931,21 @@
             const targetPhoto = allPhotosData[targetIndex];
             const adjSlide = createAdjacentSlide(targetPhoto);
 
+            // Rimuove eventuali slide temporanee residue
             track.querySelectorAll('.featured-slide:not(#featured-slide-main)').forEach(el => el.remove());
 
             track.style.transition = 'none';
             if (direction === 'next') {
+                // La nuova foto sta subito a destra di quella attuale e scorrono insieme verso sinistra
                 track.appendChild(adjSlide);
                 track.style.transform = 'translateX(0px)';
             } else {
+                // La foto precedente sta subito a sinistra di quella attuale e scorrono insieme verso destra
                 track.insertBefore(adjSlide, mainSlide);
                 track.style.transform = `translateX(${-width}px)`;
             }
 
+            // Forza il reflow per far partire l'animazione in modo affidabile
             track.getBoundingClientRect();
 
             const duration = fast ? 320 : 520;
@@ -2040,6 +1975,7 @@
             startFeaturedTimer();
         }
 
+        // Gestione trascinamento continuo col dito (cellulare) e col mouse (PC) con arresto anche a metà
         (function setupFeaturedPointerDrag() {
             const card = document.getElementById('featured-card');
             const track = document.getElementById('featured-track');
@@ -2064,7 +2000,7 @@
             let isDragging = false;
             let isHorizontalSwipe = false;
             let previewIndex = -1;
-            let previewSide = null;
+            let previewSide = null; // 'next' (a destra, si trascina a sinistra) o 'prev' (a sinistra, si trascina a destra)
             let suppressClick = false;
 
             function cleanupDragSlides() {
@@ -2231,6 +2167,7 @@
                 }
             }
 
+            // Touch su cellulare
             card.addEventListener('touchstart', (e) => {
                 if (e.touches.length !== 1) return;
                 beginDrag(e.touches[0].clientX, e.touches[0].clientY);
@@ -2246,6 +2183,7 @@
                 endDrag(endX);
             }, { passive: true });
 
+            // Mouse su PC (tasto sinistro premuto, arresto anche a metà fermando il mouse)
             card.addEventListener('mousedown', (e) => {
                 if (e.button !== 0) return;
                 if (e.target.closest('.featured-nav-btn')) return;
@@ -2270,6 +2208,7 @@
             }, true);
         })();
 
+        // Frecce destra/sinistra da tastiera su PC quando la home è visibile
         window.addEventListener('keydown', (e) => {
             const lightboxOpen = document.getElementById('lightbox').style.display === 'flex';
             const contactOpen = document.getElementById('contact-modal').style.display === 'flex';
