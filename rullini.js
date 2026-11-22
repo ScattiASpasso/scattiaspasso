@@ -271,16 +271,6 @@
     let fetchPromise = null;
     const hiddenElementsState = new Map();
 
-    function exitRollMode(runNativeFilters = false) {
-        if (selectedRoll === null) return;
-        selectedRoll = null;
-        syncHomeVisibility();
-        renderRollsList();
-        if (runNativeFilters && typeof window.applyFilters === 'function') {
-            window.applyFilters();
-        }
-    }
-
     function getJsonFilename() {
         return isEn ? 'foto_inglese.json' : 'foto.json';
     }
@@ -534,12 +524,6 @@
         });
         applyRollFilterNow();
         renderRollsList();
-
-        const gallery = findGalleryContainer() || document.getElementById('rullini-step-bar');
-        if (gallery) {
-            const top = gallery.getBoundingClientRect().top + window.scrollY - 110;
-            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-        }
     }
 
     function hookCategoryClicks() {
@@ -551,7 +535,6 @@
             if (!target) return;
             if (target.closest('#rullini-dock') || target.closest('#rullini-step-bar')) return;
 
-            // Se l'utente clicca una voce di categoria o navigazione (non il tasto Rullini), esce dalla modalità rullino
             selectedRoll = null;
             syncHomeVisibility();
             renderRollsList();
