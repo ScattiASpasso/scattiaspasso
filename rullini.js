@@ -46,42 +46,6 @@
             #rullini-dock > * {
                 pointer-events: auto;
             }
-            @keyframes rulliniWhiteFlashBeam {
-                0% {
-                    opacity: 0;
-                    transform: scale(0.75);
-                }
-                25% {
-                    opacity: 1;
-                    transform: scale(1.45);
-                }
-                100% {
-                    opacity: 0;
-                    transform: scale(1.9);
-                }
-            }
-            @keyframes rulliniButtonWhiteHit {
-                0% {
-                    background: linear-gradient(135deg, #281911, #150e0a);
-                    color: #f3c4a2;
-                    border-color: rgba(232, 168, 124, 0.9);
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
-                }
-                22% {
-                    background: #ffffff;
-                    color: #140c07;
-                    border-color: #ffffff;
-                    box-shadow:
-                        0 0 28px 10px rgba(255, 255, 255, 0.95),
-                        0 0 75px 24px rgba(255, 255, 255, 0.65);
-                }
-                100% {
-                    background: linear-gradient(135deg, #281911, #150e0a);
-                    color: #f3c4a2;
-                    border-color: rgba(232, 168, 124, 0.9);
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
-                }
-            }
             .rullini-toggle-btn {
                 position: relative;
                 display: inline-flex;
@@ -101,21 +65,6 @@
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
                 backdrop-filter: blur(8px);
                 transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background 0.25s ease;
-            }
-            .rullini-toggle-btn::after {
-                content: '';
-                position: absolute;
-                inset: -8px;
-                border-radius: 999px;
-                background: radial-gradient(circle, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0) 75%);
-                opacity: 0;
-                pointer-events: none;
-            }
-            .rullini-toggle-btn.is-white-boom {
-                animation: rulliniButtonWhiteHit 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            }
-            .rullini-toggle-btn.is-white-boom::after {
-                animation: rulliniWhiteFlashBeam 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             }
             .rullini-toggle-btn:hover {
                 transform: translateY(-1px);
@@ -326,7 +275,6 @@
     let isOpen = false;
     let cachedPhotos = [];
     let fetchPromise = null;
-    let flashTimer = null;
     const hiddenElementsState = new Map();
 
     function getJsonFilename() {
@@ -684,21 +632,6 @@
         return bar;
     }
 
-    function runWhiteFlash() {
-        const btn = document.getElementById('rullini-toggle-btn');
-        if (!btn) return;
-        if (flashTimer) clearTimeout(flashTimer);
-
-        flashTimer = setTimeout(() => {
-            btn.classList.remove('is-white-boom');
-            void btn.offsetWidth;
-            btn.classList.add('is-white-boom');
-            btn.addEventListener('animationend', () => {
-                btn.classList.remove('is-white-boom');
-            }, { once: true });
-        }, 1100);
-    }
-
     function mountUI() {
         const root = document.getElementById('rullini-bar-root');
         if (!root) return;
@@ -764,16 +697,7 @@
         hookCategoryClicks();
         ensurePhotosLoaded().then(() => renderRollsList());
         renderRollsList();
-        runWhiteFlash();
     }
-
-    window.addEventListener('pageshow', () => {
-        if (!document.getElementById('rullini-toggle-btn')) {
-            mountUI();
-        } else {
-            runWhiteFlash();
-        }
-    });
 
     document.addEventListener('DOMContentLoaded', () => {
         mountUI();
