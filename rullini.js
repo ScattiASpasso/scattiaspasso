@@ -8,7 +8,6 @@
             toggle: 'Rolls',
             title: 'Rolls index',
             close: 'Close',
-            all: 'All rolls',
             rollPrefix: 'Roll',
             countSuffix: 'photos',
             prevRoll: 'Previous roll',
@@ -18,7 +17,6 @@
             toggle: 'Rullini',
             title: 'Indice rullini',
             close: 'Chiudi',
-            all: 'Tutti i rullini',
             rollPrefix: 'Rullino',
             countSuffix: 'foto',
             prevRoll: 'Rullino precedente',
@@ -280,9 +278,17 @@
 
     let selectedRoll = null;
     let isOpen = false;
+    let cachedPhotos = [];
+
+    function getPhotosList() {
+        if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
+            cachedPhotos = window.allPhotosData;
+        }
+        return cachedPhotos;
+    }
 
     function getTotalRolls() {
-        const list = Array.isArray(window.allPhotosData) ? window.allPhotosData : [];
+        const list = getPhotosList();
         return Math.max(1, Math.ceil(list.length / RULLINO_SIZE));
     }
 
@@ -292,6 +298,9 @@
 
     function setDrawerOpen(nextState) {
         isOpen = nextState;
+        if (isOpen) {
+            renderRollsList();
+        }
         const toggleBtn = document.getElementById('rullini-toggle-btn');
         const drawer = document.getElementById('rullini-drawer');
         if (toggleBtn) {
@@ -306,17 +315,11 @@
 
     function renderRollsList() {
         const listEl = document.getElementById('rullini-list');
-        const totalPhotos = Array.isArray(window.allPhotosData) ? window.allPhotosData.length : 0;
+        const totalPhotos = getPhotosList().length;
         const totalRolls = getTotalRolls();
         if (!listEl) return;
 
-        let html = `
-            <button type="button" class="rullini-item-btn ${selectedRoll === null ? 'is-active' : ''}" data-roll="all">
-                <span>${i18n.all}</span>
-                <span class="rullini-item-meta">${totalPhotos} ${i18n.countSuffix}</span>
-            </button>
-        `;
-
+        let html = '';
         for (let i = 0; i < totalRolls; i++) {
             const start = i * RULLINO_SIZE;
             const count = Math.max(0, Math.min(RULLINO_SIZE, totalPhotos - start));
@@ -332,8 +335,8 @@
 
         listEl.querySelectorAll('.rullini-item-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const raw = btn.dataset.roll;
-                selectRoll(raw === 'all' ? null : Number(raw));
+                selectRoll(Number(btn.dataset.roll));
+                setDrawerOpen(false);
             });
         });
 
@@ -381,7 +384,7 @@
         if (typeof origApplyFilters !== 'function' || typeof origRenderVisiblePhotos !== 'function') return false;
 
         window.applyFilters = function () {
-            const list = Array.isArray(window.allPhotosData) ? window.allPhotosData : [];
+            const list = getPhotosList();
             if (selectedRoll === null) {
                 return origApplyFilters.apply(this, arguments);
             }
@@ -510,10 +513,14 @@
         let tries = 0;
         const timer = setInterval(() => {
             tries++;
-            if (hookGalleryPipeline()) {
+            if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
+                cachedPhotos = window.allPhotosData;
+                renderRollsList();
+            }
+            if (hookGalleryPipeline() && getPhotosList().length > 0) {
                 renderRollsList();
                 clearInterval(timer);
-            } else if (tries > 60) {
+            } else if (tries > 100) {
                 clearInterval(timer);
             }
         }, 100);
