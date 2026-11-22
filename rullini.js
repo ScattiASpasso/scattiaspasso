@@ -213,7 +213,9 @@
                 border: 1px solid rgba(232, 168, 124, 0.38);
             }
             .rullini-step-bar--bottom {
-                margin: 22px auto 18px auto;
+                position: relative;
+                z-index: 2;
+                margin: 36px auto 44px auto;
             }
             .rullini-step-bar.is-visible {
                 display: flex;
