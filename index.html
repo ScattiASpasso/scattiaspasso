@@ -549,7 +549,7 @@
         .gallery {
             width: 100% !important;
             max-width: none !important;
-            margin: 20px auto 100px auto;
+            margin: 20px auto 36px auto;
             padding: 0 3%;
             display: flex;
             flex-direction: column;
@@ -572,13 +572,50 @@
             gap: 25px;
             width: 94% !important;
             max-width: 1400px !important;
-            margin: 20px auto 100px auto !important;
+            margin: 20px auto 36px auto !important;
             padding: 0 !important;
         }
         .gallery.grid-view .photo-card img {
             height: auto;
             max-height: none;
             object-fit: contain;
+        }
+
+        /* Pulsante "Carica altri contenuti" a blocchi di 50 */
+        .load-more-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 8px;
+            margin: 10px auto 100px auto;
+            padding: 0 3%;
+        }
+        .load-more-btn {
+            background-color: #141414;
+            border: 1px solid rgba(184, 124, 36, 0.55);
+            color: #f3d58d;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+        .load-more-btn:hover {
+            border-color: #f3d58d;
+            background-color: rgba(243, 213, 141, 0.1);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .load-more-info {
+            font-size: 0.78rem;
+            color: #777;
+            letter-spacing: 0.6px;
         }
 
         /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi e compatta gli spazi verticali */
@@ -692,6 +729,11 @@
             }
             .featured-nav-btn {
                 display: none;
+            }
+            .load-more-btn {
+                padding: 10px 22px;
+                font-size: 0.78rem;
+                letter-spacing: 1.5px;
             }
         }
 
@@ -1184,7 +1226,7 @@
                 <a class="active" onclick="goToHome(this)">Home</a>
                 <a id="about-nav-link" onclick="toggleAccordion('about', this)">Chi sono</a>
                 <a id="gear-nav-link" onclick="toggleAccordion('gear', this)">Attrezzatura</a>
-                <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="applyFilters()">
+                <input type="text" id="search-input" class="search-input" placeholder="Cerca foto..." oninput="onSearchInput()">
                 <a class="nav-contact" onclick="openContactModal()">Contattami</a>
                 <a href="index_inglese.html" class="nav-lang" title="English version" aria-label="English version">
                     <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
@@ -1372,6 +1414,11 @@
         </div>
     </main>
 
+    <div id="load-more-container" class="load-more-container">
+        <button type="button" id="load-more-btn" class="load-more-btn" onclick="loadMorePhotos()">Carica altri contenuti</button>
+        <div id="load-more-info" class="load-more-info"></div>
+    </div>
+
     <footer>
         &copy; 2026 Scatti a Spasso — Stefano Adami
     </footer>
@@ -1452,7 +1499,9 @@
     </div>
 
     <script>
+        const PHOTOS_BATCH_SIZE = 50;
         let currentCategory = 'all';
+        let visibleLimit = PHOTOS_BATCH_SIZE;
         let activeAccordion = null;
         let allPhotosData = [];
         let lastFeaturedIndex = -1;
@@ -1508,22 +1557,24 @@
         fetch('foto.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
-                allPhotosData = data || [];
+                allPhotosData = Array.isArray(data) ? data : [];
 
                 if (allPhotosData.length > 0) {
                     initFeaturedPhoto();
                     startFeaturedTimer();
                 }
 
-                renderGallery(allPhotosData);
-
                 const hash = window.location.hash;
+                const params = new URLSearchParams(window.location.search);
+                const queryParam = params.get('search');
+
                 if (hash.startsWith('#foto=')) {
                     const targetFile = decodeURIComponent(hash.replace('#foto=', ''));
                     const targetPhoto = allPhotosData.find(p => p.file === targetFile);
                     if (targetPhoto) {
                         openLightbox(`foto/${targetPhoto.file}`, targetPhoto.titolo, targetPhoto.file);
                     }
+                    applyFilters();
                 } else if (hash.startsWith('#cat=')) {
                     const cat = decodeURIComponent(hash.replace('#cat=', ''));
                     if (cat === 'all') {
@@ -1538,21 +1589,30 @@
                         });
                         filterGallery(cat, targetCatLink || null);
                     }
-                } else if (hash.startsWith('#search=')) {
-                    const q = decodeURIComponent(hash.replace('#search=', ''));
+                } else if (hash.startsWith('#search=') || queryParam !== null) {
+                    const q = hash.startsWith('#search=')
+                        ? decodeURIComponent(hash.replace('#search=', ''))
+                        : (queryParam || '');
                     const searchInput = document.getElementById('search-input');
                     if (searchInput) {
                         searchInput.value = q;
-                        filterGallery('all', null);
                     }
+                    visibleLimit = PHOTOS_BATCH_SIZE;
+                    applyFilters();
                 } else if (hash === '#about') {
                     toggleAccordion('about', document.getElementById('about-nav-link'));
+                    applyFilters();
                 } else if (hash === '#gear') {
                     toggleAccordion('gear', document.getElementById('gear-nav-link'));
+                    applyFilters();
                 } else if (hash === '#contact') {
                     openContactModal();
+                    applyFilters();
                 } else if (hash === '#install') {
                     openInstallModal();
+                    applyFilters();
+                } else {
+                    applyFilters();
                 }
             })
             .catch(err => console.error('Errore nel caricamento delle foto:', err));
@@ -1943,28 +2003,78 @@
             }
         });
 
-        function renderGallery(data) {
-            const container = document.getElementById('gallery-container');
-            container.querySelectorAll('.photo-wrapper').forEach(el => el.remove());
+        function photoMatchesQuery(photo, query) {
+            if (!query) return true;
+            const title = (photo.titolo || '').toLowerCase();
+            if (title.includes(query)) return true;
+            if (Array.isArray(photo.tags)) {
+                return photo.tags.some(tag => String(tag).toLowerCase().includes(query));
+            }
+            if (typeof photo.tags === 'string') {
+                return photo.tags.toLowerCase().includes(query);
+            }
+            return false;
+        }
 
-            data.forEach(photo => {
-                const safeTitle = photo.titolo.replace(/"/g, '&quot;');
-                const safeTitleEscaped = photo.titolo.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                const tagsStr = photo.tags && Array.isArray(photo.tags) ? photo.tags.join(' ').toLowerCase() : '';
+        function createPhotoWrapperHtml(photo) {
+            const safeTitle = (photo.titolo || '').replace(/"/g, '&quot;');
+            const safeTitleEscaped = (photo.titolo || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const tagsStr = Array.isArray(photo.tags)
+                ? photo.tags.map(t => String(t).toLowerCase()).join(' ')
+                : (typeof photo.tags === 'string' ? photo.tags.toLowerCase() : '');
 
-                const html = `
-                    <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${photo.titolo.toLowerCase()}" data-tags="${tagsStr}">
-                        <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
-                            <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
-                            <div class="photo-overlay">
-                                <span class="photo-title">${photo.titolo}</span>
-                            </div>
+            return `
+                <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${(photo.titolo || '').toLowerCase()}" data-tags="${tagsStr}">
+                    <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
+                        <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
+                        <div class="photo-overlay">
+                            <span class="photo-title">${photo.titolo}</span>
                         </div>
                     </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
+                </div>
+            `;
+        }
+
+        function renderVisiblePhotos(matchingPhotos) {
+            const container = document.getElementById('gallery-container');
+            const emptyEl = document.getElementById('gallery-empty');
+            const loadMoreContainer = document.getElementById('load-more-container');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const loadMoreInfo = document.getElementById('load-more-info');
+
+            container.querySelectorAll('.photo-wrapper').forEach(el => el.remove());
+
+            const totalMatches = matchingPhotos.length;
+            const sliceToShow = matchingPhotos.slice(0, visibleLimit);
+
+            sliceToShow.forEach(photo => {
+                container.insertAdjacentHTML('beforeend', createPhotoWrapperHtml(photo));
             });
 
+            if (emptyEl) {
+                emptyEl.style.display = (totalMatches === 0) ? 'block' : 'none';
+            }
+
+            if (loadMoreContainer && loadMoreBtn && loadMoreInfo) {
+                if (totalMatches > visibleLimit) {
+                    const remaining = totalMatches - visibleLimit;
+                    const nextBatch = Math.min(PHOTOS_BATCH_SIZE, remaining);
+                    loadMoreBtn.textContent = `Carica altri contenuti (+${nextBatch})`;
+                    loadMoreInfo.textContent = `Visualizzate ${sliceToShow.length} su ${totalMatches} fotografie`;
+                    loadMoreContainer.style.display = 'flex';
+                } else {
+                    loadMoreContainer.style.display = 'none';
+                }
+            }
+        }
+
+        function loadMorePhotos() {
+            visibleLimit += PHOTOS_BATCH_SIZE;
+            applyFilters();
+        }
+
+        function onSearchInput() {
+            visibleLimit = PHOTOS_BATCH_SIZE;
             applyFilters();
         }
 
@@ -2064,6 +2174,7 @@
         function goToHome(element) {
             closeAccordion();
             currentCategory = 'all';
+            visibleLimit = PHOTOS_BATCH_SIZE;
             const introEl = document.getElementById('home-intro');
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
@@ -2089,6 +2200,7 @@
         function filterGallery(category, element) {
             closeAccordion();
             currentCategory = category;
+            visibleLimit = PHOTOS_BATCH_SIZE;
             
             const introEl = document.getElementById('home-intro');
             const galleryContainer = document.getElementById('gallery-container');
@@ -2114,30 +2226,16 @@
         }
 
         function applyFilters() {
-            const query = document.getElementById('search-input').value.toLowerCase().trim();
-            const wrappers = document.querySelectorAll('.photo-wrapper');
-            let visibleCount = 0;
+            const searchEl = document.getElementById('search-input');
+            const query = searchEl ? searchEl.value.toLowerCase().trim() : '';
 
-            wrappers.forEach(card => {
-                const category = card.getAttribute('data-category');
-                const title = card.getAttribute('data-title');
-                const tags = card.getAttribute('data-tags') || '';
-
-                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
-                const matchesSearch = title.includes(query) || tags.includes(query);
-
-                if (matchesCategory && matchesSearch) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+            const matchingPhotos = allPhotosData.filter(photo => {
+                const matchesCategory = (currentCategory === 'all' || photo.categoria === currentCategory);
+                const matchesSearch = photoMatchesQuery(photo, query);
+                return matchesCategory && matchesSearch;
             });
 
-            const emptyEl = document.getElementById('gallery-empty');
-            if (emptyEl) {
-                emptyEl.style.display = (visibleCount === 0) ? 'block' : 'none';
-            }
+            renderVisiblePhotos(matchingPhotos);
         }
 
         function openContactModal() {
