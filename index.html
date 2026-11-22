@@ -618,6 +618,49 @@
             letter-spacing: 0.6px;
         }
 
+        /* Pulsante fisso "Torna su" in alto a destra (stile distintivo dorato) */
+        .scroll-top-btn {
+            position: fixed;
+            top: 22px;
+            right: 26px;
+            z-index: 950;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #241b0e, #121212 75%);
+            border: 1.5px solid rgba(243, 213, 141, 0.75);
+            color: #f3d58d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.92);
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7), 0 0 14px rgba(184, 124, 36, 0.35);
+            backdrop-filter: blur(6px);
+            padding: 0;
+        }
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .scroll-top-btn:hover {
+            border-color: #ffe7a3;
+            color: #ffffff;
+            transform: translateY(-2px) scale(1.06);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8), 0 0 22px rgba(243, 213, 141, 0.55);
+        }
+        .scroll-top-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        .scroll-top-btn svg {
+            width: 21px;
+            height: 21px;
+        }
+
         /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi e compatta gli spazi verticali */
         @media (max-width: 768px) {
             .install-container {
@@ -734,6 +777,16 @@
                 padding: 10px 22px;
                 font-size: 0.78rem;
                 letter-spacing: 1.5px;
+            }
+            .scroll-top-btn {
+                top: 14px;
+                right: 14px;
+                width: 40px;
+                height: 40px;
+            }
+            .scroll-top-btn svg {
+                width: 18px;
+                height: 18px;
             }
         }
 
@@ -1213,6 +1266,12 @@
         })();
     </script>
 
+    <button type="button" id="scroll-top-btn" class="scroll-top-btn" onclick="scrollToTop()" title="Torna su" aria-label="Torna su">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
     <header>
         <div class="header-top">
             <div class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px;">
@@ -1510,6 +1569,23 @@
         let featuredTimer = null;
         let isFeaturedAnimating = false;
         let deferredPrompt = null;
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateScrollTopButton() {
+            const btn = document.getElementById('scroll-top-btn');
+            if (!btn) return;
+            if (window.scrollY > 320) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', updateScrollTopButton, { passive: true });
+        window.addEventListener('DOMContentLoaded', updateScrollTopButton);
 
         // Gestione dell'evento di installazione PWA
         window.addEventListener('beforeinstallprompt', (e) => {
