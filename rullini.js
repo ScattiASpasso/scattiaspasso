@@ -1,5 +1,6 @@
 (function () {
     const RULLINO_SIZE = 50;
+    const MOBILE_BREAKPOINT = 768;
     const isEn = document.documentElement.lang === 'en' ||
         (document.getElementById('rullini-bar-root')?.dataset.lang === 'en');
 
@@ -20,6 +21,10 @@
             prevRoll: 'Rullino precedente',
             nextRoll: 'Rullino successivo'
         };
+
+    function isMobileViewport() {
+        return window.innerWidth <= MOBILE_BREAKPOINT;
+    }
 
     function injectStyles() {
         if (document.getElementById('rullini-styles')) return;
@@ -79,6 +84,33 @@
             }
             .rullini-toggle-btn.is-open .rullini-toggle-chevron {
                 transform: rotate(180deg);
+            }
+
+            /* Icona rullino compatta in alto a destra su mobile */
+            .rullini-mobile-icon-btn {
+                display: none;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                flex: 0 0 36px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #281911, #150e0a);
+                border: 1.5px solid rgba(232, 168, 124, 0.9);
+                color: #f3c4a2;
+                cursor: pointer;
+                padding: 0;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(224, 154, 108, 0.24);
+                transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .rullini-mobile-icon-btn:active {
+                transform: scale(0.95);
+            }
+            .rullini-mobile-icon-btn.is-open {
+                border-color: #ffe0c8;
+                color: #ffffff;
+                background: linear-gradient(135deg, #382216, #1d130e);
             }
 
             /* Pannello a srotolamento dall'alto (effetto papiro / pellicola) */
@@ -249,15 +281,22 @@
 
             /* Su schermi stretti / smartphone */
             @media (max-width: 768px) {
-                #rullini-dock {
-                    left: 10px;
-                    top: -76px;
+                #rullini-dock .rullini-toggle-btn {
+                    display: none;
                 }
-                .rullini-toggle-btn {
-                    padding: 8px 12px;
-                    font-size: 0.7rem;
+                .rullini-mobile-icon-btn {
+                    display: inline-flex;
                 }
-                .rullini-drawer {
+                #rullini-dock.rullini-dock--mobile-drawer {
+                    position: fixed;
+                    left: 12px;
+                    top: 62px;
+                    z-index: 1050;
+                }
+                #rullini-dock.rullini-dock--mobile-drawer .rullini-drawer {
+                    position: relative;
+                    top: 0;
+                    left: 0;
                     width: min(250px, calc(100vw - 24px));
                 }
                 .rullini-drawer.is-open {
@@ -457,17 +496,45 @@
         }
     }
 
+    function syncDrawerPlacement() {
+        const dock = document.getElementById('rullini-dock');
+        const drawer = document.getElementById('rullini-drawer');
+        if (!dock || !drawer) return;
+
+        const mobile = isMobileViewport();
+        dock.classList.toggle('rullini-dock--mobile-drawer', mobile);
+
+        if (mobile && isOpen) {
+            if (dock.parentElement !== document.body) {
+                document.body.appendChild(dock);
+            }
+        } else {
+            const root = document.getElementById('rullini-bar-root');
+            if (root && dock.parentElement !== root) {
+                root.appendChild(dock);
+            }
+        }
+    }
+
     function setDrawerOpen(nextState) {
         isOpen = nextState;
         if (isOpen) {
             ensurePhotosLoaded().then(() => renderRollsList());
             renderRollsList();
         }
+        syncDrawerPlacement();
+
         const toggleBtn = document.getElementById('rullini-toggle-btn');
+        const mobileBtn = document.getElementById('rullini-mobile-icon-btn');
         const drawer = document.getElementById('rullini-drawer');
+
         if (toggleBtn) {
             toggleBtn.classList.toggle('is-open', isOpen);
             toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        }
+        if (mobileBtn) {
+            mobileBtn.classList.toggle('is-open', isOpen);
+            mobileBtn.setAttribute('aria-expanded', String(isOpen));
         }
         if (drawer) {
             drawer.classList.toggle('is-open', isOpen);
@@ -552,7 +619,7 @@
                 '[data-category], [data-cat], .category-btn, .cat-btn, .filter-btn, .categories button, .category-nav button, .category-nav a, nav button, nav a'
             );
             if (!target) return;
-            if (target.closest('#rullini-dock') || target.closest('.rullini-step-bar')) return;
+            if (target.closest('#rullini-dock') || target.closest('.rullini-step-bar') || target.closest('#rullini-mobile-icon-btn')) return;
 
             selectedRoll = null;
             syncHomeVisibility();
@@ -632,6 +699,42 @@
         return bar;
     }
 
+    function mountMobileIconButton() {
+        const headerTarget = document.querySelector('header .header-brand-row') || document.querySelector('header');
+        if (!headerTarget) return;
+
+        let mobileBtn = document.getElementById('rullini-mobile-icon-btn');
+        if (!mobileBtn) {
+            mobileBtn = document.createElement('button');
+            mobileBtn.type = 'button';
+            mobileBtn.id = 'rullini-mobile-icon-btn';
+            mobileBtn.className = 'rullini-mobile-icon-btn';
+            mobileBtn.title = i18n.toggle;
+            mobileBtn.setAttribute('aria-label', i18n.toggle);
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            mobileBtn.setAttribute('aria-controls', 'rullini-drawer');
+            mobileBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="4" y="2" width="16" height="20" rx="2.5"></rect>
+                    <line x1="4" y1="6" x2="7.5" y2="6"></line>
+                    <line x1="4" y1="10" x2="7.5" y2="10"></line>
+                    <line x1="4" y1="14" x2="7.5" y2="14"></line>
+                    <line x1="4" y1="18" x2="7.5" y2="18"></line>
+                    <line x1="16.5" y1="6" x2="20" y2="6"></line>
+                    <line x1="16.5" y1="10" x2="20" y2="10"></line>
+                    <line x1="16.5" y1="14" x2="20" y2="14"></line>
+                    <line x1="16.5" y1="18" x2="20" y2="18"></line>
+                    <rect x="9" y="7" width="6" height="10" rx="1"></rect>
+                </svg>
+            `;
+            mobileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setDrawerOpen(!isOpen);
+            });
+            headerTarget.appendChild(mobileBtn);
+        }
+    }
+
     function mountUI() {
         const root = document.getElementById('rullini-bar-root');
         if (!root) return;
@@ -654,6 +757,8 @@
                 </aside>
             </div>
         `;
+
+        mountMobileIconButton();
 
         const gallery = findGalleryContainer();
         if (gallery && gallery.parentNode) {
@@ -683,10 +788,19 @@
         document.addEventListener('click', (e) => {
             if (!isOpen) return;
             const dock = document.getElementById('rullini-dock');
-            if (dock && !dock.contains(e.target)) {
+            const mobileBtn = document.getElementById('rullini-mobile-icon-btn');
+            const insideDock = dock && dock.contains(e.target);
+            const insideMobileBtn = mobileBtn && mobileBtn.contains(e.target);
+            if (!insideDock && !insideMobileBtn) {
                 setDrawerOpen(false);
             }
         });
+
+        window.addEventListener('resize', () => {
+            if (isOpen) {
+                syncDrawerPlacement();
+            }
+        }, { passive: true });
 
         window.addEventListener('scroll', () => {
             if (isOpen) {
