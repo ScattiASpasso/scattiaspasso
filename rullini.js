@@ -37,13 +37,14 @@
                 z-index: 940;
             }
             #rullini-dock {
-                position: relative;
-                display: inline-flex;
+                position: absolute;
+                left: 16px;
+                top: -88px;
+                z-index: 940;
+                display: flex;
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
-                margin: 10px 0 6px 16px;
-                z-index: 940;
                 pointer-events: none;
             }
             #rullini-dock > * {
@@ -252,7 +253,8 @@
             /* Su schermi stretti / smartphone */
             @media (max-width: 768px) {
                 #rullini-dock {
-                    margin: 8px 0 4px 10px;
+                    left: 10px;
+                    top: -76px;
                 }
                 .rullini-toggle-btn {
                     padding: 8px 12px;
