@@ -59,7 +59,7 @@
                         0 0 90px 26px rgba(232, 168, 124, 0.65);
                     filter: brightness(2.4);
                 }
-                18% {
+                16% {
                     opacity: 1;
                     transform: scale(1.1);
                     background: linear-gradient(135deg, #ffd8b5, #e8a87c);
@@ -71,16 +71,25 @@
                         0 0 110px 34px rgba(232, 168, 124, 0.8);
                     filter: brightness(2.1);
                 }
-                42% {
+                48% {
                     opacity: 1;
-                    transform: scale(1.03);
+                    transform: scale(1.04);
                     background: linear-gradient(135deg, #5a341f, #281911);
                     color: #fff3e6;
                     border-color: #ffe4c9;
                     box-shadow:
                         0 0 0 18px rgba(232, 168, 124, 0),
-                        0 0 34px 6px rgba(232, 168, 124, 0.75);
-                    filter: brightness(1.35);
+                        0 0 36px 8px rgba(232, 168, 124, 0.75);
+                    filter: brightness(1.38);
+                }
+                78% {
+                    opacity: 1;
+                    transform: scale(1.01);
+                    background: linear-gradient(135deg, #382216, #1d130e);
+                    color: #f8d4b7;
+                    border-color: rgba(232, 168, 124, 0.95);
+                    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.8), 0 0 22px rgba(232, 168, 124, 0.45);
+                    filter: brightness(1.12);
                 }
                 100% {
                     opacity: 1;
@@ -115,7 +124,7 @@
                 opacity: 0;
             }
             .rullini-toggle-btn.is-flashing {
-                animation: rulliniBoomFlash 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                animation: rulliniBoomFlash 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             }
             .rullini-toggle-btn:hover {
                 transform: translateY(-1px);
@@ -326,6 +335,7 @@
     let isOpen = false;
     let cachedPhotos = [];
     let fetchPromise = null;
+    let flashTimer = null;
     const hiddenElementsState = new Map();
 
     function getJsonFilename() {
@@ -686,10 +696,11 @@
     function triggerIntroFlash() {
         const btn = document.getElementById('rullini-toggle-btn');
         if (!btn) return;
+        if (flashTimer) clearTimeout(flashTimer);
         btn.classList.remove('is-flashing');
         btn.classList.add('is-flash-pending');
 
-        setTimeout(() => {
+        flashTimer = setTimeout(() => {
             btn.classList.remove('is-flash-pending');
             void btn.offsetWidth;
             btn.classList.add('is-flashing');
@@ -766,6 +777,14 @@
         renderRollsList();
         triggerIntroFlash();
     }
+
+    window.addEventListener('pageshow', () => {
+        if (!document.getElementById('rullini-toggle-btn')) {
+            mountUI();
+        } else {
+            triggerIntroFlash();
+        }
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         mountUI();
