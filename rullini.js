@@ -46,6 +46,30 @@
             #rullini-dock > * {
                 pointer-events: auto;
             }
+            @keyframes rulliniIntroFlash {
+                0% {
+                    border-color: rgba(232, 168, 124, 0.9);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
+                    filter: brightness(1);
+                }
+                35% {
+                    border-color: #fff0e2;
+                    background: linear-gradient(135deg, #4b2c1b, #23160f);
+                    color: #ffffff;
+                    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.85), 0 0 28px rgba(255, 214, 179, 0.85);
+                    filter: brightness(1.25);
+                }
+                70% {
+                    border-color: rgba(232, 168, 124, 0.95);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 20px rgba(232, 168, 124, 0.55);
+                    filter: brightness(1.08);
+                }
+                100% {
+                    border-color: rgba(232, 168, 124, 0.9);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
+                    filter: brightness(1);
+                }
+            }
             .rullini-toggle-btn {
                 display: inline-flex;
                 align-items: center;
@@ -64,6 +88,9 @@
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
                 backdrop-filter: blur(8px);
                 transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background 0.25s ease;
+            }
+            .rullini-toggle-btn.is-flashing {
+                animation: rulliniIntroFlash 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s 1;
             }
             .rullini-toggle-btn:hover {
                 transform: translateY(-1px);
@@ -631,6 +658,17 @@
         return bar;
     }
 
+    function triggerIntroFlash() {
+        const btn = document.getElementById('rullini-toggle-btn');
+        if (!btn) return;
+        btn.classList.remove('is-flashing');
+        void btn.offsetWidth;
+        btn.classList.add('is-flashing');
+        btn.addEventListener('animationend', () => {
+            btn.classList.remove('is-flashing');
+        }, { once: true });
+    }
+
     function mountUI() {
         const root = document.getElementById('rullini-bar-root');
         if (!root) return;
@@ -696,6 +734,7 @@
         hookCategoryClicks();
         ensurePhotosLoaded().then(() => renderRollsList());
         renderRollsList();
+        triggerIntroFlash();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
