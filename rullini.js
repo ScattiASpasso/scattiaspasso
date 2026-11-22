@@ -6,7 +6,6 @@
     const i18n = isEn
         ? {
             toggle: 'Rolls',
-            title: 'Rolls index',
             close: 'Close',
             rollPrefix: 'Roll',
             countSuffix: 'photos',
@@ -15,7 +14,6 @@
         }
         : {
             toggle: 'Rullini',
-            title: 'Indice rullini',
             close: 'Chiudi',
             rollPrefix: 'Rullino',
             countSuffix: 'foto',
@@ -122,18 +120,9 @@
             .rullini-drawer-header {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                gap: 8px;
-                padding-bottom: 8px;
+                justify-content: flex-end;
+                padding-bottom: 6px;
                 border-bottom: 1px solid rgba(232, 168, 124, 0.16);
-            }
-            .rullini-drawer-title {
-                font-family: 'Cinzel', serif;
-                font-size: 0.72rem;
-                letter-spacing: 1.5px;
-                text-transform: uppercase;
-                color: #e8a87c;
-                font-weight: 700;
             }
             .rullini-close-btn {
                 width: 26px;
@@ -279,6 +268,26 @@
     let selectedRoll = null;
     let isOpen = false;
     let cachedPhotos = [];
+    let fetchStarted = false;
+
+    function ensurePhotosLoaded() {
+        if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
+            cachedPhotos = window.allPhotosData;
+            return;
+        }
+        if (cachedPhotos.length === 0 && !fetchStarted) {
+            fetchStarted = true;
+            fetch('foto.json')
+                .then(r => r.json())
+                .then(data => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        cachedPhotos = data;
+                        renderRollsList();
+                    }
+                })
+                .catch(() => {});
+        }
+    }
 
     function getPhotosList() {
         if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
@@ -299,6 +308,7 @@
     function setDrawerOpen(nextState) {
         isOpen = nextState;
         if (isOpen) {
+            ensurePhotosLoaded();
             renderRollsList();
         }
         const toggleBtn = document.getElementById('rullini-toggle-btn');
@@ -365,6 +375,7 @@
     }
 
     function selectRoll(rollIdx) {
+        ensurePhotosLoaded();
         selectedRoll = rollIdx;
         if (typeof window.applyFilters === 'function') {
             window.applyFilters();
@@ -383,7 +394,18 @@
         const origRenderVisiblePhotos = window.renderVisiblePhotos;
         if (typeof origApplyFilters !== 'function' || typeof origRenderVisiblePhotos !== 'function') return false;
 
+        window.renderVisiblePhotos = function (matchingPhotos) {
+            const searchEl = document.getElementById('search-input');
+            const hasSearch = searchEl && searchEl.value.trim() !== '';
+            if (!hasSearch && Array.isArray(matchingPhotos) && matchingPhotos.length > cachedPhotos.length) {
+                cachedPhotos = matchingPhotos;
+                renderRollsList();
+            }
+            return origRenderVisiblePhotos.apply(this, arguments);
+        };
+
         window.applyFilters = function () {
+            ensurePhotosLoaded();
             const list = getPhotosList();
             if (selectedRoll === null) {
                 return origApplyFilters.apply(this, arguments);
@@ -452,7 +474,6 @@
                 <aside id="rullini-drawer" class="rullini-drawer" aria-hidden="true">
                     <div class="rullini-drawer-inner">
                         <div class="rullini-drawer-header">
-                            <span class="rullini-drawer-title">${i18n.title}</span>
                             <button type="button" id="rullini-close-btn" class="rullini-close-btn" title="${i18n.close}" aria-label="${i18n.close}">&times;</button>
                         </div>
                         <div id="rullini-list" class="rullini-list"></div>
@@ -505,6 +526,7 @@
             }
         }, { passive: true });
 
+        ensurePhotosLoaded();
         renderRollsList();
     }
 
@@ -513,13 +535,10 @@
         let tries = 0;
         const timer = setInterval(() => {
             tries++;
-            if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
-                cachedPhotos = window.allPhotosData;
+            ensurePhotosLoaded();
+            if (hookGalleryPipeline() || getPhotosList().length > 0) {
                 renderRollsList();
-            }
-            if (hookGalleryPipeline() && getPhotosList().length > 0) {
-                renderRollsList();
-                clearInterval(timer);
+                if (tries > 15) clearInterval(timer);
             } else if (tries > 100) {
                 clearInterval(timer);
             }
