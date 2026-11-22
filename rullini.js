@@ -271,6 +271,16 @@
     let fetchPromise = null;
     const hiddenElementsState = new Map();
 
+    function exitRollMode(runNativeFilters = false) {
+        if (selectedRoll === null) return;
+        selectedRoll = null;
+        syncHomeVisibility();
+        renderRollsList();
+        if (runNativeFilters && typeof window.applyFilters === 'function') {
+            window.applyFilters();
+        }
+    }
+
     function getJsonFilename() {
         return isEn ? 'foto_inglese.json' : 'foto.json';
     }
@@ -306,7 +316,6 @@
             });
         });
 
-        // Cerca anche blocchi che contengono la frase introduttiva o la nota privacy
         const markers = [
             'fermare il tempo durante le uscite',
             'nessun cookie',
@@ -327,7 +336,6 @@
             ) {
                 return;
             }
-            // Evita contenitori troppo grandi che avvolgono l'intera galleria o il footer
             if (el.querySelector('#gallery-container') || el.querySelector('#rullini-step-bar')) {
                 return;
             }
@@ -337,7 +345,6 @@
             }
         });
 
-        // Se un elemento trovato è contenuto in un altro elemento già selezionato, tieni solo il più esterno adatto
         const arr = Array.from(targets);
         return arr.filter(el => !arr.some(other => other !== el && other.contains(el)));
     }
@@ -535,6 +542,28 @@
         }
     }
 
+    function hookCategoryClicks() {
+        document.addEventListener('click', (e) => {
+            if (selectedRoll === null) return;
+            const target = e.target.closest(
+                '[data-category], [data-cat], .category-btn, .cat-btn, .filter-btn, .categories button, .category-nav button, .category-nav a, nav button, nav a'
+            );
+            if (!target) return;
+            if (target.closest('#rullini-dock') || target.closest('#rullini-step-bar')) return;
+
+            // Se l'utente clicca una voce di categoria o navigazione (non il tasto Rullini), esce dalla modalità rullino
+            selectedRoll = null;
+            syncHomeVisibility();
+            renderRollsList();
+
+            setTimeout(() => {
+                if (selectedRoll === null && typeof window.applyFilters === 'function') {
+                    window.applyFilters();
+                }
+            }, 0);
+        }, true);
+    }
+
     function hookGalleryPipeline() {
         const origApplyFilters = window.applyFilters;
         const origRenderVisiblePhotos = window.renderVisiblePhotos;
@@ -649,6 +678,7 @@
             }
         }, { passive: true });
 
+        hookCategoryClicks();
         ensurePhotosLoaded().then(() => renderRollsList());
         renderRollsList();
     }
