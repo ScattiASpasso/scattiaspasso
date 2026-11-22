@@ -820,7 +820,7 @@
             }
             .scroll-top-btn {
                 top: 14px;
-                right: 14px;
+                right: 58px;
                 width: 40px;
                 height: 40px;
             }
@@ -1236,8 +1236,21 @@
                 return { x: dx, y: `${dy}px`, scale };
             }
 
+            function getActiveRulliniFlashTarget() {
+                const candidates = [
+                    document.getElementById('rullini-mobile-icon-btn'),
+                    document.getElementById('rullini-toggle-btn')
+                ];
+                for (const el of candidates) {
+                    if (!el) continue;
+                    const rect = el.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) return el;
+                }
+                return null;
+            }
+
             function fireRulliniFlash() {
-                const btn = document.getElementById('rullini-toggle-btn');
+                const btn = getActiveRulliniFlashTarget();
                 if (!btn) return;
 
                 const rect = btn.getBoundingClientRect();
