@@ -1,5 +1,5 @@
 (function () {
-    const RULLINO_SIZE = 100;
+    const RULLINO_SIZE = 50;
     const isEn = document.documentElement.lang === 'en' ||
         (document.getElementById('rullini-bar-root')?.dataset.lang === 'en');
 
@@ -243,40 +243,6 @@
                 cursor: not-allowed;
             }
 
-            /* Griglia fallback se la funzione nativa della galleria non disegna nulla */
-            .rullini-fallback-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-                gap: 18px;
-                width: 100%;
-                max-width: 1200px;
-                margin: 16px auto;
-                padding: 0 16px;
-            }
-            .rullini-photo-card {
-                background: #141414;
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 12px;
-                overflow: hidden;
-                cursor: pointer;
-                transition: transform 0.25s ease, border-color 0.25s ease;
-            }
-            .rullini-photo-card:hover {
-                transform: translateY(-3px);
-                border-color: rgba(232, 168, 124, 0.5);
-            }
-            .rullini-photo-card img {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                display: block;
-            }
-            .rullini-photo-caption {
-                padding: 10px 12px;
-                font-size: 0.85rem;
-                color: #e5e5e5;
-            }
-
             /* Su schermi stretti / smartphone */
             @media (max-width: 768px) {
                 #rullini-dock {
@@ -311,20 +277,19 @@
     }
 
     function ensurePhotosLoaded() {
-        if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
+        if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > cachedPhotos.length) {
             cachedPhotos = window.allPhotosData;
-            return Promise.resolve(cachedPhotos);
-        }
-        if (cachedPhotos.length > 0) {
-            return Promise.resolve(cachedPhotos);
         }
         if (!fetchPromise) {
-            fetchPromise = fetch(getJsonFilename())
-                .then(r => r.ok ? r.json() : fetch(isEn ? 'foto.json' : 'foto_inglese.json').then(r2 => r2.json()))
+            fetchPromise = fetch(getJsonFilename() + '?v=' + Date.now())
+                .then(r => r.ok ? r.json() : fetch('foto.json?v=' + Date.now()).then(r2 => r2.json()))
                 .then(data => {
                     if (Array.isArray(data) && data.length > 0) {
                         cachedPhotos = data;
                         renderRollsList();
+                        if (selectedRoll !== null) {
+                            applyRollFilterNow();
+                        }
                     }
                     return cachedPhotos;
                 })
@@ -334,7 +299,7 @@
     }
 
     function getPhotosList() {
-        if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > 0) {
+        if (Array.isArray(window.allPhotosData) && window.allPhotosData.length > cachedPhotos.length) {
             cachedPhotos = window.allPhotosData;
         }
         return cachedPhotos;
@@ -356,48 +321,9 @@
             document.getElementById('gallery');
     }
 
-    function removeFallbackGrid() {
-        const existing = document.getElementById('rullini-fallback-grid');
-        if (existing) existing.remove();
-    }
-
-    function renderFallbackGrid(photos) {
-        removeFallbackGrid();
-        const stepBar = document.getElementById('rullini-step-bar');
-        const gallery = findGalleryContainer();
-        const anchor = stepBar || gallery;
-        if (!anchor || !anchor.parentNode) return;
-
-        const grid = document.createElement('div');
-        grid.id = 'rullini-fallback-grid';
-        grid.className = 'rullini-fallback-grid';
-
-        if (!photos || photos.length === 0) {
-            grid.innerHTML = `<p style="color:#aaa;text-align:center;grid-column:1/-1;">${i18n.empty}</p>`;
-        } else {
-            photos.forEach(photo => {
-                const src = photo.url || photo.src || photo.immagine || photo.file || photo.path || '';
-                const title = photo.titolo || photo.title || photo.nome || '';
-                const card = document.createElement('div');
-                card.className = 'rullini-photo-card';
-                card.innerHTML = `
-                    ${src ? `<img src="${src}" alt="${title}" loading="lazy">` : ''}
-                    ${title ? `<div class="rullini-photo-caption">${title}</div>` : ''}
-                `;
-                if (typeof window.openLightbox === 'function') {
-                    card.addEventListener('click', () => window.openLightbox(photo));
-                }
-                grid.appendChild(card);
-            });
-        }
-
-        anchor.parentNode.insertBefore(grid, anchor.nextSibling);
-    }
-
     function applyRollFilterNow() {
         const list = getPhotosList();
         if (selectedRoll === null) {
-            removeFallbackGrid();
             if (typeof window.applyFilters === 'function') {
                 window.applyFilters();
             }
@@ -419,28 +345,16 @@
             return matchesCategory && matchesSearch;
         });
 
-        let renderedByNative = false;
         if (typeof window.renderVisiblePhotos === 'function') {
             const prevLimit = window.visibleLimit;
             window.visibleLimit = Math.max(filteredRoll.length, RULLINO_SIZE);
             window.renderVisiblePhotos(filteredRoll);
             window.visibleLimit = prevLimit;
-
-            const gallery = findGalleryContainer();
-            if (gallery && gallery.children.length > 0 && gallery.textContent.trim().indexOf('Scatti in arrivo') === -1) {
-                renderedByNative = true;
-            }
         }
 
         const loadMoreContainer = document.getElementById('load-more-container');
         if (loadMoreContainer) {
             loadMoreContainer.style.display = 'none';
-        }
-
-        if (!renderedByNative) {
-            renderFallbackGrid(filteredRoll);
-        } else {
-            removeFallbackGrid();
         }
     }
 
@@ -546,7 +460,6 @@
 
         window.applyFilters = function () {
             if (selectedRoll === null) {
-                removeFallbackGrid();
                 return origApplyFilters.apply(this, arguments);
             }
             applyRollFilterNow();
@@ -556,7 +469,6 @@
         if (typeof origLoadMore === 'function') {
             window.loadMorePhotos = function () {
                 selectedRoll = null;
-                removeFallbackGrid();
                 renderRollsList();
                 return origLoadMore.apply(this, arguments);
             };
@@ -566,7 +478,6 @@
         if (typeof origGoToHome === 'function') {
             window.goToHome = function () {
                 selectedRoll = null;
-                removeFallbackGrid();
                 const res = origGoToHome.apply(this, arguments);
                 renderRollsList();
                 return res;
