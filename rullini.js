@@ -48,26 +48,27 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 8px;
-                padding: 9px 14px;
+                padding: 9px 15px;
                 border-radius: 999px;
-                background: linear-gradient(135deg, rgba(20, 20, 20, 0.94), rgba(34, 25, 13, 0.94));
-                border: 1px solid rgba(243, 213, 141, 0.45);
-                color: #f3d58d;
+                background: linear-gradient(135deg, #2e1f0a, #17120b);
+                border: 1.5px solid rgba(243, 213, 141, 0.88);
+                color: #ffe6a3;
                 font-family: 'Cinzel', serif;
-                font-size: 0.75rem;
+                font-size: 0.76rem;
                 font-weight: 700;
-                letter-spacing: 1.6px;
+                letter-spacing: 1.8px;
                 text-transform: uppercase;
                 cursor: pointer;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(243, 213, 141, 0.28);
                 backdrop-filter: blur(8px);
-                transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+                transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background 0.25s ease;
             }
             .rullini-toggle-btn:hover {
                 transform: translateY(-1px);
-                border-color: #f3d58d;
+                background: linear-gradient(135deg, #3f2a0d, #1f180e);
+                border-color: #fff2c6;
                 color: #ffffff;
-                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8), 0 0 16px rgba(243, 213, 141, 0.28);
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 22px rgba(243, 213, 141, 0.48);
             }
             .rullini-toggle-chevron {
                 transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -265,7 +266,7 @@
         document.head.appendChild(style);
     }
 
-    let selectedRoll = null; // null = tutti (con normale paginazione a 50), numero = indice 0-based del rullino (solo quelle 100 foto)
+    let selectedRoll = null;
     let isOpen = false;
 
     function getTotalRolls() {
@@ -399,7 +400,6 @@
             }
         };
 
-        // Se l'utente clicca "Carica altri contenuti" o una categoria/home, torna alla vista normale
         const origLoadMore = window.loadMorePhotos;
         if (typeof origLoadMore === 'function') {
             window.loadMorePhotos = function () {
@@ -476,7 +476,6 @@
             setDrawerOpen(false);
         });
 
-        // Su PC / fuori dal dock: cliccando altrove si richiude con animazione
         document.addEventListener('click', (e) => {
             if (!isOpen) return;
             const dock = document.getElementById('rullini-dock');
