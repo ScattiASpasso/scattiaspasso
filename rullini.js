@@ -26,6 +26,33 @@
         return window.innerWidth <= MOBILE_BREAKPOINT;
     }
 
+    function getFilmRollSvg(sizeClass) {
+        return `
+            <svg class="rullini-film-svg ${sizeClass || ''}" viewBox="0 0 32 36" width="22" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- Bobina / sporgenze laterali -->
+                <path d="M5 10H3V17H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M25 9.5L29 11.5V16.5L25 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Corpo cilindrico del rullino -->
+                <rect x="5" y="4" width="20" height="15" rx="3" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="2"/>
+                <line x1="9" y1="7.5" x2="9" y2="15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <line x1="21" y1="4" x2="21" y2="19" stroke="currentColor" stroke-width="1.6"/>
+                <!-- Lingua / striscia di pellicola che esce sotto -->
+                <path d="M8 19V25.5C8 27.2 9.4 28.5 11.1 28.5H13.5C15.2 28.5 16.5 29.8 16.5 31.5V33H24.5V19" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Fori pellicola a sinistra -->
+                <rect x="10.2" y="21" width="1.6" height="2.4" rx="0.6" fill="currentColor"/>
+                <rect x="10.2" y="25" width="1.6" height="2.4" rx="0.6" fill="currentColor"/>
+                <!-- Fori pellicola a destra -->
+                <rect x="20.4" y="20.5" width="1.6" height="2.2" rx="0.6" fill="currentColor"/>
+                <rect x="20.4" y="24" width="1.6" height="2.2" rx="0.6" fill="currentColor"/>
+                <rect x="20.4" y="27.5" width="1.6" height="2.2" rx="0.6" fill="currentColor"/>
+                <rect x="20.4" y="31" width="1.6" height="2" rx="0.6" fill="currentColor"/>
+                <!-- Stelline sulla pellicola -->
+                <path d="M16.8 21.5L17.3 23.1L18.9 23.6L17.3 24.1L16.8 25.7L16.3 24.1L14.7 23.6L16.3 23.1L16.8 21.5Z" fill="currentColor"/>
+                <path d="M13.6 26.8L14 27.8L15 28.2L14 28.6L13.6 29.6L13.2 28.6L12.2 28.2L13.2 27.8L13.6 26.8Z" fill="currentColor"/>
+            </svg>
+        `;
+    }
+
     function injectStyles() {
         if (document.getElementById('rullini-styles')) return;
         const style = document.createElement('style');
@@ -55,8 +82,8 @@
                 position: relative;
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
-                padding: 9px 15px;
+                gap: 7px;
+                padding: 8px 14px;
                 border-radius: 999px;
                 background: linear-gradient(135deg, #281911, #150e0a);
                 border: 1.5px solid rgba(232, 168, 124, 0.9);
@@ -78,6 +105,11 @@
                 color: #ffffff;
                 box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 22px rgba(232, 168, 124, 0.48);
             }
+            .rullini-film-svg--desktop {
+                width: 18px;
+                height: 20px;
+                flex-shrink: 0;
+            }
             .rullini-toggle-chevron {
                 transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
                 display: inline-flex;
@@ -89,18 +121,22 @@
             /* Icona rullino compatta in alto a destra su mobile */
             .rullini-mobile-icon-btn {
                 display: none;
+                position: fixed;
+                top: 12px;
+                right: 12px;
+                z-index: 1050;
                 align-items: center;
                 justify-content: center;
-                width: 36px;
-                height: 36px;
-                flex: 0 0 36px;
-                border-radius: 10px;
+                width: 38px;
+                height: 40px;
+                border-radius: 11px;
                 background: linear-gradient(135deg, #281911, #150e0a);
-                border: 1.5px solid rgba(232, 168, 124, 0.9);
+                border: 1.5px solid rgba(232, 168, 124, 0.92);
                 color: #f3c4a2;
                 cursor: pointer;
                 padding: 0;
-                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(224, 154, 108, 0.24);
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.78), 0 0 14px rgba(224, 154, 108, 0.3);
+                backdrop-filter: blur(8px);
                 transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
                 -webkit-tap-highlight-color: transparent;
             }
@@ -111,6 +147,10 @@
                 border-color: #ffe0c8;
                 color: #ffffff;
                 background: linear-gradient(135deg, #382216, #1d130e);
+            }
+            .rullini-film-svg--mobile {
+                width: 22px;
+                height: 25px;
             }
 
             /* Pannello a srotolamento dall'alto (effetto papiro / pellicola) */
@@ -289,14 +329,17 @@
                 }
                 #rullini-dock.rullini-dock--mobile-drawer {
                     position: fixed;
-                    left: 12px;
-                    top: 62px;
+                    right: 12px;
+                    left: auto;
+                    top: 58px;
                     z-index: 1050;
+                    align-items: flex-end;
                 }
                 #rullini-dock.rullini-dock--mobile-drawer .rullini-drawer {
                     position: relative;
                     top: 0;
-                    left: 0;
+                    left: auto;
+                    right: 0;
                     width: min(250px, calc(100vw - 24px));
                 }
                 .rullini-drawer.is-open {
@@ -700,9 +743,6 @@
     }
 
     function mountMobileIconButton() {
-        const headerTarget = document.querySelector('header .header-brand-row') || document.querySelector('header');
-        if (!headerTarget) return;
-
         let mobileBtn = document.getElementById('rullini-mobile-icon-btn');
         if (!mobileBtn) {
             mobileBtn = document.createElement('button');
@@ -713,25 +753,12 @@
             mobileBtn.setAttribute('aria-label', i18n.toggle);
             mobileBtn.setAttribute('aria-expanded', 'false');
             mobileBtn.setAttribute('aria-controls', 'rullini-drawer');
-            mobileBtn.innerHTML = `
-                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="4" y="2" width="16" height="20" rx="2.5"></rect>
-                    <line x1="4" y1="6" x2="7.5" y2="6"></line>
-                    <line x1="4" y1="10" x2="7.5" y2="10"></line>
-                    <line x1="4" y1="14" x2="7.5" y2="14"></line>
-                    <line x1="4" y1="18" x2="7.5" y2="18"></line>
-                    <line x1="16.5" y1="6" x2="20" y2="6"></line>
-                    <line x1="16.5" y1="10" x2="20" y2="10"></line>
-                    <line x1="16.5" y1="14" x2="20" y2="14"></line>
-                    <line x1="16.5" y1="18" x2="20" y2="18"></line>
-                    <rect x="9" y="7" width="6" height="10" rx="1"></rect>
-                </svg>
-            `;
+            mobileBtn.innerHTML = getFilmRollSvg('rullini-film-svg--mobile');
             mobileBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 setDrawerOpen(!isOpen);
             });
-            headerTarget.appendChild(mobileBtn);
+            document.body.appendChild(mobileBtn);
         }
     }
 
@@ -744,6 +771,7 @@
         root.innerHTML = `
             <div id="rullini-dock">
                 <button type="button" id="rullini-toggle-btn" class="rullini-toggle-btn" aria-expanded="false" aria-controls="rullini-drawer">
+                    ${getFilmRollSvg('rullini-film-svg--desktop')}
                     <span>${i18n.toggle}</span>
                     <span class="rullini-toggle-chevron" aria-hidden="true">▾</span>
                 </button>
