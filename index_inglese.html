@@ -22,7 +22,7 @@
             line-height: 1.6;
         }
 
-        /* Splash intro: large logo -> pause -> title -> pause -> flight toward top-left -> smoke fade-out toward right */
+        /* Splash intro: large logo -> pause -> title -> pause -> fly to top-left -> smoke to right */
         #splash-intro {
             position: fixed;
             inset: 0;
@@ -205,7 +205,7 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* Container for install icon + label (hidden on desktop, visible on mobile) */
+        /* Install app container (hidden on desktop, visible only on mobile) */
         .install-container {
             display: none;
             align-items: center;
@@ -465,7 +465,7 @@
             cursor: grabbing;
         }
 
-        /* Horizontal track for sliding adjacent photos together */
+        /* Horizontal track to slide two attached photos together */
         .featured-track {
             display: flex;
             width: 100%;
@@ -504,7 +504,7 @@
             pointer-events: none;
         }
 
-        /* Side arrows for browsing "Featured" on desktop */
+        /* Side arrows for Featured on desktop */
         .featured-nav-btn {
             position: absolute;
             top: 50%;
@@ -549,7 +549,7 @@
         .gallery {
             width: 100% !important;
             max-width: none !important;
-            margin: 20px auto 100px auto;
+            margin: 20px auto 36px auto;
             padding: 0 3%;
             display: flex;
             flex-direction: column;
@@ -558,7 +558,7 @@
             transition: all 0.3s ease;
         }
 
-        /* On wide desktop screens, home narrows to 50% */
+        /* On wide screens, home narrows to 50% */
         @media (min-width: 900px) {
             .gallery:not(.grid-view) {
                 width: 50% !important;
@@ -572,7 +572,7 @@
             gap: 25px;
             width: 94% !important;
             max-width: 1400px !important;
-            margin: 20px auto 100px auto !important;
+            margin: 20px auto 36px auto !important;
             padding: 0 !important;
         }
         .gallery.grid-view .photo-card img {
@@ -581,7 +581,87 @@
             object-fit: contain;
         }
 
-        /* On smartphones and narrow screens, switch to 2 large columns and compact vertical spacing */
+        /* Load more content button in batches of 50 */
+        .load-more-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 8px;
+            margin: 10px auto 100px auto;
+            padding: 0 3%;
+        }
+        .load-more-btn {
+            background-color: #141414;
+            border: 1px solid rgba(184, 124, 36, 0.55);
+            color: #f3d58d;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+        .load-more-btn:hover {
+            border-color: #f3d58d;
+            background-color: rgba(243, 213, 141, 0.1);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .load-more-info {
+            font-size: 0.78rem;
+            color: #777;
+            letter-spacing: 0.6px;
+        }
+
+        /* Fixed "Back to top" button in top-right (distinctive golden style) */
+        .scroll-top-btn {
+            position: fixed;
+            top: 22px;
+            right: 26px;
+            z-index: 950;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #241b0e, #121212 75%);
+            border: 1.5px solid rgba(243, 213, 141, 0.75);
+            color: #f3d58d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.92);
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7), 0 0 14px rgba(184, 124, 36, 0.35);
+            backdrop-filter: blur(6px);
+            padding: 0;
+        }
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .scroll-top-btn:hover {
+            border-color: #ffe7a3;
+            color: #ffffff;
+            transform: translateY(-2px) scale(1.06);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8), 0 0 22px rgba(243, 213, 141, 0.55);
+        }
+        .scroll-top-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        .scroll-top-btn svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        /* On smartphones and narrow screens, switch automatically to 2 large columns and compact vertical spacing */
         @media (max-width: 768px) {
             .install-container {
                 display: flex !important;
@@ -692,6 +772,21 @@
             }
             .featured-nav-btn {
                 display: none;
+            }
+            .load-more-btn {
+                padding: 10px 22px;
+                font-size: 0.78rem;
+                letter-spacing: 1.5px;
+            }
+            .scroll-top-btn {
+                top: 14px;
+                right: 14px;
+                width: 40px;
+                height: 40px;
+            }
+            .scroll-top-btn svg {
+                width: 18px;
+                height: 18px;
             }
         }
 
@@ -974,7 +1069,7 @@
         }
     </style>
     <meta name="description" content="Scatti a Spasso - Photography portfolio by Stefano Adami">
-    <meta name="keywords" content="photography, landscapes, nature, wildlife, macro, Trentino, photography portfolio">
+    <meta name="keywords" content="photography, landscapes, nature, wildlife, macro, Trentino, photo portfolio">
 
     <meta property="og:title" content="Scatti a Spasso - Photography Portfolio">
     <meta property="og:image" content="https://scattiaspasso.github.io/scattiaspasso/foto/logo1.jpg">
@@ -1123,16 +1218,13 @@
                         logoWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
                         titleWrap.style.transition = 'opacity 0.55s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
 
-                        // 1. Large logo fades in gradually with a brief pause
                         logoWrap.style.opacity = '1';
                         logoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
 
-                        // 2. Title appears with a brief pause for reading
                         timers.push(setTimeout(() => {
                             titleWrap.style.opacity = '1';
                             titleWrap.style.transform = 'translate(-50%, 0) scale(1)';
 
-                            // 3. Smooth flight toward top-left (same travel speed)
                             timers.push(setTimeout(() => {
                                 logoWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
                                 titleWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
@@ -1143,7 +1235,6 @@
                                 const logoMove = moveLogoTowardTopLeft(logoWrap, headerLogo);
                                 const titleMove = moveTitleTowardTopLeft(titleWrap, headerTitle);
 
-                                // 4. Smoke fade-out toward the right
                                 timers.push(setTimeout(() => {
                                     logoWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
                                     titleWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
@@ -1164,12 +1255,17 @@
                 });
             };
 
-            // Runs ONLY on page load / refresh (skips once when coming from Stories)
             if (!shouldSkipIntro()) {
                 window.triggerEntryIntro(true);
             }
         })();
     </script>
+
+    <button type="button" id="scroll-top-btn" class="scroll-top-btn" onclick="scrollToTop()" title="Back to top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
 
     <header>
         <div class="header-top">
@@ -1184,18 +1280,13 @@
                 <a class="active" onclick="goToHome(this)">Home</a>
                 <a id="about-nav-link" onclick="toggleAccordion('about', this)">About me</a>
                 <a id="gear-nav-link" onclick="toggleAccordion('gear', this)">Gear</a>
-                <input type="text" id="search-input" class="search-input" placeholder="Search..." oninput="applyFilters()">
+                <input type="text" id="search-input" class="search-input" placeholder="Search photos..." oninput="onSearchInput()">
                 <a class="nav-contact" onclick="openContactModal()">Contact me</a>
                 <a href="index.html" class="nav-lang" title="Versione italiana" aria-label="Versione italiana">
-                    <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
-                        <clipPath id="it-clip">
-                            <rect width="60" height="40" rx="2"/>
-                        </clipPath>
-                        <g clip-path="url(#it-clip)">
-                            <rect width="20" height="40" x="0" fill="#009246"/>
-                            <rect width="20" height="40" x="20" fill="#FFFFFF"/>
-                            <rect width="20" height="40" x="40" fill="#CE2B37"/>
-                        </g>
+                    <svg class="flag-icon" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="1" height="2" x="0" fill="#009246"/>
+                        <rect width="1" height="2" x="1" fill="#ffffff"/>
+                        <rect width="1" height="2" x="2" fill="#ce2b37"/>
                     </svg>
                 </a>
                 <button onclick="sharePhoto()" class="icon-btn" title="Share site">
@@ -1229,7 +1320,7 @@
                 <a class="cat-link" onclick="filterGallery('macro', this)">Macro</a>
                 <a class="cat-link" onclick="filterGallery('eventi', this)">Events</a>
                 <a class="cat-link" onclick="filterGallery('street', this)">Street photography</a>
-                <a class="cat-link" onclick="filterGallery('sport', this)">Sports</a>
+                <a class="cat-link" onclick="filterGallery('sport', this)">Sport</a>
                 <a class="cat-link" onclick="filterGallery('astrofotografia', this)">Astrophotography</a>
                 <a class="cat-link" onclick="filterGallery('fiori', this)">Flowers &amp; Flora</a>
                 <a class="cat-link" onclick="filterGallery('strutture', this)">Structures &amp; Architecture</a>
@@ -1243,7 +1334,7 @@
     </header>
     
     <div id="home-intro" class="intro">
-        <p>My way of freezing time during outings in the open air: light, mountains, and unexpected encounters.</p>
+        <p>My way of freezing time during outdoor walks: light, mountains, and unexpected encounters.</p>
         <p style="margin-top: 12px; font-size: 0.82rem; color: #665; font-style: normal; letter-spacing: 1px;">No cookies, no tracking, zero personal data. Just photography in freedom.</p>
     </div>
 
@@ -1257,13 +1348,13 @@
                 Hi, I'm Stefano Adami.
             </p>
             <p style="color: #dcdcdc;">
-                "Scatti a Spasso" comes from the desire to collect the moments when I took the time to stop and look at what often rushes past us too quickly. To share them the "old-fashioned" way. Without social media, algorithms, and likes at any cost.
+                "Scatti a Spasso" comes from the desire to collect the moments when I took the time to stop and look at what often passes us by too quickly. To share them the "old-fashioned way". Without social media, algorithms, or likes at all costs.
             </p>
             <p style="color: #b5b5b5;">
-                For me, photography is passion. It's walking quietly between nature and art, mountains and cities. It's standing still waiting for a shift in light or bending down over a tiny detail. I don't look for the perfect shot.
+                For me, photography is passion. It is walking quietly between nature and art, mountains and cities. It is standing still waiting for a shift in light or bending down to a tiny detail. I don't look for the perfect shot.
             </p>
             <p style="color: #b5b5b5;">
-                Between landscapes, wildlife, and macro, I try to bring home honest images tied to the moment and place where they were born, without too many frills. If a photo makes you want to lace up your shoes and step outside, it has already done its job.
+                Between landscapes, wildlife, and macro, I try to bring home honest images tied to the moment and place where they were born, without too many frills. If a photo makes you want to lace up your shoes and head outside, it has already done its job.
             </p>
             <p style="color: #dcdcdc;">
                 Photos can be freely downloaded using the dedicated button and republished as long as the source is credited. Zero cookies, zero tracking, just photography.
@@ -1282,16 +1373,16 @@
             </div>
             <div class="gear-list">
                 <div class="gear-item">
-                    <div class="gear-name">Canon EOS 5D Mark III camera body</div>
+                    <div class="gear-name">Canon EOS 5D Mark III body</div>
                     <div class="gear-why">
-                        My full-frame professional camera to play it safe with no compromises. With a lens attached it has significant weight, so it comes along on more "important" and never-casual outings, as well as sports and theater events.
+                        My professional full-frame camera to play it safe without compromises. With a lens attached it carries noticeable weight, so it comes along on more "important", never-casual outings, as well as sports and theatre events.
                     </div>
                 </div>
 
                 <div class="gear-item">
-                    <div class="gear-name">Canon EOS 50D camera body</div>
+                    <div class="gear-name">Canon EOS 50D body</div>
                     <div class="gear-why">
-                        A semi-pro camera that is more compact and lighter than its pro sibling, and it was my first digital camera. Now used only paired with the 5D. When the moment matters more than the weight of two cameras.
+                        A more compact and lighter semi-pro camera than its pro sibling, and my first digital camera. Now used only paired with the 5D when catching the moment matters more than the weight of two bodies.
                     </div>
                 </div>
 
@@ -1299,22 +1390,22 @@
                     <div class="gear-name">Sony RX10 IV camera</div>
                     <div class="gear-why">
                         <span class="gear-spec">1" CMOS sensor, 24–600mm optical zoom (f/2.4–4.0)</span>
-                        The most used one. Light and versatile all-rounder compromise. It lets me go from wide landscape shots up to 600mm while keeping a quality that has little to envy a professional camera.
+                        My most-used camera. Light and versatile all-rounder. Lets me move from wide-angle landscapes all the way to 600mm while keeping quality that has little to envy from a professional setup.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Samsung Galaxy S25 Ultra</div>
                     <div class="gear-why">
-                        The lifeline against the fleeting moment when I don't have a camera with me. Even with a quad camera featuring a 200 MP main sensor, 50 MP ultra-wide, 50 MP 5x telephoto, and 10 MP 3x telephoto, like any smartphone it doesn't compete with real cameras, yet it's enough not to regret leaving them behind.
+                        The safety net against a fleeting moment when I don't have a camera with me. Even with a 200 MP quad-camera system, 50 MP ultra-wide, 50 MP 5x telephoto, and 10 MP 3x telephoto, like any smartphone it doesn't compete with dedicated cameras, yet it's enough not to regret leaving them behind.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Canon EF 24-70mm f/2.8L USM lens</div>
                     <div class="gear-why">
-                        <span class="gear-spec">Professional standard zoom f/2.8 ultrasonic</span>
-                        The quality all-rounder par excellence between wide angle and medium telephoto. Bright, solid, and immediate. The most used overall.
+                        <span class="gear-spec">Professional ultrasonic f/2.8 standard zoom</span>
+                        The quintessential quality all-rounder between wide-angle and medium telephoto. Bright, solid, and immediate. The most used lens overall.
                     </div>
                 </div>
 
@@ -1322,15 +1413,15 @@
                     <div class="gear-name">Canon EF 70-200mm f/2.8L IS USM</div>
                     <div class="gear-why">
                         <span class="gear-spec">Professional telephoto zoom, constant f/2.8, stabilized</span>
-                        Heavy and noticeable. Brought along on planned missions! When I go hunting for shots and distance matters. It compresses planes and separates the subject with soft bokeh.
+                        Heavy and noticeable. Brought along by deliberate choice! When I'm out tracking wildlife and distance matters. Compresses planes and separates the subject with smooth bokeh.
                     </div>
                 </div>
 
                 <div class="gear-item">
                     <div class="gear-name">Canon EF 100mm f/2.8L Macro IS USM</div>
                     <div class="gear-why">
-                        <span class="gear-spec">Macro and medium telephoto lens f/2.8 stabilized</span>
-                        When I want to dive into tiny details, as well as for portraits and close-up glimpses with a clean, accurate rendering.
+                        <span class="gear-spec">Stabilized f/2.8 macro and medium telephoto lens</span>
+                        When I want to dive into tiny details, as well as for portraits and close-up views with a clean, crisp rendering.
                     </div>
                 </div>
             </div>
@@ -1370,6 +1461,11 @@
         </div>
     </main>
 
+    <div id="load-more-container" class="load-more-container">
+        <button type="button" id="load-more-btn" class="load-more-btn" onclick="loadMorePhotos()">Load more content</button>
+        <div id="load-more-info" class="load-more-info"></div>
+    </div>
+
     <footer>
         &copy; 2026 Scatti a Spasso — Stefano Adami
     </footer>
@@ -1401,7 +1497,7 @@
                         </div>
                     </div>
                     <div class="lightbox-note">
-                        Need the original resolution or a specific print format? <a onclick="closeLightbox(); openContactModal();">Write to me.</a>
+                        Need the original resolution or a specific print size? <a onclick="closeLightbox(); openContactModal();">Write to me.</a>
                     </div>
                 </div>
             </div>
@@ -1422,7 +1518,7 @@
                 </div>
                 <span>install app</span>
             </button>
-            <p class="modal-install-note">for unsupported browsers, add a shortcut to your home screen</p>
+            <p class="modal-install-note">for unsupported browsers add a shortcut to your home screen</p>
         </div>
     </div>
 
@@ -1450,7 +1546,9 @@
     </div>
 
     <script>
+        const PHOTOS_BATCH_SIZE = 50;
         let currentCategory = 'all';
+        let visibleLimit = PHOTOS_BATCH_SIZE;
         let activeAccordion = null;
         let allPhotosData = [];
         let lastFeaturedIndex = -1;
@@ -1460,7 +1558,24 @@
         let isFeaturedAnimating = false;
         let deferredPrompt = null;
 
-        // PWA install prompt event handling
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateScrollTopButton() {
+            const btn = document.getElementById('scroll-top-btn');
+            if (!btn) return;
+            if (window.scrollY > 320) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', updateScrollTopButton, { passive: true });
+        window.addEventListener('DOMContentLoaded', updateScrollTopButton);
+
+        // PWA installation event handling
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -1486,9 +1601,9 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install');
+                        console.log('User accepted installation');
                     } else {
-                        console.log('User dismissed the install');
+                        console.log('User dismissed installation');
                     }
                     deferredPrompt = null;
                 });
@@ -1498,68 +1613,34 @@
                 if (isIOS) {
                     alert("Direct installation is not available on iPhone/Safari.\n\nTo add a home screen shortcut:\n1. Tap the Share button (square with an arrow at the bottom).\n2. Select 'Add to Home Screen' and confirm.");
                 } else {
-                    alert("Direct installation is not available right now.\n\nTo add a home screen shortcut on Chrome or other browsers:\n1. Open the browser menu (three dots).\n2. Select 'Add to Home screen' or 'Install app' and confirm.");
+                    alert("Direct installation is not available right now.\n\nTo add a home screen shortcut in Chrome or other browsers:\n1. Open the browser menu (three dots).\n2. Select 'Add to Home screen' or 'Install app' and confirm.");
                 }
             }
-        }
-
-        function normalizeCategoryFromHash(rawCat) {
-            const clean = (rawCat || '').trim().toLowerCase();
-            const map = {
-                'all': 'all',
-                'tutte': 'all',
-                'landscapes': 'paesaggi',
-                'paesaggi': 'paesaggi',
-                'nature': 'natura',
-                'natura': 'natura',
-                'wildlife': 'fauna',
-                'fauna': 'fauna',
-                'macro': 'macro',
-                'events': 'eventi',
-                'eventi': 'eventi',
-                'street': 'street',
-                'street photography': 'street',
-                'sports': 'sport',
-                'sport': 'sport',
-                'astrophotography': 'astrofotografia',
-                'astrofotografia': 'astrofotografia',
-                'flowers & flora': 'fiori',
-                'flowers and flora': 'fiori',
-                'fiori': 'fiori',
-                'structures & architecture': 'strutture',
-                'structures and architecture': 'strutture',
-                'strutture': 'strutture',
-                'black & white': 'bianco-e-nero',
-                'black and white': 'bianco-e-nero',
-                'bianco-e-nero': 'bianco-e-nero',
-                'abstract': 'astratta',
-                'astratta': 'astratta'
-            };
-            return map[clean] || clean;
         }
 
         fetch('foto_inglese.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
-                allPhotosData = data || [];
+                allPhotosData = Array.isArray(data) ? data : [];
 
                 if (allPhotosData.length > 0) {
                     initFeaturedPhoto();
                     startFeaturedTimer();
                 }
 
-                renderGallery(allPhotosData);
-
                 const hash = window.location.hash;
+                const params = new URLSearchParams(window.location.search);
+                const queryParam = params.get('search');
+
                 if (hash.startsWith('#foto=')) {
                     const targetFile = decodeURIComponent(hash.replace('#foto=', ''));
                     const targetPhoto = allPhotosData.find(p => p.file === targetFile);
                     if (targetPhoto) {
                         openLightbox(`foto/${targetPhoto.file}`, targetPhoto.titolo, targetPhoto.file);
                     }
+                    applyFilters();
                 } else if (hash.startsWith('#cat=')) {
-                    const rawCat = decodeURIComponent(hash.replace('#cat=', ''));
-                    const cat = normalizeCategoryFromHash(rawCat);
+                    const cat = decodeURIComponent(hash.replace('#cat=', ''));
                     if (cat === 'all') {
                         const allLink = Array.from(document.querySelectorAll('.categories-nav .cat-link')).find(
                             el => (el.textContent || '').trim().toLowerCase() === 'all'
@@ -1568,25 +1649,34 @@
                     } else {
                         const targetCatLink = Array.from(document.querySelectorAll('.cat-link')).find(el => {
                             const txt = (el.textContent || '').trim().toLowerCase();
-                            return txt === rawCat.trim().toLowerCase() || normalizeCategoryFromHash(txt) === cat;
+                            return txt === cat.toLowerCase();
                         });
                         filterGallery(cat, targetCatLink || null);
                     }
-                } else if (hash.startsWith('#search=')) {
-                    const q = decodeURIComponent(hash.replace('#search=', ''));
+                } else if (hash.startsWith('#search=') || queryParam !== null) {
+                    const q = hash.startsWith('#search=')
+                        ? decodeURIComponent(hash.replace('#search=', ''))
+                        : (queryParam || '');
                     const searchInput = document.getElementById('search-input');
                     if (searchInput) {
                         searchInput.value = q;
-                        filterGallery('all', null);
                     }
+                    visibleLimit = PHOTOS_BATCH_SIZE;
+                    applyFilters();
                 } else if (hash === '#about') {
                     toggleAccordion('about', document.getElementById('about-nav-link'));
+                    applyFilters();
                 } else if (hash === '#gear') {
                     toggleAccordion('gear', document.getElementById('gear-nav-link'));
+                    applyFilters();
                 } else if (hash === '#contact') {
                     openContactModal();
+                    applyFilters();
                 } else if (hash === '#install') {
                     openInstallModal();
+                    applyFilters();
+                } else {
+                    applyFilters();
                 }
             })
             .catch(err => console.error('Error loading photos:', err));
@@ -1652,7 +1742,6 @@
             return slide;
         }
 
-        // direction: 'next' (new/forward -> slides right to left) or 'prev' (back -> slides left to right)
         function advanceFeaturedPhoto(direction = 'next', fast = true) {
             if (allPhotosData.length === 0 || isFeaturedAnimating) return;
             if (allPhotosData.length === 1) return;
@@ -1693,21 +1782,17 @@
             const targetPhoto = allPhotosData[targetIndex];
             const adjSlide = createAdjacentSlide(targetPhoto);
 
-            // Remove any leftover temporary slides
             track.querySelectorAll('.featured-slide:not(#featured-slide-main)').forEach(el => el.remove());
 
             track.style.transition = 'none';
             if (direction === 'next') {
-                // New photo sits right next to the current one and slides left together
                 track.appendChild(adjSlide);
                 track.style.transform = 'translateX(0px)';
             } else {
-                // Previous photo sits right to the left of the current one and slides right together
                 track.insertBefore(adjSlide, mainSlide);
                 track.style.transform = `translateX(${-width}px)`;
             }
 
-            // Force reflow so transition starts reliably
             track.getBoundingClientRect();
 
             const duration = fast ? 320 : 520;
@@ -1737,7 +1822,6 @@
             startFeaturedTimer();
         }
 
-        // Continuous finger (mobile) and mouse (desktop) drag handling with mid-drag hold support
         (function setupFeaturedPointerDrag() {
             const card = document.getElementById('featured-card');
             const track = document.getElementById('featured-track');
@@ -1750,7 +1834,7 @@
             let isDragging = false;
             let isHorizontalSwipe = false;
             let previewIndex = -1;
-            let previewSide = null; // 'next' (on right, drag left) or 'prev' (on left, drag right)
+            let previewSide = null;
             let suppressClick = false;
 
             function cleanupDragSlides() {
@@ -1917,7 +2001,6 @@
                 }
             }
 
-            // Touch on mobile
             card.addEventListener('touchstart', (e) => {
                 if (e.touches.length !== 1) return;
                 beginDrag(e.touches[0].clientX, e.touches[0].clientY);
@@ -1933,7 +2016,6 @@
                 endDrag(endX);
             }, { passive: true });
 
-            // Mouse on desktop (left button held, holds even mid-drag when mouse stops)
             card.addEventListener('mousedown', (e) => {
                 if (e.button !== 0) return;
                 if (e.target.closest('.featured-nav-btn')) return;
@@ -1958,7 +2040,6 @@
             }, true);
         })();
 
-        // Left/right keyboard arrows on desktop when home is visible
         window.addEventListener('keydown', (e) => {
             const lightboxOpen = document.getElementById('lightbox').style.display === 'flex';
             const contactOpen = document.getElementById('contact-modal').style.display === 'flex';
@@ -1977,28 +2058,78 @@
             }
         });
 
-        function renderGallery(data) {
-            const container = document.getElementById('gallery-container');
-            container.querySelectorAll('.photo-wrapper').forEach(el => el.remove());
+        function photoMatchesQuery(photo, query) {
+            if (!query) return true;
+            const title = (photo.titolo || '').toLowerCase();
+            if (title.includes(query)) return true;
+            if (Array.isArray(photo.tags)) {
+                return photo.tags.some(tag => String(tag).toLowerCase().includes(query));
+            }
+            if (typeof photo.tags === 'string') {
+                return photo.tags.toLowerCase().includes(query);
+            }
+            return false;
+        }
 
-            data.forEach(photo => {
-                const safeTitle = photo.titolo.replace(/"/g, '&quot;');
-                const safeTitleEscaped = photo.titolo.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                const tagsStr = photo.tags && Array.isArray(photo.tags) ? photo.tags.join(' ').toLowerCase() : '';
+        function createPhotoWrapperHtml(photo) {
+            const safeTitle = (photo.titolo || '').replace(/"/g, '&quot;');
+            const safeTitleEscaped = (photo.titolo || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const tagsStr = Array.isArray(photo.tags)
+                ? photo.tags.map(t => String(t).toLowerCase()).join(' ')
+                : (typeof photo.tags === 'string' ? photo.tags.toLowerCase() : '');
 
-                const html = `
-                    <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${photo.titolo.toLowerCase()}" data-tags="${tagsStr}">
-                        <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
-                            <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
-                            <div class="photo-overlay">
-                                <span class="photo-title">${photo.titolo}</span>
-                            </div>
+            return `
+                <div class="photo-wrapper" data-category="${photo.categoria}" data-title="${(photo.titolo || '').toLowerCase()}" data-tags="${tagsStr}">
+                    <div class="photo-card" onclick="openLightbox('foto/${photo.file}', '${safeTitleEscaped}', '${photo.file}')">
+                        <img src="foto/${photo.file}" alt="${safeTitle}" loading="lazy" oncontextmenu="return false;">
+                        <div class="photo-overlay">
+                            <span class="photo-title">${photo.titolo}</span>
                         </div>
                     </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
+                </div>
+            `;
+        }
+
+        function renderVisiblePhotos(matchingPhotos) {
+            const container = document.getElementById('gallery-container');
+            const emptyEl = document.getElementById('gallery-empty');
+            const loadMoreContainer = document.getElementById('load-more-container');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const loadMoreInfo = document.getElementById('load-more-info');
+
+            container.querySelectorAll('.photo-wrapper').forEach(el => el.remove());
+
+            const totalMatches = matchingPhotos.length;
+            const sliceToShow = matchingPhotos.slice(0, visibleLimit);
+
+            sliceToShow.forEach(photo => {
+                container.insertAdjacentHTML('beforeend', createPhotoWrapperHtml(photo));
             });
 
+            if (emptyEl) {
+                emptyEl.style.display = (totalMatches === 0) ? 'block' : 'none';
+            }
+
+            if (loadMoreContainer && loadMoreBtn && loadMoreInfo) {
+                if (totalMatches > visibleLimit) {
+                    const remaining = totalMatches - visibleLimit;
+                    const nextBatch = Math.min(PHOTOS_BATCH_SIZE, remaining);
+                    loadMoreBtn.textContent = `Load more content (+${nextBatch})`;
+                    loadMoreInfo.textContent = `Showing ${sliceToShow.length} of ${totalMatches} photographs`;
+                    loadMoreContainer.style.display = 'flex';
+                } else {
+                    loadMoreContainer.style.display = 'none';
+                }
+            }
+        }
+
+        function loadMorePhotos() {
+            visibleLimit += PHOTOS_BATCH_SIZE;
+            applyFilters();
+        }
+
+        function onSearchInput() {
+            visibleLimit = PHOTOS_BATCH_SIZE;
             applyFilters();
         }
 
@@ -2098,6 +2229,7 @@
         function goToHome(element) {
             closeAccordion();
             currentCategory = 'all';
+            visibleLimit = PHOTOS_BATCH_SIZE;
             const introEl = document.getElementById('home-intro');
             const featuredSection = document.getElementById('featured-section');
             const dividerLabel = document.getElementById('gallery-divider-label');
@@ -2123,6 +2255,7 @@
         function filterGallery(category, element) {
             closeAccordion();
             currentCategory = category;
+            visibleLimit = PHOTOS_BATCH_SIZE;
             
             const introEl = document.getElementById('home-intro');
             const galleryContainer = document.getElementById('gallery-container');
@@ -2148,30 +2281,16 @@
         }
 
         function applyFilters() {
-            const query = document.getElementById('search-input').value.toLowerCase().trim();
-            const wrappers = document.querySelectorAll('.photo-wrapper');
-            let visibleCount = 0;
+            const searchEl = document.getElementById('search-input');
+            const query = searchEl ? searchEl.value.toLowerCase().trim() : '';
 
-            wrappers.forEach(card => {
-                const category = card.getAttribute('data-category');
-                const title = card.getAttribute('data-title');
-                const tags = card.getAttribute('data-tags') || '';
-
-                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
-                const matchesSearch = title.includes(query) || tags.includes(query);
-
-                if (matchesCategory && matchesSearch) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+            const matchingPhotos = allPhotosData.filter(photo => {
+                const matchesCategory = (currentCategory === 'all' || photo.categoria === currentCategory);
+                const matchesSearch = photoMatchesQuery(photo, query);
+                return matchesCategory && matchesSearch;
             });
 
-            const emptyEl = document.getElementById('gallery-empty');
-            if (emptyEl) {
-                emptyEl.style.display = (visibleCount === 0) ? 'block' : 'none';
-            }
+            renderVisiblePhotos(matchingPhotos);
         }
 
         function openContactModal() {
