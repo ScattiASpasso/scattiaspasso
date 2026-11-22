@@ -30,10 +30,16 @@
         const style = document.createElement('style');
         style.id = 'rullini-styles';
         style.textContent = `
+            #rullini-bar-root {
+                position: relative;
+                width: 100%;
+                height: 0;
+                z-index: 940;
+            }
             #rullini-dock {
-                position: fixed;
+                position: absolute;
                 left: 16px;
-                top: 165px;
+                top: 12px;
                 z-index: 940;
                 display: flex;
                 flex-direction: column;
@@ -245,8 +251,7 @@
             @media (max-width: 768px) {
                 #rullini-dock {
                     left: 10px;
-                    top: auto;
-                    bottom: 58px;
+                    top: 10px;
                 }
                 .rullini-toggle-btn {
                     padding: 8px 12px;
@@ -483,6 +488,12 @@
                 setDrawerOpen(false);
             }
         });
+
+        window.addEventListener('scroll', () => {
+            if (isOpen) {
+                setDrawerOpen(false);
+            }
+        }, { passive: true });
 
         renderRollsList();
     }
