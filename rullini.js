@@ -212,6 +212,9 @@
                 background: #141414;
                 border: 1px solid rgba(232, 168, 124, 0.38);
             }
+            .rullini-step-bar--bottom {
+                margin: 22px auto 18px auto;
+            }
             .rullini-step-bar.is-visible {
                 display: flex;
             }
@@ -320,13 +323,18 @@
                 el.id === 'rullini-bar-root' ||
                 el.id === 'rullini-dock' ||
                 el.id === 'rullini-step-bar' ||
+                el.id === 'rullini-step-bar-bottom' ||
                 el.id === 'gallery-container' ||
                 el.closest('#rullini-dock') ||
                 el.closest('#gallery-container')
             ) {
                 return;
             }
-            if (el.querySelector('#gallery-container') || el.querySelector('#rullini-step-bar')) {
+            if (
+                el.querySelector('#gallery-container') ||
+                el.querySelector('#rullini-step-bar') ||
+                el.querySelector('#rullini-step-bar-bottom')
+            ) {
                 return;
             }
             const txt = (el.textContent || '').toLowerCase();
@@ -495,27 +503,32 @@
     }
 
     function updateStepBar() {
-        const stepBar = document.getElementById('rullini-step-bar');
-        const stepLabel = document.getElementById('rullini-step-label');
-        const prevBtn = document.getElementById('rullini-prev-btn');
-        const nextBtn = document.getElementById('rullini-next-btn');
+        const bars = [
+            document.getElementById('rullini-step-bar'),
+            document.getElementById('rullini-step-bar-bottom')
+        ].filter(Boolean);
         const totalRolls = getTotalRolls();
 
-        if (!stepBar) return;
+        if (bars.length === 0) return;
+
         if (selectedRoll === null) {
-            stepBar.classList.remove('is-visible');
+            bars.forEach(b => b.classList.remove('is-visible'));
             return;
         }
 
-        stepBar.classList.add('is-visible');
-        if (stepLabel) {
-            stepLabel.textContent = `${formatRollName(selectedRoll)} (${selectedRoll + 1} / ${totalRolls})`;
-        }
-        if (prevBtn) prevBtn.disabled = selectedRoll <= 0;
-        if (nextBtn) nextBtn.disabled = selectedRoll >= totalRolls - 1;
+        const text = `${formatRollName(selectedRoll)} (${selectedRoll + 1} / ${totalRolls})`;
+        bars.forEach(b => {
+            b.classList.add('is-visible');
+            const lbl = b.querySelector('.rullini-step-label');
+            const prev = b.querySelector('.rullini-prev-btn');
+            const next = b.querySelector('.rullini-next-btn');
+            if (lbl) lbl.textContent = text;
+            if (prev) prev.disabled = selectedRoll <= 0;
+            if (next) next.disabled = selectedRoll >= totalRolls - 1;
+        });
     }
 
-    function selectRoll(rollIdx) {
+    function selectRoll(rollIdx, scrollTopOnStep = false) {
         selectedRoll = rollIdx;
         syncHomeVisibility();
         ensurePhotosLoaded().then(() => {
@@ -524,6 +537,9 @@
         });
         applyRollFilterNow();
         renderRollsList();
+        if (scrollTopOnStep) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
 
     function hookCategoryClicks() {
@@ -533,7 +549,7 @@
                 '[data-category], [data-cat], .category-btn, .cat-btn, .filter-btn, .categories button, .category-nav button, .category-nav a, nav button, nav a'
             );
             if (!target) return;
-            if (target.closest('#rullini-dock') || target.closest('#rullini-step-bar')) return;
+            if (target.closest('#rullini-dock') || target.closest('.rullini-step-bar')) return;
 
             selectedRoll = null;
             syncHomeVisibility();
@@ -594,6 +610,25 @@
         return true;
     }
 
+    function createStepBarElement(id, extraClass) {
+        const bar = document.createElement('div');
+        bar.id = id;
+        bar.className = `rullini-step-bar ${extraClass || ''}`.trim();
+        bar.innerHTML = `
+            <button type="button" class="rullini-step-btn rullini-prev-btn">&lsaquo; ${i18n.prevRoll}</button>
+            <span class="rullini-step-label"></span>
+            <button type="button" class="rullini-step-btn rullini-next-btn">${i18n.nextRoll} &rsaquo;</button>
+        `;
+        const scrollTop = id === 'rullini-step-bar-bottom';
+        bar.querySelector('.rullini-prev-btn').addEventListener('click', () => {
+            if (selectedRoll !== null && selectedRoll > 0) selectRoll(selectedRoll - 1, scrollTop);
+        });
+        bar.querySelector('.rullini-next-btn').addEventListener('click', () => {
+            if (selectedRoll !== null && selectedRoll < getTotalRolls() - 1) selectRoll(selectedRoll + 1, scrollTop);
+        });
+        return bar;
+    }
+
     function mountUI() {
         const root = document.getElementById('rullini-bar-root');
         if (!root) return;
@@ -618,23 +653,18 @@
         `;
 
         const gallery = findGalleryContainer();
-        if (gallery && !document.getElementById('rullini-step-bar')) {
-            const stepBar = document.createElement('div');
-            stepBar.id = 'rullini-step-bar';
-            stepBar.className = 'rullini-step-bar';
-            stepBar.innerHTML = `
-                <button type="button" id="rullini-prev-btn" class="rullini-step-btn">&lsaquo; ${i18n.prevRoll}</button>
-                <span id="rullini-step-label" class="rullini-step-label"></span>
-                <button type="button" id="rullini-next-btn" class="rullini-step-btn">${i18n.nextRoll} &rsaquo;</button>
-            `;
-            gallery.parentNode.insertBefore(stepBar, gallery);
-
-            document.getElementById('rullini-prev-btn').addEventListener('click', () => {
-                if (selectedRoll !== null && selectedRoll > 0) selectRoll(selectedRoll - 1);
-            });
-            document.getElementById('rullini-next-btn').addEventListener('click', () => {
-                if (selectedRoll !== null && selectedRoll < getTotalRolls() - 1) selectRoll(selectedRoll + 1);
-            });
+        if (gallery && gallery.parentNode) {
+            if (!document.getElementById('rullini-step-bar')) {
+                gallery.parentNode.insertBefore(createStepBarElement('rullini-step-bar', ''), gallery);
+            }
+            if (!document.getElementById('rullini-step-bar-bottom')) {
+                const footer = document.querySelector('footer');
+                if (footer && footer.parentNode === gallery.parentNode) {
+                    gallery.parentNode.insertBefore(createStepBarElement('rullini-step-bar-bottom', 'rullini-step-bar--bottom'), footer);
+                } else {
+                    gallery.parentNode.insertBefore(createStepBarElement('rullini-step-bar-bottom', 'rullini-step-bar--bottom'), gallery.nextSibling);
+                }
+            }
         }
 
         document.getElementById('rullini-toggle-btn').addEventListener('click', (e) => {
