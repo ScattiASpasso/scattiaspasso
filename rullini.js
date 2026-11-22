@@ -37,14 +37,13 @@
                 z-index: 940;
             }
             #rullini-dock {
-                position: absolute;
-                left: 16px;
-                top: -88px;
-                z-index: 940;
-                display: flex;
+                position: relative;
+                display: inline-flex;
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
+                margin: 10px 0 6px 16px;
+                z-index: 940;
                 pointer-events: none;
             }
             #rullini-dock > * {
@@ -86,6 +85,9 @@
 
             /* Pannello a srotolamento morbido */
             .rullini-drawer {
+                position: absolute;
+                top: 46px;
+                left: 0;
                 width: 224px;
                 max-height: 0;
                 opacity: 0;
@@ -250,8 +252,7 @@
             /* Su schermi stretti / smartphone */
             @media (max-width: 768px) {
                 #rullini-dock {
-                    left: 10px;
-                    top: -76px;
+                    margin: 8px 0 4px 10px;
                 }
                 .rullini-toggle-btn {
                     padding: 8px 12px;
