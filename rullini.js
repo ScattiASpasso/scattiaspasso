@@ -46,25 +46,47 @@
             #rullini-dock > * {
                 pointer-events: auto;
             }
-            @keyframes rulliniIntroFlash {
+            @keyframes rulliniBoomFlash {
                 0% {
-                    border-color: rgba(232, 168, 124, 0.9);
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
-                    filter: brightness(1);
+                    opacity: 0;
+                    transform: scale(0.84);
+                    background: #fff5ea;
+                    color: #281911;
+                    border-color: #ffffff;
+                    box-shadow:
+                        0 0 0 0 rgba(255, 226, 194, 0.95),
+                        0 0 45px 14px rgba(255, 210, 166, 0.95),
+                        0 0 90px 26px rgba(232, 168, 124, 0.65);
+                    filter: brightness(2.4);
                 }
-                35% {
-                    border-color: #fff0e2;
-                    background: linear-gradient(135deg, #4b2c1b, #23160f);
-                    color: #ffffff;
-                    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.85), 0 0 28px rgba(255, 214, 179, 0.85);
-                    filter: brightness(1.25);
+                18% {
+                    opacity: 1;
+                    transform: scale(1.1);
+                    background: linear-gradient(135deg, #ffd8b5, #e8a87c);
+                    color: #180e08;
+                    border-color: #ffffff;
+                    box-shadow:
+                        0 0 0 10px rgba(255, 226, 194, 0.45),
+                        0 0 55px 18px rgba(255, 214, 173, 1),
+                        0 0 110px 34px rgba(232, 168, 124, 0.8);
+                    filter: brightness(2.1);
                 }
-                70% {
-                    border-color: rgba(232, 168, 124, 0.95);
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 20px rgba(232, 168, 124, 0.55);
-                    filter: brightness(1.08);
+                42% {
+                    opacity: 1;
+                    transform: scale(1.03);
+                    background: linear-gradient(135deg, #5a341f, #281911);
+                    color: #fff3e6;
+                    border-color: #ffe4c9;
+                    box-shadow:
+                        0 0 0 18px rgba(232, 168, 124, 0),
+                        0 0 34px 6px rgba(232, 168, 124, 0.75);
+                    filter: brightness(1.35);
                 }
                 100% {
+                    opacity: 1;
+                    transform: scale(1);
+                    background: linear-gradient(135deg, #281911, #150e0a);
+                    color: #f3c4a2;
                     border-color: rgba(232, 168, 124, 0.9);
                     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
                     filter: brightness(1);
@@ -89,8 +111,11 @@
                 backdrop-filter: blur(8px);
                 transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background 0.25s ease;
             }
+            .rullini-toggle-btn.is-flash-pending {
+                opacity: 0;
+            }
             .rullini-toggle-btn.is-flashing {
-                animation: rulliniIntroFlash 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s 1;
+                animation: rulliniBoomFlash 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             }
             .rullini-toggle-btn:hover {
                 transform: translateY(-1px);
@@ -662,11 +687,16 @@
         const btn = document.getElementById('rullini-toggle-btn');
         if (!btn) return;
         btn.classList.remove('is-flashing');
-        void btn.offsetWidth;
-        btn.classList.add('is-flashing');
-        btn.addEventListener('animationend', () => {
-            btn.classList.remove('is-flashing');
-        }, { once: true });
+        btn.classList.add('is-flash-pending');
+
+        setTimeout(() => {
+            btn.classList.remove('is-flash-pending');
+            void btn.offsetWidth;
+            btn.classList.add('is-flashing');
+            btn.addEventListener('animationend', () => {
+                btn.classList.remove('is-flashing');
+            }, { once: true });
+        }, 420);
     }
 
     function mountUI() {
