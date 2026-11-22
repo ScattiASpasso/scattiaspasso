@@ -97,6 +97,43 @@
             white-space: nowrap;
         }
 
+        @keyframes rulliniIntroFlash {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.65);
+            }
+            22% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.25);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.85);
+            }
+        }
+        .rullini-intro-flash-fx {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 150px;
+            height: 76px;
+            border-radius: 999px;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 248, 230, 0.85) 35%,
+                rgba(243, 213, 141, 0.35) 60%,
+                rgba(255, 255, 255, 0) 80%
+            );
+            filter: blur(4px);
+            box-shadow: 0 0 36px 10px rgba(255, 255, 255, 0.75);
+            pointer-events: none;
+            z-index: 2100;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: rulliniIntroFlash 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         header {
             padding: 30px 3% 15px 3%;
             width: 100%;
@@ -462,6 +499,12 @@
             cursor: grab;
         }
         .featured-card.is-dragging {
+            cursor: grabbing;
+        }
+        .featured-card.over-photo {
+            cursor: zoom-in;
+        }
+        .featured-card.over-photo.is-dragging {
             cursor: grabbing;
         }
 
@@ -1196,6 +1239,27 @@
                 return { x: dx, y: `${dy}px`, scale };
             }
 
+            function fireRulliniFlash() {
+                const btn = document.getElementById('rullini-toggle-btn');
+                if (!btn) return;
+
+                const rect = btn.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+
+                const fx = document.createElement('div');
+                fx.className = 'rullini-intro-flash-fx';
+                fx.style.left = `${rect.left + rect.width / 2}px`;
+                fx.style.top = `${rect.top + rect.height / 2}px`;
+                fx.style.width = `${Math.max(120, rect.width + 44)}px`;
+                fx.style.height = `${Math.max(56, rect.height + 28)}px`;
+
+                document.body.appendChild(fx);
+                fx.addEventListener('animationend', () => fx.remove(), { once: true });
+                setTimeout(() => {
+                    if (fx.isConnected) fx.remove();
+                }, 900);
+            }
+
             window.triggerEntryIntro = function(force = false) {
                 if (!force && shouldSkipIntro()) return;
                 if (introActive && !force) return;
@@ -1206,6 +1270,7 @@
                 splash.style.display = 'block';
 
                 function finishIntro() {
+                    fireRulliniFlash();
                     splash.classList.add('fade-out');
                     timers.push(setTimeout(() => {
                         splash.style.display = 'none';
@@ -1559,6 +1624,37 @@
         let featuredTimer = null;
         let isFeaturedAnimating = false;
         let deferredPrompt = null;
+        let currentFeaturedPhoto = null;
+
+        function isPointOverFeaturedPhoto(clientX, clientY) {
+            const card = document.getElementById('featured-card');
+            if (!card) return false;
+            const imgs = card.querySelectorAll('.featured-slide img');
+            const pad = 2;
+            for (const img of imgs) {
+                const r = img.getBoundingClientRect();
+                if (r.width <= 1 || r.height <= 1) continue;
+                if (
+                    clientX >= r.left - pad &&
+                    clientX <= r.right + pad &&
+                    clientY >= r.top - pad &&
+                    clientY <= r.bottom + pad
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function updateFeaturedPhotoHoverCursor(clientX, clientY) {
+            const card = document.getElementById('featured-card');
+            if (!card) return;
+            if (typeof clientX === 'number' && typeof clientY === 'number') {
+                card.classList.toggle('over-photo', isPointOverFeaturedPhoto(clientX, clientY));
+            } else {
+                card.classList.remove('over-photo');
+            }
+        }
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1704,8 +1800,14 @@
         }
 
         function bindFeaturedClick(photo) {
+            currentFeaturedPhoto = photo;
             const card = document.getElementById('featured-card');
-            card.onclick = () => openLightbox(`foto/${photo.file}`, photo.titolo, photo.file);
+            card.onclick = (e) => {
+                if (e.target.closest('.featured-nav-btn')) return;
+                if (!currentFeaturedPhoto) return;
+                if (!isPointOverFeaturedPhoto(e.clientX, e.clientY)) return;
+                openLightbox(`foto/${currentFeaturedPhoto.file}`, currentFeaturedPhoto.titolo, currentFeaturedPhoto.file);
+            };
         }
 
         function initFeaturedPhoto() {
@@ -1829,6 +1931,18 @@
             const track = document.getElementById('featured-track');
             const mainSlide = document.getElementById('featured-slide-main');
             if (!card || !track || !mainSlide) return;
+
+            card.addEventListener('mousemove', (e) => {
+                if (e.target.closest('.featured-nav-btn')) {
+                    card.classList.remove('over-photo');
+                    return;
+                }
+                updateFeaturedPhotoHoverCursor(e.clientX, e.clientY);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                updateFeaturedPhotoHoverCursor();
+            });
 
             let startX = 0;
             let startY = 0;
