@@ -77,38 +77,42 @@
                 box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 22px rgba(232, 168, 124, 0.48);
             }
             .rullini-toggle-chevron {
-                transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+                transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
                 display: inline-flex;
             }
             .rullini-toggle-btn.is-open .rullini-toggle-chevron {
                 transform: rotate(180deg);
             }
 
-            /* Pannello a srotolamento morbido */
+            /* Pannello a srotolamento dall'alto (effetto papiro / pellicola) */
             .rullini-drawer {
                 position: absolute;
                 top: 46px;
                 left: 0;
                 width: 224px;
-                max-height: 0;
+                max-height: min(62vh, 460px);
                 opacity: 0;
+                pointer-events: none;
                 overflow: hidden;
-                transform: translateY(-8px) scaleY(0.96);
+                clip-path: inset(0% 0% 100% 0% round 14px);
+                transform: translateY(-12px);
                 transform-origin: top center;
                 border-radius: 14px;
-                background: rgba(16, 16, 16, 0.96);
-                border: 1px solid rgba(232, 168, 124, 0.45);
-                box-shadow: 0 16px 38px rgba(0, 0, 0, 0.82);
+                background: linear-gradient(180deg, rgba(24, 17, 12, 0.98) 0%, rgba(15, 15, 15, 0.97) 100%);
+                border: 1px solid rgba(232, 168, 124, 0.5);
+                box-shadow: 0 18px 42px rgba(0, 0, 0, 0.86);
                 backdrop-filter: blur(10px);
+                will-change: clip-path, transform, opacity;
                 transition:
-                    max-height 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-                    opacity 0.26s ease,
-                    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+                    clip-path 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.24s ease;
             }
             .rullini-drawer.is-open {
-                max-height: min(62vh, 460px);
                 opacity: 1;
-                transform: translateY(0) scaleY(1);
+                pointer-events: auto;
+                clip-path: inset(0% 0% 0% 0% round 14px);
+                transform: translateY(0);
             }
             .rullini-drawer-inner {
                 padding: 12px;
@@ -123,7 +127,7 @@
                 justify-content: space-between;
                 gap: 8px;
                 padding-bottom: 8px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                border-bottom: 1px solid rgba(232, 168, 124, 0.16);
             }
             .rullini-drawer-title {
                 font-family: 'Cinzel', serif;
