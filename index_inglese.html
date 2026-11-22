@@ -1626,14 +1626,46 @@
         let deferredPrompt = null;
         let currentFeaturedPhoto = null;
 
+        function getRenderedImageRect(img) {
+            const box = img.getBoundingClientRect();
+            if (box.width <= 1 || box.height <= 1) return null;
+
+            const natW = img.naturalWidth;
+            const natH = img.naturalHeight;
+            if (!natW || !natH) return box;
+
+            const boxRatio = box.width / box.height;
+            const imgRatio = natW / natH;
+
+            let renderW = box.width;
+            let renderH = box.height;
+            let offsetX = box.left;
+            let offsetY = box.top;
+
+            if (imgRatio > boxRatio) {
+                renderH = box.width / imgRatio;
+                offsetY = box.top + (box.height - renderH) / 2;
+            } else {
+                renderW = box.height * imgRatio;
+                offsetX = box.left + (box.width - renderW) / 2;
+            }
+
+            return {
+                left: offsetX,
+                right: offsetX + renderW,
+                top: offsetY,
+                bottom: offsetY + renderH
+            };
+        }
+
         function isPointOverFeaturedPhoto(clientX, clientY) {
             const card = document.getElementById('featured-card');
             if (!card) return false;
             const imgs = card.querySelectorAll('.featured-slide img');
             const pad = 2;
             for (const img of imgs) {
-                const r = img.getBoundingClientRect();
-                if (r.width <= 1 || r.height <= 1) continue;
+                const r = getRenderedImageRect(img);
+                if (!r) continue;
                 if (
                     clientX >= r.left - pad &&
                     clientX <= r.right + pad &&
