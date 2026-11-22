@@ -46,56 +46,6 @@
             #rullini-dock > * {
                 pointer-events: auto;
             }
-            @keyframes rulliniBoomFlash {
-                0% {
-                    opacity: 0;
-                    background: #fff7ee;
-                    color: #281911;
-                    border-color: #ffffff;
-                    box-shadow:
-                        0 0 0 0 rgba(255, 232, 204, 0.95),
-                        0 0 42px 14px rgba(255, 214, 173, 0.95),
-                        0 0 85px 26px rgba(232, 168, 124, 0.7);
-                    filter: brightness(2.5);
-                }
-                18% {
-                    opacity: 1;
-                    background: linear-gradient(135deg, #ffe0c2, #e8a87c);
-                    color: #180e08;
-                    border-color: #ffffff;
-                    box-shadow:
-                        0 0 0 12px rgba(255, 226, 194, 0.45),
-                        0 0 55px 18px rgba(255, 214, 173, 1),
-                        0 0 110px 34px rgba(232, 168, 124, 0.85);
-                    filter: brightness(2.15);
-                }
-                50% {
-                    opacity: 1;
-                    background: linear-gradient(135deg, #633921, #281911);
-                    color: #fff5ea;
-                    border-color: #ffe6cc;
-                    box-shadow:
-                        0 0 0 20px rgba(232, 168, 124, 0),
-                        0 0 36px 8px rgba(232, 168, 124, 0.75);
-                    filter: brightness(1.4);
-                }
-                80% {
-                    opacity: 1;
-                    background: linear-gradient(135deg, #3b2316, #1c120d);
-                    color: #f8d4b7;
-                    border-color: rgba(232, 168, 124, 0.95);
-                    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.8), 0 0 22px rgba(232, 168, 124, 0.45);
-                    filter: brightness(1.12);
-                }
-                100% {
-                    opacity: 1;
-                    background: linear-gradient(135deg, #281911, #150e0a);
-                    color: #f3c4a2;
-                    border-color: rgba(232, 168, 124, 0.9);
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
-                    filter: brightness(1);
-                }
-            }
             .rullini-toggle-btn {
                 position: relative;
                 display: inline-flex;
@@ -325,8 +275,6 @@
     let isOpen = false;
     let cachedPhotos = [];
     let fetchPromise = null;
-    let flashTimer = null;
-    let clearFlashTimer = null;
     const hiddenElementsState = new Map();
 
     function getJsonFilename() {
@@ -684,25 +632,6 @@
         return bar;
     }
 
-    function triggerIntroFlash() {
-        const btn = document.getElementById('rullini-toggle-btn');
-        if (!btn) return;
-        if (flashTimer) clearTimeout(flashTimer);
-        if (clearFlashTimer) clearTimeout(clearFlashTimer);
-
-        btn.style.animation = 'none';
-        btn.style.opacity = '0';
-
-        flashTimer = setTimeout(() => {
-            void btn.offsetWidth;
-            btn.style.animation = 'rulliniBoomFlash 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-            clearFlashTimer = setTimeout(() => {
-                btn.style.animation = '';
-                btn.style.opacity = '';
-            }, 1200);
-        }, 420);
-    }
-
     function mountUI() {
         const root = document.getElementById('rullini-bar-root');
         if (!root) return;
@@ -768,16 +697,7 @@
         hookCategoryClicks();
         ensurePhotosLoaded().then(() => renderRollsList());
         renderRollsList();
-        triggerIntroFlash();
     }
-
-    window.addEventListener('pageshow', () => {
-        if (!document.getElementById('rullini-toggle-btn')) {
-            mountUI();
-        } else {
-            triggerIntroFlash();
-        }
-    });
 
     document.addEventListener('DOMContentLoaded', () => {
         mountUI();
