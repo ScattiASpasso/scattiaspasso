@@ -150,6 +150,13 @@
             align-items: center;
             gap: 12px;
         }
+        .header-brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+        }
         .logo-img {
             height: 80px;
             width: auto;
@@ -242,7 +249,6 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* Contenitore per icona + scritta installa app (nascosto su PC, visibile solo su smartphone) */
         .install-container {
             display: none;
             align-items: center;
@@ -368,7 +374,6 @@
             text-align: center;
         }
 
-        /* Pannello a fisarmonica sotto l'introduzione */
         .accordion-panel {
             display: none;
             width: 100%;
@@ -420,7 +425,6 @@
             margin-bottom: 0;
         }
 
-        /* Stili dedicati per Attrezzatura: nome vs perché */
         .gear-list {
             display: flex;
             flex-direction: column;
@@ -508,7 +512,6 @@
             cursor: grabbing;
         }
 
-        /* Binario orizzontale per far scorrere due foto attaccate insieme */
         .featured-track {
             display: flex;
             width: 100%;
@@ -547,7 +550,6 @@
             pointer-events: none;
         }
 
-        /* Frecce laterali per scorrere "In primo piano" su PC */
         .featured-nav-btn {
             position: absolute;
             top: 50%;
@@ -588,7 +590,6 @@
             right: 20px;
         }
 
-        /* Gallery per smartphone (100% di larghezza) */
         .gallery {
             width: 100% !important;
             max-width: none !important;
@@ -601,7 +602,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Su desktop (schermi larghi), la home si restringe al 50% come volevi */
         @media (min-width: 900px) {
             .gallery:not(.grid-view) {
                 width: 50% !important;
@@ -624,7 +624,6 @@
             object-fit: contain;
         }
 
-        /* Pulsante "Carica altri contenuti" a blocchi di 50 */
         .load-more-container {
             display: none;
             justify-content: center;
@@ -661,7 +660,6 @@
             letter-spacing: 0.6px;
         }
 
-        /* Pulsante fisso "Torna su" in alto a destra (stile distintivo dorato) */
         .scroll-top-btn {
             position: fixed;
             top: 22px;
@@ -704,7 +702,6 @@
             height: 21px;
         }
 
-        /* Su smartphone e schermi stretti, passa automaticamente a 2 colonne grandi e compatta gli spazi verticali */
         @media (max-width: 768px) {
             .install-container {
                 display: flex !important;
@@ -1283,16 +1280,13 @@
                         logoWrap.style.transition = 'opacity 0.7s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
                         titleWrap.style.transition = 'opacity 0.55s ease-out, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease-out';
 
-                        // 1. Appare il logo grande in modo graduale e breve sosta
                         logoWrap.style.opacity = '1';
                         logoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
 
-                        // 2. Appare la scritta e breve pausa per leggere
                         timers.push(setTimeout(() => {
                             titleWrap.style.opacity = '1';
                             titleWrap.style.transform = 'translate(-50%, 0) scale(1)';
 
-                            // 3. Volo fluido verso l'alto a sinistra (velocità invariata)
                             timers.push(setTimeout(() => {
                                 logoWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
                                 titleWrap.style.transition = 'opacity 0.7s ease-out, transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease-out';
@@ -1303,7 +1297,6 @@
                                 const logoMove = moveLogoTowardTopLeft(logoWrap, headerLogo);
                                 const titleMove = moveTitleTowardTopLeft(titleWrap, headerTitle);
 
-                                // 4. Sfumano con effetto fumo verso destra
                                 timers.push(setTimeout(() => {
                                     logoWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
                                     titleWrap.style.transition = 'opacity 0.6s ease-out, transform 0.65s ease-out, filter 0.6s ease-out';
@@ -1324,7 +1317,6 @@
                 });
             };
 
-            // Parte SOLO al caricamento / aggiornamento pagina (salta una volta se arrivi da Storie)
             if (!shouldSkipIntro()) {
                 window.triggerEntryIntro(true);
             }
@@ -1339,10 +1331,12 @@
 
     <header>
         <div class="header-top">
-            <div class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
-                    <div class="logo">Scatti a Spasso</div>
+            <div class="logo-container" style="flex-direction: column; align-items: stretch; padding-left: 10px; gap: 4px; flex: 1; min-width: 240px;">
+                <div class="header-brand-row">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
+                        <div class="logo">Scatti a Spasso</div>
+                    </div>
                 </div>
                 <span class="cat-link" style="cursor: default; padding: 0; font-size: 0.72rem; color: #888;">portfolio di stefano adami</span>
             </div>
@@ -1717,7 +1711,6 @@
         window.addEventListener('scroll', updateScrollTopButton, { passive: true });
         window.addEventListener('DOMContentLoaded', updateScrollTopButton);
 
-        // Gestione dell'evento di installazione PWA
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -1890,7 +1883,6 @@
             return slide;
         }
 
-        // direction: 'next' (nuova/avanti -> scorre da destra verso sinistra) o 'prev' (indietro -> scorre da sinistra verso destra)
         function advanceFeaturedPhoto(direction = 'next', fast = true) {
             if (allPhotosData.length === 0 || isFeaturedAnimating) return;
             if (allPhotosData.length === 1) return;
@@ -1931,21 +1923,17 @@
             const targetPhoto = allPhotosData[targetIndex];
             const adjSlide = createAdjacentSlide(targetPhoto);
 
-            // Rimuove eventuali slide temporanee residue
             track.querySelectorAll('.featured-slide:not(#featured-slide-main)').forEach(el => el.remove());
 
             track.style.transition = 'none';
             if (direction === 'next') {
-                // La nuova foto sta subito a destra di quella attuale e scorrono insieme verso sinistra
                 track.appendChild(adjSlide);
                 track.style.transform = 'translateX(0px)';
             } else {
-                // La foto precedente sta subito a sinistra di quella attuale e scorrono insieme verso destra
                 track.insertBefore(adjSlide, mainSlide);
                 track.style.transform = `translateX(${-width}px)`;
             }
 
-            // Forza il reflow per far partire l'animazione in modo affidabile
             track.getBoundingClientRect();
 
             const duration = fast ? 320 : 520;
@@ -1975,7 +1963,6 @@
             startFeaturedTimer();
         }
 
-        // Gestione trascinamento continuo col dito (cellulare) e col mouse (PC) con arresto anche a metà
         (function setupFeaturedPointerDrag() {
             const card = document.getElementById('featured-card');
             const track = document.getElementById('featured-track');
@@ -2000,7 +1987,7 @@
             let isDragging = false;
             let isHorizontalSwipe = false;
             let previewIndex = -1;
-            let previewSide = null; // 'next' (a destra, si trascina a sinistra) o 'prev' (a sinistra, si trascina a destra)
+            let previewSide = null;
             let suppressClick = false;
 
             function cleanupDragSlides() {
@@ -2167,7 +2154,6 @@
                 }
             }
 
-            // Touch su cellulare
             card.addEventListener('touchstart', (e) => {
                 if (e.touches.length !== 1) return;
                 beginDrag(e.touches[0].clientX, e.touches[0].clientY);
@@ -2183,7 +2169,6 @@
                 endDrag(endX);
             }, { passive: true });
 
-            // Mouse su PC (tasto sinistro premuto, arresto anche a metà fermando il mouse)
             card.addEventListener('mousedown', (e) => {
                 if (e.button !== 0) return;
                 if (e.target.closest('.featured-nav-btn')) return;
@@ -2208,7 +2193,6 @@
             }, true);
         })();
 
-        // Frecce destra/sinistra da tastiera su PC quando la home è visibile
         window.addEventListener('keydown', (e) => {
             const lightboxOpen = document.getElementById('lightbox').style.display === 'flex';
             const contactOpen = document.getElementById('contact-modal').style.display === 'flex';
