@@ -50,25 +50,25 @@
                 gap: 8px;
                 padding: 9px 15px;
                 border-radius: 999px;
-                background: linear-gradient(135deg, #2e1f0a, #17120b);
-                border: 1.5px solid rgba(243, 213, 141, 0.88);
-                color: #ffe6a3;
+                background: linear-gradient(135deg, #281911, #150e0a);
+                border: 1.5px solid rgba(232, 168, 124, 0.9);
+                color: #f3c4a2;
                 font-family: 'Cinzel', serif;
                 font-size: 0.76rem;
                 font-weight: 700;
                 letter-spacing: 1.8px;
                 text-transform: uppercase;
                 cursor: pointer;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(243, 213, 141, 0.28);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 154, 108, 0.28);
                 backdrop-filter: blur(8px);
                 transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background 0.25s ease;
             }
             .rullini-toggle-btn:hover {
                 transform: translateY(-1px);
-                background: linear-gradient(135deg, #3f2a0d, #1f180e);
-                border-color: #fff2c6;
+                background: linear-gradient(135deg, #382216, #1d130e);
+                border-color: #ffe0c8;
                 color: #ffffff;
-                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 22px rgba(243, 213, 141, 0.48);
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 22px rgba(232, 168, 124, 0.48);
             }
             .rullini-toggle-chevron {
                 transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -88,7 +88,7 @@
                 transform-origin: top center;
                 border-radius: 14px;
                 background: rgba(16, 16, 16, 0.96);
-                border: 1px solid rgba(184, 124, 36, 0.38);
+                border: 1px solid rgba(232, 168, 124, 0.45);
                 box-shadow: 0 16px 38px rgba(0, 0, 0, 0.82);
                 backdrop-filter: blur(10px);
                 transition:
@@ -121,7 +121,7 @@
                 font-size: 0.72rem;
                 letter-spacing: 1.5px;
                 text-transform: uppercase;
-                color: #f3d58d;
+                color: #e8a87c;
                 font-weight: 700;
             }
             .rullini-close-btn {
@@ -140,9 +140,9 @@
                 transition: all 0.2s ease;
             }
             .rullini-close-btn:hover {
-                border-color: #f3d58d;
+                border-color: #e8a87c;
                 color: #ffffff;
-                background: rgba(243, 213, 141, 0.14);
+                background: rgba(232, 168, 124, 0.16);
             }
 
             /* Lista interna a scorrimento per tanti rullini */
@@ -153,13 +153,13 @@
                 overflow-y: auto;
                 padding-right: 4px;
                 scrollbar-width: thin;
-                scrollbar-color: rgba(243, 213, 141, 0.35) transparent;
+                scrollbar-color: rgba(232, 168, 124, 0.4) transparent;
             }
             .rullini-list::-webkit-scrollbar {
                 width: 5px;
             }
             .rullini-list::-webkit-scrollbar-thumb {
-                background: rgba(243, 213, 141, 0.35);
+                background: rgba(232, 168, 124, 0.4);
                 border-radius: 999px;
             }
             .rullini-item-btn {
@@ -179,14 +179,14 @@
                 transition: all 0.2s ease;
             }
             .rullini-item-btn:hover {
-                background: rgba(243, 213, 141, 0.08);
-                border-color: rgba(243, 213, 141, 0.28);
+                background: rgba(232, 168, 124, 0.1);
+                border-color: rgba(232, 168, 124, 0.35);
                 color: #ffffff;
             }
             .rullini-item-btn.is-active {
-                background: rgba(243, 213, 141, 0.14);
-                border-color: rgba(243, 213, 141, 0.65);
-                color: #f3d58d;
+                background: rgba(232, 168, 124, 0.16);
+                border-color: rgba(232, 168, 124, 0.72);
+                color: #f3c4a2;
                 font-weight: 600;
             }
             .rullini-item-meta {
@@ -195,7 +195,7 @@
                 white-space: nowrap;
             }
             .rullini-item-btn.is-active .rullini-item-meta {
-                color: #e6c473;
+                color: #e8a87c;
             }
 
             /* Barra di navigazione rapida tra un rullino e l'altro quando è selezionato */
@@ -210,7 +210,7 @@
                 padding: 10px 14px;
                 border-radius: 12px;
                 background: #141414;
-                border: 1px solid rgba(184, 124, 36, 0.32);
+                border: 1px solid rgba(232, 168, 124, 0.38);
             }
             .rullini-step-bar.is-visible {
                 display: flex;
@@ -219,7 +219,7 @@
                 font-family: 'Cinzel', serif;
                 font-size: 0.8rem;
                 letter-spacing: 1.4px;
-                color: #f3d58d;
+                color: #f3c4a2;
                 text-align: center;
             }
             .rullini-step-btn {
@@ -233,8 +233,8 @@
                 transition: all 0.2s ease;
             }
             .rullini-step-btn:hover:not(:disabled) {
-                border-color: #f3d58d;
-                color: #f3d58d;
+                border-color: #e8a87c;
+                color: #f3c4a2;
             }
             .rullini-step-btn:disabled {
                 opacity: 0.35;
