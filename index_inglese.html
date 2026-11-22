@@ -145,6 +145,13 @@
             flex-wrap: wrap;
             gap: 20px;
         }
+        .header-brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 12px;
+        }
         .logo-container {
             display: flex;
             align-items: center;
@@ -169,6 +176,39 @@
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 10px rgba(184, 124, 36, 0.25));
         }
+
+        /* Rolls button: icon + label on desktop, icon only top-right on mobile */
+        .rullini-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background-color: #141414;
+            border: 1px solid rgba(184, 124, 36, 0.45);
+            border-radius: 4px;
+            padding: 7px 12px;
+            color: #f3d58d;
+            font-family: inherit;
+            font-size: 0.82rem;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+        .rullini-btn:hover,
+        .rullini-btn.active {
+            border-color: #f3d58d;
+            background-color: rgba(243, 213, 141, 0.1);
+            color: #ffffff;
+        }
+        .rullini-icon {
+            width: 17px;
+            height: 17px;
+            display: block;
+            flex-shrink: 0;
+        }
+
         .nav-main {
             display: flex;
             align-items: center;
@@ -736,6 +776,18 @@
             }
             .logo-img {
                 height: 28px;
+            }
+            .rullini-btn {
+                padding: 5px 7px;
+                gap: 0;
+                border-radius: 6px;
+            }
+            .rullini-btn-label {
+                display: none;
+            }
+            .rullini-icon {
+                width: 18px;
+                height: 18px;
             }
             .nav-main {
                 gap: 4px;
@@ -1346,10 +1398,25 @@
 
     <header>
         <div class="header-top">
-            <div class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
-                    <div class="logo">Scatti a Spasso</div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px; flex: 1; min-width: 240px;">
+                <div class="header-brand-row">
+                    <div class="logo-container">
+                        <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
+                        <div class="logo">Scatti a Spasso</div>
+                    </div>
+                    <button type="button" id="rullini-toggle-btn" class="rullini-btn" title="Rolls" aria-label="Rolls">
+                        <svg class="rullini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="4" width="12" height="16" rx="2.5"></rect>
+                            <line x1="6" y1="8" x2="8.5" y2="8"></line>
+                            <line x1="6" y1="12" x2="8.5" y2="12"></line>
+                            <line x1="6" y1="16" x2="8.5" y2="16"></line>
+                            <line x1="15.5" y1="8" x2="18" y2="8"></line>
+                            <line x1="15.5" y1="12" x2="18" y2="12"></line>
+                            <line x1="15.5" y1="16" x2="18" y2="16"></line>
+                            <circle cx="12" cy="12" r="2.2"></circle>
+                        </svg>
+                        <span class="rullini-btn-label">Rolls</span>
+                    </button>
                 </div>
                 <span class="cat-link" style="cursor: default; padding: 0; font-size: 0.72rem; color: #888;">photography portfolio by stefano adami</span>
             </div>
@@ -2508,7 +2575,7 @@
         });
     </script>
 
-<script src="rullini.js" defer></script>
+    <script src="rullini.js" defer></script>
     
 </body>
 </html>
