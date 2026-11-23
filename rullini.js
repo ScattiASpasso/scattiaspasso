@@ -276,11 +276,11 @@
                 display: none;
                 justify-content: space-between;
                 align-items: center;
-                gap: 12px;
+                gap: 8px;
                 width: 100%;
                 max-width: 800px;
                 margin: 0 auto 14px auto;
-                padding: 10px 14px;
+                padding: 10px 12px;
                 border-radius: 12px;
                 background: #141414;
                 border: 1px solid rgba(232, 168, 124, 0.38);
@@ -300,6 +300,12 @@
                 color: #f3c4a2;
                 text-align: center;
                 line-height: 1.35;
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+            .rullini-step-title {
+                display: inline;
+                white-space: nowrap;
             }
             .rullini-step-counter {
                 display: inline;
@@ -312,6 +318,8 @@
                 background: #0d0d0d;
                 color: #dcdcdc;
                 font-size: 0.75rem;
+                white-space: nowrap;
+                flex-shrink: 0;
                 cursor: pointer;
                 transition: all 0.2s ease;
             }
@@ -353,9 +361,20 @@
                 .rullini-drawer-inner {
                     max-height: 46vh;
                 }
+                .rullini-step-bar {
+                    gap: 6px;
+                    padding: 8px 10px;
+                }
+                .rullini-step-btn {
+                    padding: 6px 9px;
+                    font-size: 0.68rem;
+                }
                 .rullini-step-label {
-                    font-size: 0.74rem;
-                    letter-spacing: 1px;
+                    font-size: 0.7rem;
+                    letter-spacing: 0.7px;
+                }
+                .rullini-step-title {
+                    display: block;
                 }
                 .rullini-step-counter {
                     display: block;
@@ -642,7 +661,7 @@
             return;
         }
 
-        const html = `${formatRollName(selectedRoll)} <span class="rullini-step-counter">(${selectedRoll + 1} / ${totalRolls})</span>`;
+        const html = `<span class="rullini-step-title">${formatRollName(selectedRoll)}</span> <span class="rullini-step-counter">(${selectedRoll + 1} / ${totalRolls})</span>`;
         bars.forEach(b => {
             b.classList.add('is-visible');
             const lbl = b.querySelector('.rullini-step-label');
