@@ -299,6 +299,11 @@
                 letter-spacing: 1.4px;
                 color: #f3c4a2;
                 text-align: center;
+                line-height: 1.35;
+            }
+            .rullini-step-counter {
+                display: inline;
+                white-space: nowrap;
             }
             .rullini-step-btn {
                 padding: 6px 12px;
@@ -347,6 +352,14 @@
                 }
                 .rullini-drawer-inner {
                     max-height: 46vh;
+                }
+                .rullini-step-label {
+                    font-size: 0.74rem;
+                    letter-spacing: 1px;
+                }
+                .rullini-step-counter {
+                    display: block;
+                    margin-top: 2px;
                 }
             }
         `;
@@ -629,13 +642,13 @@
             return;
         }
 
-        const text = `${formatRollName(selectedRoll)} (${selectedRoll + 1} / ${totalRolls})`;
+        const html = `${formatRollName(selectedRoll)} <span class="rullini-step-counter">(${selectedRoll + 1} / ${totalRolls})</span>`;
         bars.forEach(b => {
             b.classList.add('is-visible');
             const lbl = b.querySelector('.rullini-step-label');
             const prev = b.querySelector('.rullini-prev-btn');
             const next = b.querySelector('.rullini-next-btn');
-            if (lbl) lbl.textContent = text;
+            if (lbl) lbl.innerHTML = html;
             if (prev) prev.disabled = selectedRoll <= 0;
             if (next) next.disabled = selectedRoll >= totalRolls - 1;
         });
