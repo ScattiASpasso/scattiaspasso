@@ -306,7 +306,6 @@
             text-shadow: 0 0 10px rgba(110, 231, 183, 0.65);
         }
 
-        /* Load more content button in batches of 50 (emerald style with glow) */
         .load-more-container {
             display: none;
             justify-content: center;
@@ -345,7 +344,6 @@
             letter-spacing: 0.6px;
         }
 
-        /* Fixed "Back to top" button in top-right (emerald style with glow) */
         .scroll-top-btn {
             position: fixed;
             top: 22px;
@@ -683,16 +681,24 @@
     <script>
         const STORIES_BATCH_SIZE = 50;
         let visibleStoriesLimit = STORIES_BATCH_SIZE;
+        const STORIES_REPO_BASE = 'https://scattiaspasso.github.io/scatti-a-spasso-storie/storie';
 
-        // Add future stories here: above 50 items, "Load more content" will appear automatically
         const storiesData = [
             {
-                href: 'storie/gita soffietto 1-5-10/gita_soffietto1-5-10_inglese.html',
-                cover: 'storie/gita soffietto 1-5-10/IMG_1469.JPG',
+                href: `${STORIES_REPO_BASE}/gita_soffietto_1-5-10/gita_soffietto1-5-10_inglese.html`,
+                cover: `${STORIES_REPO_BASE}/gita_soffietto_1-5-10/IMG_1469.JPG`,
                 alt: 'Soffietto Club Trip',
                 date: 'May 1 / October 10',
                 title: 'Soffietto Club Trip',
                 excerpt: 'A visual and written account of a special day filled with nature, company, and photography.'
+            },
+            {
+                href: `${STORIES_REPO_BASE}/02_17-08-14_Svizzera_Poschiavo/02_17-08-14_Svizzera_Poschiavo_inglese.html`,
+                cover: `${STORIES_REPO_BASE}/02_17-08-14_Svizzera_Poschiavo/cover.jpg`,
+                alt: 'Switzerland — Poschiavo',
+                date: 'August 17, 2014',
+                title: 'Switzerland — Poschiavo',
+                excerpt: 'An outing and photo sequence around Poschiavo and alpine scenery.'
             }
         ];
 
