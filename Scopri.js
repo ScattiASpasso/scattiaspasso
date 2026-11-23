@@ -4,19 +4,29 @@
     const isEn = document.documentElement.lang === 'en' ||
         (rootEl && rootEl.dataset && rootEl.dataset.lang === 'en');
 
+    const DEFAULT_INDEX_URL = isEn
+        ? 'https://scattiaspasso.github.io/scattiaspasso/storie_inglese.html'
+        : 'https://scattiaspasso.github.io/scattiaspasso/storie.html';
+    const indexUrl = (rootEl && rootEl.dataset && rootEl.dataset.indexUrl) || DEFAULT_INDEX_URL;
+    const CACHE_KEY = 'scopri_stories_cache_' + indexUrl;
+
     const i18n = isEn
         ? {
             toggle: 'Discover',
             close: 'Close',
+            loading: 'Loading stories...',
             empty: 'No stories available yet.'
         }
         : {
             toggle: 'Scopri',
             close: 'Chiudi',
+            loading: 'Caricamento storie...',
             empty: 'Nessuna storia disponibile al momento.'
         };
 
     let isOpen = false;
+    let remoteStoriesCache = null;
+    let isFetchingRemote = false;
 
     function isMobileViewport() {
         return window.innerWidth <= MOBILE_BREAKPOINT;
@@ -34,6 +44,108 @@
                 <path d="M16 12.1C17.4 11.5 19.6 11.3 21.8 11.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/>
             </svg>
         `;
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function sanitizeHref(href) {
+        const val = String(href || '').trim();
+        if (!val || val === '#') return '#';
+        if (/^(https?:\/\/|\/|\.\/|\.\.\/|[a-zA-Z0-9_-]+\/|[a-zA-Z0-9_.-]+\.html)/i.test(val)) {
+            return val;
+        }
+        return '#';
+    }
+
+    function parseStoriesFromHtml(htmlText, baseUrl) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+        const items = [];
+
+        doc.querySelectorAll('#stories-container .story-card').forEach(card => {
+            const title = (card.querySelector('.story-title')?.textContent || '').trim();
+            const rawHref = card.getAttribute('href') || '#';
+            let resolvedHref = rawHref;
+            try {
+                resolvedHref = new URL(rawHref, baseUrl).href;
+            } catch (_) {}
+            if (title) {
+                items.push({ href: resolvedHref, title });
+            }
+        });
+
+        if (items.length > 0) return items;
+
+        const match = htmlText.match(/const\s+storiesData\s*=\s*(\[[\s\S]*?\]);/);
+        if (match && match[1]) {
+            try {
+                const fn = new Function('return ' + match[1]);
+                const arr = fn();
+                if (Array.isArray(arr)) {
+                    return arr
+                        .map(s => {
+                            let resolvedHref = s.href || '#';
+                            try {
+                                resolvedHref = new URL(resolvedHref, baseUrl).href;
+                            } catch (_) {}
+                            return {
+                                href: resolvedHref,
+                                title: (s.title || '').trim()
+                            };
+                        })
+                        .filter(s => s.title);
+                }
+            } catch (_) {}
+        }
+
+        return [];
+    }
+
+    function readCachedStories() {
+        try {
+            const raw = sessionStorage.getItem(CACHE_KEY);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.items) && (Date.now() - parsed.ts) < 1000 * 60 * 10) {
+                return parsed.items;
+            }
+        } catch (_) {}
+        return null;
+    }
+
+    function writeCachedStories(items) {
+        try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), items }));
+        } catch (_) {}
+    }
+
+    function fetchRemoteStories(listEl) {
+        if (isFetchingRemote) return;
+        isFetchingRemote = true;
+        if (listEl && !listEl.children.length) {
+            listEl.innerHTML = `<div class="scopri-empty">${i18n.loading}</div>`;
+        }
+
+        fetch(indexUrl, { cache: 'no-store' })
+            .then(res => (res.ok ? res.text() : Promise.reject(new Error('HTTP ' + res.status))))
+            .then(html => {
+                const items = parseStoriesFromHtml(html, indexUrl);
+                remoteStoriesCache = items;
+                writeCachedStories(items);
+                renderStoriesIndex();
+            })
+            .catch(() => {
+                renderStoriesIndex(true);
+            })
+            .finally(() => {
+                isFetchingRemote = false;
+            });
     }
 
     function injectStyles() {
@@ -294,7 +406,7 @@
         }
     }
 
-    function renderStoriesIndex() {
+    function renderStoriesIndex(fetchFailed) {
         const listEl = document.getElementById('scopri-list');
         if (!listEl) return;
 
@@ -306,7 +418,7 @@
                     title: (s.title || '').trim()
                 }))
                 .filter(s => s.title);
-        } else {
+        } else if (document.querySelector('#stories-container .story-card')) {
             document.querySelectorAll('#stories-container .story-card').forEach(card => {
                 const title = (card.querySelector('.story-title')?.textContent || '').trim();
                 const href = card.getAttribute('href') || '#';
@@ -314,6 +426,17 @@
                     items.push({ href, title });
                 }
             });
+        } else if (Array.isArray(remoteStoriesCache) && remoteStoriesCache.length > 0) {
+            items = remoteStoriesCache;
+        } else {
+            const cached = readCachedStories();
+            if (cached && cached.length > 0) {
+                remoteStoriesCache = cached;
+                items = cached;
+            } else if (!fetchFailed) {
+                fetchRemoteStories(listEl);
+                return;
+            }
         }
 
         if (!items.length) {
@@ -322,9 +445,11 @@
         }
 
         listEl.innerHTML = items.map(item => `
-            <a href="${item.href}" class="scopri-item-link">${item.title}</a>
+            <a href="${escapeHtml(sanitizeHref(item.href))}" class="scopri-item-link">${escapeHtml(item.title)}</a>
         `).join('');
     }
+
+    window.renderScopriStoriesIndex = renderStoriesIndex;
 
     function setDrawerOpen(nextState) {
         isOpen = nextState;
