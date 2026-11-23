@@ -504,6 +504,9 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                line-height: 1.38;
+            }
             header {
                 padding: 14px 3% 6px 3%;
             }
@@ -539,17 +542,24 @@
                 padding-bottom: 0;
             }
             .categories-nav {
-                gap: 8px 12px;
+                gap: 6px 10px;
+                line-height: 1.25;
             }
             .cat-link {
                 font-size: 0.68rem;
                 letter-spacing: 1px;
+                line-height: 1.25;
             }
             .divider-line {
                 margin: 10px 0 20px 0;
             }
             .page-title {
                 font-size: 1.4rem;
+            }
+            .scopri-item-link {
+                padding: 5px 8px !important;
+                line-height: 1.25 !important;
+                font-size: 0.76rem !important;
             }
             .load-more-btn {
                 padding: 10px 22px;
@@ -558,7 +568,7 @@
             }
             .scroll-top-btn {
                 top: 14px;
-                right: 14px;
+                right: 58px;
                 width: 40px;
                 height: 40px;
             }
@@ -641,6 +651,8 @@
         <div class="divider-line"></div>
     </header>
 
+    <div id="scopri-bar-root" data-lang="it"></div>
+
     <section class="page-title-section">
         <h1 class="page-title">Storie</h1>
         <p class="page-subtitle">Racconti, escursioni ed esperienze fotografiche vissute in prima persona.</p>
@@ -703,6 +715,7 @@
                 excerpt: 'Escursione e scatti tra Poschiavo e i paesaggi alpini.'
             }
         ];
+        window.storiesData = storiesData;
 
         function renderStories() {
             const container = document.getElementById('stories-container');
@@ -725,6 +738,10 @@
                     </div>
                 </a>
             `).join('');
+
+            if (typeof window.renderScopriStoriesIndex === 'function') {
+                window.renderScopriStoriesIndex();
+            }
 
             if (loadMoreContainer && loadMoreBtn && loadMoreInfo) {
                 if (totalStories > visibleStoriesLimit) {
@@ -838,6 +855,7 @@
             }
         });
     </script>
+    <script src="Scopri.js" defer></script>
 
 </body>
 </html>
