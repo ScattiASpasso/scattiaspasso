@@ -321,7 +321,7 @@
             }
             .rullini-step-arrow {
                 color: #e8a87c;
-                font-size: 0.85rem;
+                font-size: 0.74rem;
                 line-height: 1;
             }
             .rullini-step-btn:hover:not(:disabled) {
@@ -677,11 +677,11 @@
             if (lbl) lbl.textContent = formatRollName(selectedRoll);
             if (prev) {
                 prev.disabled = !hasPrev;
-                prev.innerHTML = `<span>${prevNum}</span> <span class="rullini-step-arrow" aria-hidden="true">&#x2B9C;</span>`;
+                prev.innerHTML = `<span>${prevNum}</span> <span class="rullini-step-arrow" aria-hidden="true">&#x25C0;&#xFE0E;</span>`;
             }
             if (next) {
                 next.disabled = !hasNext;
-                next.innerHTML = `<span class="rullini-step-arrow" aria-hidden="true">&#x2B9E;</span> <span>${nextNum}</span>`;
+                next.innerHTML = `<span class="rullini-step-arrow" aria-hidden="true">&#x25B6;&#xFE0E;</span> <span>${nextNum}</span>`;
             }
         });
     }
@@ -773,9 +773,9 @@
         bar.id = id;
         bar.className = `rullini-step-bar ${extraClass || ''}`.trim();
         bar.innerHTML = `
-            <button type="button" class="rullini-step-btn rullini-prev-btn" aria-label="${i18n.prevRoll}"><span>--</span> <span class="rullini-step-arrow" aria-hidden="true">&#x2B9C;</span></button>
+            <button type="button" class="rullini-step-btn rullini-prev-btn" aria-label="${i18n.prevRoll}"><span>--</span> <span class="rullini-step-arrow" aria-hidden="true">&#x25C0;&#xFE0E;</span></button>
             <span class="rullini-step-label"></span>
-            <button type="button" class="rullini-step-btn rullini-next-btn" aria-label="${i18n.nextRoll}"><span class="rullini-step-arrow" aria-hidden="true">&#x2B9E;</span> <span>--</span></button>
+            <button type="button" class="rullini-step-btn rullini-next-btn" aria-label="${i18n.nextRoll}"><span class="rullini-step-arrow" aria-hidden="true">&#x25B6;&#xFE0E;</span> <span>--</span></button>
         `;
         const scrollTop = id === 'rullini-step-bar-bottom';
         bar.querySelector('.rullini-prev-btn').addEventListener('click', () => {
