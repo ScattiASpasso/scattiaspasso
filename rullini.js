@@ -276,7 +276,7 @@
                 display: none;
                 justify-content: space-between;
                 align-items: center;
-                gap: 12px;
+                gap: 10px;
                 width: 100%;
                 max-width: 800px;
                 margin: 0 auto 14px auto;
@@ -295,28 +295,47 @@
             }
             .rullini-step-label {
                 font-family: 'Cinzel', serif;
-                font-size: 0.8rem;
-                letter-spacing: 1.4px;
+                font-size: 0.86rem;
+                font-weight: 700;
+                letter-spacing: 1.5px;
                 color: #f3c4a2;
                 text-align: center;
+                white-space: nowrap;
             }
             .rullini-step-btn {
-                padding: 6px 12px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 13px;
                 border-radius: 999px;
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                border: 1px solid rgba(232, 168, 124, 0.35);
                 background: #0d0d0d;
-                color: #dcdcdc;
-                font-size: 0.75rem;
+                color: #e6e6e6;
+                font-family: 'Cinzel', serif;
+                font-size: 0.78rem;
+                font-weight: 700;
+                letter-spacing: 0.8px;
+                white-space: nowrap;
                 cursor: pointer;
                 transition: all 0.2s ease;
             }
+            .rullini-step-arrow {
+                color: #e8a87c;
+                font-size: 0.85rem;
+                line-height: 1;
+            }
             .rullini-step-btn:hover:not(:disabled) {
-                border-color: #e8a87c;
-                color: #f3c4a2;
+                border-color: #f3c4a2;
+                color: #ffffff;
+                background: rgba(232, 168, 124, 0.14);
             }
             .rullini-step-btn:disabled {
                 opacity: 0.35;
                 cursor: not-allowed;
+                border-color: rgba(255, 255, 255, 0.12);
+            }
+            .rullini-step-btn:disabled .rullini-step-arrow {
+                color: #888;
             }
 
             /* Su schermi stretti / smartphone */
@@ -348,9 +367,17 @@
                 .rullini-drawer-inner {
                     max-height: 46vh;
                 }
+                .rullini-step-bar {
+                    gap: 6px;
+                    padding: 8px 10px;
+                }
+                .rullini-step-btn {
+                    padding: 6px 10px;
+                    font-size: 0.74rem;
+                }
                 .rullini-step-label {
-                    white-space: nowrap;
-                    line-height: 1.35;
+                    font-size: 0.78rem;
+                    letter-spacing: 1px;
                 }
             }
         `;
@@ -497,6 +524,10 @@
         return `${i18n.rollPrefix} ${String(rollIdx + 1).padStart(2, '0')}`;
     }
 
+    function formatRollNumber(rollIdx) {
+        return String(rollIdx + 1).padStart(2, '0');
+    }
+
     function findGalleryContainer() {
         return document.getElementById('gallery-container') ||
             document.querySelector('.gallery-container') ||
@@ -633,17 +664,25 @@
             return;
         }
 
-        const rollName = formatRollName(selectedRoll);
-        const counter = `(${selectedRoll + 1} / ${totalRolls})`;
-        const text = isMobileViewport() ? `${rollName}<br>${counter}` : `${rollName} ${counter}`;
+        const hasPrev = selectedRoll > 0;
+        const hasNext = selectedRoll < totalRolls - 1;
+        const prevNum = hasPrev ? formatRollNumber(selectedRoll - 1) : '--';
+        const nextNum = hasNext ? formatRollNumber(selectedRoll + 1) : '--';
+
         bars.forEach(b => {
             b.classList.add('is-visible');
             const lbl = b.querySelector('.rullini-step-label');
             const prev = b.querySelector('.rullini-prev-btn');
             const next = b.querySelector('.rullini-next-btn');
-            if (lbl) lbl.innerHTML = text;
-            if (prev) prev.disabled = selectedRoll <= 0;
-            if (next) next.disabled = selectedRoll >= totalRolls - 1;
+            if (lbl) lbl.textContent = formatRollName(selectedRoll);
+            if (prev) {
+                prev.disabled = !hasPrev;
+                prev.innerHTML = `<span>${prevNum}</span> <span class="rullini-step-arrow" aria-hidden="true">&#x2B9C;</span>`;
+            }
+            if (next) {
+                next.disabled = !hasNext;
+                next.innerHTML = `<span class="rullini-step-arrow" aria-hidden="true">&#x2B9E;</span> <span>${nextNum}</span>`;
+            }
         });
     }
 
@@ -734,9 +773,9 @@
         bar.id = id;
         bar.className = `rullini-step-bar ${extraClass || ''}`.trim();
         bar.innerHTML = `
-            <button type="button" class="rullini-step-btn rullini-prev-btn">&lsaquo; ${i18n.prevRoll}</button>
+            <button type="button" class="rullini-step-btn rullini-prev-btn" aria-label="${i18n.prevRoll}"><span>--</span> <span class="rullini-step-arrow" aria-hidden="true">&#x2B9C;</span></button>
             <span class="rullini-step-label"></span>
-            <button type="button" class="rullini-step-btn rullini-next-btn">${i18n.nextRoll} &rsaquo;</button>
+            <button type="button" class="rullini-step-btn rullini-next-btn" aria-label="${i18n.nextRoll}"><span class="rullini-step-arrow" aria-hidden="true">&#x2B9E;</span> <span>--</span></button>
         `;
         const scrollTop = id === 'rullini-step-bar-bottom';
         bar.querySelector('.rullini-prev-btn').addEventListener('click', () => {
@@ -834,7 +873,6 @@
             if (isOpen) {
                 syncDrawerPlacement();
             }
-            updateStepBar();
         }, { passive: true });
 
         window.addEventListener('scroll', () => {
