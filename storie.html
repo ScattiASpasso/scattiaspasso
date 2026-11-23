@@ -306,7 +306,6 @@
             text-shadow: 0 0 10px rgba(110, 231, 183, 0.65);
         }
 
-        /* Pulsante "Carica altri contenuti" a blocchi di 50 (stile verde smeraldo con glow) */
         .load-more-container {
             display: none;
             justify-content: center;
@@ -345,7 +344,6 @@
             letter-spacing: 0.6px;
         }
 
-        /* Pulsante fisso "Torna su" in alto a destra (stile verde smeraldo con glow) */
         .scroll-top-btn {
             position: fixed;
             top: 22px;
@@ -685,16 +683,24 @@
     <script>
         const STORIES_BATCH_SIZE = 50;
         let visibleStoriesLimit = STORIES_BATCH_SIZE;
+        const STORIES_REPO_BASE = 'https://scattiaspasso.github.io/scatti-a-spasso-storie/storie';
 
-        // Qui potrai aggiungere nuove storie in futuro: sopra i 50 apparirà in automatico "Carica altri contenuti"
         const storiesData = [
             {
-                href: 'storie/gita soffietto 1-5-10/gita_soffietto1-5-10.html',
-                cover: 'storie/gita soffietto 1-5-10/IMG_1469.JPG',
+                href: `${STORIES_REPO_BASE}/gita_soffietto_1-5-10/gita_soffietto1-5-10.html`,
+                cover: `${STORIES_REPO_BASE}/gita_soffietto_1-5-10/IMG_1469.JPG`,
                 alt: 'Gita club soffietto',
                 date: '1 Maggio / 10 Ottobre',
                 title: 'Gita club soffietto',
                 excerpt: 'Un resoconto per immagini e parole di una giornata speciale tra natura, compagnia e scatti.'
+            },
+            {
+                href: `${STORIES_REPO_BASE}/02_17-08-14_Svizzera_Poschiavo/02_17-08-14_Svizzera_Poschiavo.html`,
+                cover: `${STORIES_REPO_BASE}/02_17-08-14_Svizzera_Poschiavo/cover.jpg`,
+                alt: 'Svizzera — Poschiavo',
+                date: '17 Agosto 2014',
+                title: 'Svizzera — Poschiavo',
+                excerpt: 'Escursione e scatti tra Poschiavo e i paesaggi alpini.'
             }
         ];
 
