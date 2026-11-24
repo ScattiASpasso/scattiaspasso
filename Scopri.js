@@ -50,7 +50,7 @@
             #scopri-dock {
                 position: absolute;
                 left: 16px;
-                top: -88px;
+                top: 6px;
                 z-index: 940;
                 display: flex;
                 flex-direction: column;
@@ -325,6 +325,7 @@
             <a href="${item.href}" class="scopri-item-link">${item.title}</a>
         `).join('');
     }
+    window.renderScopriStoriesIndex = renderStoriesIndex;
 
     function setDrawerOpen(nextState) {
         isOpen = nextState;
