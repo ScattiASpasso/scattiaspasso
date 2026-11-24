@@ -87,12 +87,12 @@
             font-family: inherit;
             outline: none;
             transition: border-color 0.3s, width 0.3s, box-shadow 0.3s;
-            width: 90px;
+            width: 110px;
         }
         .search-input:focus {
             border-color: #34d399;
             box-shadow: 0 0 14px rgba(52, 211, 153, 0.35);
-            width: 200px;
+            width: 210px;
         }
         .search-input::placeholder {
             color: #665;
@@ -604,7 +604,8 @@
             .search-input {
                 padding: 4px 10px;
                 font-size: 0.8rem;
-                width: 85px;
+                width: 118px;
+                flex: 0 0 118px;
             }
             .nav-contact {
                 padding: 5px 10px !important;
@@ -680,7 +681,7 @@
                 <a href="index_inglese.html#from-storie" onclick="sessionStorage.setItem('skipIntroFromStorie', '1')">Home</a>
                 <a href="index_inglese.html#about" onclick="sessionStorage.setItem('skipIntroFromStorie', '1')">About me</a>
                 <a href="index_inglese.html#gear" onclick="sessionStorage.setItem('skipIntroFromStorie', '1')">Gear</a>
-                <input type="text" id="search-input" class="search-input" placeholder="Search..." oninput="handleSearchInput(this.value)">
+                <input type="text" id="search-input" class="search-input" placeholder="Search photo" oninput="handleSearchInput(this.value)">
                 <a class="nav-contact" onclick="openContactModal()">Contact me</a>
                 <a href="storie.html" class="nav-lang" title="Versione italiana" aria-label="Versione italiana">
                     <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
