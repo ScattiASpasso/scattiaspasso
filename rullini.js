@@ -67,7 +67,7 @@
             #rullini-dock {
                 position: absolute;
                 left: 16px;
-                top: -88px;
+                top: -6px;
                 z-index: 940;
                 display: flex;
                 flex-direction: column;
