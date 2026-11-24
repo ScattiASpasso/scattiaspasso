@@ -135,6 +135,76 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
 
+        .install-container {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-install {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ccc;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+        .install-container:hover .nav-install {
+            border-color: #34d399;
+            background-color: rgba(52, 211, 153, 0.14);
+            box-shadow: 0 0 16px rgba(52, 211, 153, 0.45);
+            color: #6ee7b7;
+        }
+        .nav-install svg {
+            width: 15px;
+            height: 15px;
+        }
+        .install-text {
+            font-size: 0.75rem;
+            color: #888;
+            letter-spacing: 0.5px;
+            text-transform: none;
+            transition: color 0.3s ease;
+        }
+        .install-container:hover .install-text {
+            color: #d1fae5;
+        }
+
+        .modal-install-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 12px auto 18px auto;
+            padding: 12px 18px;
+            background-color: #0c0c0c;
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            border-radius: 8px;
+            color: #6ee7b7;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .modal-install-action:hover {
+            border-color: #34d399;
+            background-color: rgba(52, 211, 153, 0.12);
+            color: #d1fae5;
+        }
+        .modal-install-note {
+            text-align: center;
+            color: #8ea59b;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
         .icon-btn {
             background-color: transparent;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -504,11 +574,17 @@
         }
 
         @media (max-width: 768px) {
+            .install-container {
+                display: flex !important;
+            }
             body {
                 line-height: 1.38;
             }
             header {
                 padding: 14px 3% 6px 3%;
+            }
+            .header-top {
+                gap: 10px;
             }
             .logo {
                 font-size: 1.35rem;
@@ -516,6 +592,9 @@
             }
             .logo-img {
                 height: 32px;
+            }
+            .nav-main {
+                gap: 6px;
             }
             .nav-main a {
                 font-size: 0.75rem;
@@ -542,7 +621,7 @@
                 padding-bottom: 0;
             }
             .categories-nav {
-                gap: 6px 10px;
+                gap: 8px 12px;
                 line-height: 1.25;
             }
             .cat-link {
@@ -551,7 +630,7 @@
                 line-height: 1.25;
             }
             .divider-line {
-                margin: 10px 0 20px 0;
+                margin: 10px 0 12px 0;
             }
             .page-title {
                 font-size: 1.4rem;
@@ -590,7 +669,7 @@
 
     <header>
         <div class="header-top">
-            <div class="logo-container" style="flex-direction: column; align-items: flex-start; padding-left: 10px; gap: 4px;">
+            <div class="logo-container" style="flex-direction: column; align-items: stretch; padding-left: 10px; gap: 4px; flex: 1; min-width: 240px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <img src="foto/logo1.jpg" alt="Logo" class="logo-img">
                     <div class="logo">Scatti a Spasso</div>
@@ -624,6 +703,16 @@
                         <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                     </svg>
                 </button>
+                <a id="install-btn" class="install-container" onclick="openInstallModal()" title="Install App">
+                    <div class="nav-install">
+                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </div>
+                    <span class="install-text">install app</span>
+                </a>
             </nav>
         </div>
 
@@ -667,6 +756,24 @@
         &copy; 2026 Scatti a Spasso — Stefano Adami
     </footer>
 
+    <div id="install-modal" class="modal" onclick="closeInstallModalOnOutside(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeInstallModal()">&times;</span>
+            <h2>Install app</h2>
+            <button type="button" class="modal-install-action" onclick="installApp()">
+                <div class="nav-install">
+                    <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </div>
+                <span>install app</span>
+            </button>
+            <p class="modal-install-note">for unsupported browsers add a shortcut to your home screen</p>
+        </div>
+    </div>
+
     <div id="contact-modal" class="modal" onclick="closeContactModalOnOutside(event)">
         <div class="modal-content">
             <span class="close-modal" onclick="closeContactModal()">&times;</span>
@@ -694,6 +801,7 @@
         const STORIES_BATCH_SIZE = 50;
         let visibleStoriesLimit = STORIES_BATCH_SIZE;
         const STORIES_REPO_BASE = 'https://scattiaspasso.github.io/scatti-a-spasso-storie/storie';
+        let deferredPrompt = null;
 
         const storiesData = [
             {
@@ -778,6 +886,43 @@
             renderStories();
             updateScrollTopButton();
         });
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function openInstallModal() {
+            document.getElementById('install-modal').style.display = 'flex';
+        }
+
+        function closeInstallModal() {
+            document.getElementById('install-modal').style.display = 'none';
+        }
+
+        function closeInstallModalOnOutside(event) {
+            if (event.target.id === 'install-modal') {
+                closeInstallModal();
+            }
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                closeInstallModal();
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    deferredPrompt = null;
+                });
+            } else {
+                closeInstallModal();
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    alert("Direct installation is not available on iPhone/Safari.\n\nTo add a shortcut to your home screen:\n1. Tap the Share button (square with arrow at the bottom).\n2. Select 'Add to Home Screen' and confirm.");
+                } else {
+                    alert("Direct installation is not available right now.\n\nTo add a shortcut to your home screen on Chrome or other browsers:\n1. Open the browser menu (three dots).\n2. Select 'Add to Home screen' or 'Install app' and confirm.");
+                }
+            }
+        }
 
         function handleSearchInput(val) {
             const query = val.trim();
