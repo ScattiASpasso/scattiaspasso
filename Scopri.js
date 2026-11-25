@@ -49,7 +49,7 @@
             }
             #scopri-dock {
                 position: absolute;
-                left: 16px;
+                left: -15px;
                 top: 6px;
                 z-index: 940;
                 display: flex;
